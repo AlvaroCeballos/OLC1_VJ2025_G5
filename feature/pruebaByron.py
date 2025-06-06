@@ -1,3 +1,2 @@
-print("Archivo de Byron 2.0")
-
-print("Este es un cambio en el archivo de Byron 3.0")
+sum = 3 + 3 
+print("La suma es:", sum)
