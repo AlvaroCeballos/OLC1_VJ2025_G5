@@ -5,7 +5,7 @@ import ply.yacc as yacc
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'boolean': 'BOOLEAN',
+    'bool': 'BOOL',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -26,7 +26,6 @@ reservadas = {
     'continue': 'CONTINUE',
     'var': 'VAR',
     'do': 'DO',
-    
 }
 
 
@@ -138,7 +137,7 @@ def t_CARACTER(t):
 
 def t_ID(t):
      r'[a-zA-Z_][a-zA-Z_0-9]*'
-     t.type = reservadas.get(t.value.lower(),'ID')    # Check for reserved words
+     t.type = reservadas.get(t.value.lower(),'ID')    # Cpara el case in sensitive
      return t
 
 # Reglas especiales
@@ -150,16 +149,33 @@ def t_error(t):
     t.lexer.skip(1)
 
 
+# Tabla de símbolos para almacenar variables
+tablaSimbolos = {}
+
+# Función auxiliar para manejar variables
+def nuevaVariableTS(nombre, tipo, valor):
+    tablaSimbolos[nombre] = {'tipo': tipo, 'valor': valor}
+    return tablaSimbolos[nombre]
+
+def actualizarVariableTS(nombre, valor):
+    if nombre in tablaSimbolos:
+        tablaSimbolos[nombre]['valor'] = valor
+        return tablaSimbolos[nombre]
+    else:
+        print(f"Error: Variable '{nombre}' no ha sido declarada")
+        return None
+
 #se definen precedencias y asociaciones de operadores iniciales (aun no terminados)
-precedence = (
+precedence= (
     ('left', 'OR'),
     ('left', 'AND'),
-    ('left', 'IGUALACION', 'DIFERENCIACION'),
-    ('left', 'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL'),
+    ('left', 'XOR'),
+    ('right', 'NOT'),
+    ('left', 'IGUALACION', 'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'DIFERENCIACION'),
     ('left', 'SUMA', 'RESTA'),
-    ('left', 'MULTIPLICACION', 'DIVISION', 'MODULO'),
-    ('right', 'UMENOS', 'NOT'),
-    ('left', 'POTENCIA'),
+    ('left', 'MULTIPLICACION', 'DIVISION'),
+    ('nonassoc', 'POTENCIA', 'MODULO'),
+    ('right', 'UMENOS'),
 )
 # GRAMATICA-------------------------
 
@@ -172,14 +188,18 @@ def p_programa(t):
 def p_instrucciones_lista(t):
     '''instrucciones    : instruccion instrucciones
                         | instruccion '''
+    
+    #Se asigna que si vienen 3 elementos, instrucciones sera la suma de alguna instrucción anterior y otra lista de instrucciones
     if len(t) == 3:
         t[0] = [t[1]] + t[2]
+        #caso contrario, solamente se asigna la instruccion individual que venga
     else:
         t[0] = [t[1]]
 
 # Producción para la instruccion en si
 def p_instruccion(t):
     '''instruccion : declaracion_variable
+                   | asignacion
                    | otras_instrucciones'''
     t[0] = t[1]
 
@@ -192,7 +212,15 @@ def p_otras_instrucciones(t):
 def p_declaracion_variable(t):
     'declaracion_variable : tipo ID IGUAL expresion PYC'
     print(f'Declaración de variable: {t[2]} de tipo {t[1]} con valor {t[4]}')
-    t[0] = {'tipo': t[1], 'id': t[2], 'valor': t[4]}
+    variable = nuevaVariableTS(t[2], t[1], t[4])
+    t[0] = variable
+
+# Producción para asignación a variables existentes
+def p_asignacion_variable(t):
+    'asignacion : ID IGUAL expresion PYC'
+    print(f'Asignación a variable: {t[1]} con nuevo valor {t[3]}')
+    variable = actualizarVariableTS(t[1], t[3])
+    t[0] = variable
 
 #Para negación de expresiones
 def p_expresion_umenos(t):
@@ -203,7 +231,7 @@ def p_expresion_umenos(t):
 def p_tipo(t):
     '''tipo : INT
             | FLOAT
-            | BOOLEAN
+            | BOOL
             | CHAR
             | STR'''
     t[0] = t[1]
