@@ -211,9 +211,17 @@ def p_otras_instrucciones(t):
 
 # Para la declaracion de variables
 def p_declaracion_variable(t):
-    'declaracion_variable : tipo ID IGUAL expresion PYC'
-    print(f'Declaración de variable: {t[2]} de tipo {t[1]} con valor {t[4]}')
-    variable = nuevaVariableTS(t[2], t[1], t[4])
+    '''declaracion_variable : tipo ID IGUAL expresion PYC
+                        | tipo ID PYC'''
+                           
+    if len(t) == 6:  # Con inicialización: tipo ID = expresion ;
+        print(f'Declaración de variable: {t[2]} de tipo {t[1]} con valor {t[4]}')
+        variable = nuevaVariableTS(t[2], t[1], t[4])
+    else:  # Sin inicialización: tipo ID ;
+        print(f'Declaración de variable: {t[2]} de tipo {t[1]} sin valor inicial')
+        # Asignamos None (null) como valor por defecto
+        variable = nuevaVariableTS(t[2], t[1], None)
+    
     t[0] = variable
 
 # Producción para asignación a variables existentes
