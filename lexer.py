@@ -154,7 +154,9 @@ tablaSimbolos = {}
 
 # Función auxiliar para manejar variables
 def nuevaVariableTS(nombre, tipo, valor):
-    tablaSimbolos[nombre] = {'tipo': tipo, 'valor': valor}
+    # Normalizar el tipo a minúsculas (o mayúsculas, según prefieras)
+    tipo_normalizado = tipo.lower()
+    tablaSimbolos[nombre] = {'tipo': tipo_normalizado, 'valor': valor}
     return tablaSimbolos[nombre]
 
 def actualizarVariableTS(nombre, valor):
