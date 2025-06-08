@@ -97,13 +97,12 @@ t_LLC = r'\}'
 
 def t_COMENTARIO_UNA_LINEA(t):
     r'//.*'
-    t.value = t.value[2:]  # Eliminar el prefijo de comentario
-    return t
+    pass
 
 def t_COMENTARIO_MULTILINEA(t):
     r'[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]'
     t.value = t.value[2:-2].replace('\n', ' ')  # Eliminar los delimitadores de comentario
-    return t
+    pass
 
  # Regla para números decimales
 def t_DECIMAL(t):
