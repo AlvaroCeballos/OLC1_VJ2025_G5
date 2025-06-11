@@ -109,4 +109,28 @@ class Enviroment():
             }
             simbolos.append(template)
                     
+
+
+
         return simbolos
+    
+
+    @classmethod
+    def addEnviroment(cls, env):
+        cls.env_list.append(env)
+    
+    @classmethod
+    def getEnviroments(cls):
+        return cls.env_list
+    
+    # Obtiene los simbolos de todos los entornos creados
+    @classmethod
+    def serializarTodosSimbolos(cls):
+        simbolos = []
+        for env in cls.env_list:
+            simbolos = simbolos + env.getTablaSimbolos()
+        return simbolos
+
+    @classmethod
+    def cleanEnviroments(cls):
+        cls.env_list = []
