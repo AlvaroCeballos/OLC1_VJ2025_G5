@@ -65,3 +65,18 @@ class Enviroment():
         if(existe is not None):
             return True
         return False
+    
+    def dentroDeFuncion(self) -> bool:
+        ent:Enviroment = self
+        
+        while ent is not None:
+            if ent.getDentroFunction():
+                return True
+            ent = ent.ent_anterior
+        return False
+    
+    def setDentroFuncion(self, val:bool):
+        self.dentro_funcion = val
+    
+    def getDentroFunction(self):
+        return self.dentro_funcion
