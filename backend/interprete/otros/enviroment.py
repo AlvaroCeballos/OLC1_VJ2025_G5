@@ -19,9 +19,49 @@ class Enviroment():
 
     def getTamanio(self):
         return self.tamanio
-
+        # Funcion para agregar un ssimbolo al entorno
     def insertar_simbolo(self, id:str, simbolo:Symbol):
         if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE:
             self.ts_variables.instertarSimbolo(id, simbolo)
         elif simbolo.tipo_simbolo == TipoSimbolo.FUNCTION:
             self.ts_funciones.instertarSimbolo(id, simbolo)
+
+        #Funcion para verificar si existe el simbolo
+    def existe_simbolo(self, id:str, tipoSimbolo:TipoSimbolo):
+        ent:Enviroment = self
+
+        while ent is not None:
+            if(tipoSimbolo == TipoSimbolo.VARIABLE):
+                existe = ent.ts_variables.buscarSimbolo(id)
+
+        #se busca dentro de la tabla de simbolos funciones
+            elif(tipoSimbolo == TipoSimbolo.FUNCTION):
+                existe = ent.ts_funciones.buscarSimbolo(id)
+            if (existe is not None):
+                return True
+            ent = ent.ent_anterior
+        return False
+    
+    #Se obtiene el simbolo del entorno actual o de los anteriores
+    def getSimbolo(self, id:str, tipo_simbolo:TipoSimbolo):
+        ent:Enviroment = self
+        
+        while ent is not None:
+            if (tipo_simbolo == TipoSimbolo.VARIABLE):
+                simbolo = ent.ts_variables.getSimbolo(id)
+            elif (tipo_simbolo == TipoSimbolo.FUNCTION):
+                simbolo = ent.ts_funciones.getSimbolo(id)
+            if (simbolo is not None):
+                return simbolo
+            ent = ent.ent_anterior
+        return None
+    
+    #Se obtiene el simbolo unicamente del entorno actual
+    def existe_simbolo_ent_actual(self, id:str, tipo_simbolo:TipoSimbolo):
+        if(tipo_simbolo == TipoSimbolo.VARIABLE):
+            existe = self.ts_variables.getSimbolo(id)
+        elif (tipo_simbolo == TipoSimbolo.FUNCTION):
+            existe = self.ts_funciones.getSimbolo(id)
+        if(existe is not None):
+            return True
+        return False
