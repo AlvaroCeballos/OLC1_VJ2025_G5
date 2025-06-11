@@ -1,5 +1,5 @@
-from interprete.extra.enviroment import Enviroment
-from interprete.extra.generador import Generador
+from interprete.otros.enviroment import Enviroment
+#from interprete.otros.generador import Generador
 
 class Expresion:
     def __init__(self,  text_val:str='', linea=0, columna=0) -> None:
@@ -8,7 +8,4 @@ class Expresion:
         self.columna:int = columna
     
     def ejecutar(self, env:Enviroment):
-        pass
-
-    def ejecutar3d(self, env:Enviroment, generador:Generador):
         pass
