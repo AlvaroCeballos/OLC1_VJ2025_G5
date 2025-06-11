@@ -1,5 +1,7 @@
 import ply.lex as lex
 
+from interprete.otros.errores import *
+
 # Palabras reservadas
 reservadas = {
     'int': 'INT',
@@ -140,9 +142,17 @@ t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
 
 # Manejo de errores
 def t_error(t):
-    print(f"Carácter ilegal '{t.value[0]}'")
+    # Agregando a la tabla de erorres
+    err = Error(tipo='Léxico', linea=t.lexer.lineno, columna=find_column(t.lexer.lexdata, t), descripcion=f'Caracter no reconocido: {t.value[0]}')
+    TablaErrores.addError(err)
     t.lexer.skip(1)
 
-# Construir el analizador léxico
-def build_lexer():
-    return lex.lex()
+
+def find_column(inp, token):
+    line_start = inp.rfind('\n', 0, token.lexpos + 1) + 1
+    return (token.lexpos - line_start) + 1
+
+def t_eof(t):  #end of file
+    t.lexer.lineno = 0
+    
+lex.lex()
