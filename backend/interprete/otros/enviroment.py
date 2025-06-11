@@ -66,6 +66,7 @@ class Enviroment():
             return True
         return False
     
+
     def dentroDeFuncion(self) -> bool:
         ent:Enviroment = self
         
@@ -80,3 +81,32 @@ class Enviroment():
     
     def getDentroFunction(self):
         return self.dentro_funcion
+    
+    # Serializa la tabla de simbolos de un entorno
+    def getTablaSimbolos(self):
+        simbolos = []
+        # Llenado de variables
+        for simbolo in self.ts_variables.getTS():
+            template = {
+                'simbolo': simbolo.tipo_simbolo.name,
+                'tipo': simbolo.tipo.name,
+                'id': simbolo.id,
+                'valor': simbolo.valor,
+                'parametros': simbolo.serializarParametros(),
+                'ambito': simbolo.ambito
+            }
+            simbolos.append(template)
+
+        # Llenado de funciones
+        for simbolo in self.ts_funciones.getTS():
+            template = {
+                'simbolo': simbolo.tipo_simbolo.name,
+                'tipo': simbolo.tipo.name,
+                'id': simbolo.id,
+                'valor': '',
+                'parametros': simbolo.serializarParametros(),
+                'ambito': simbolo.ambito
+            }
+            simbolos.append(template)
+                    
+        return simbolos
