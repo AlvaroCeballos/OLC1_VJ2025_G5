@@ -329,3 +329,6 @@ class Aritmetica(Expresion):
         if self.operador == TipoAritmetica.NEGACION:
             return
         self.op2.recorrerArbol(hijo)
+    
+    
+    
