@@ -1,5 +1,4 @@
 from interprete.otros.enviroment import Enviroment
-#from interprete.otros.generador import Generador
 
 class Expresion:
     def __init__(self,  text_val:str='', linea=0, columna=0) -> None:
