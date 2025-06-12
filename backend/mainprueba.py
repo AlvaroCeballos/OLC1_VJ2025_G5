@@ -1,19 +1,27 @@
-from analizadores import lexer
-from analizadores import parser
+from analizadores.parser import parser
+from interprete.otros.enviroment import Enviroment
+from interprete.otros.ast import AST
+from interprete.otros.consola import Consola
+from interprete.otros.errores import TablaErrores
 
-# Leer el archivo
-archivo = r"C:\Users\52338386\OneDrive - Conduent\Documents\Training\Ing\Compi1\OLC1_VJ2025_G5\OLC1_VJ2025_G5\backend\entrada.txt"
+f = open('backend/entrada.txt', 'r')
+data = f.read()
 
-with open(archivo, 'r', encoding='utf-8') as f:
-    input_text = f.read()
+instrucciones = parser.parse(data.lower())
+env = Enviroment(ent_anterior=None, ambito='Global')
+try:
+    for instruccion in instrucciones:
+        instruccion.ejecutar(env)
+except Exception as e:
+    print(f"Error inesperado: {e}")
 
-# Asignar el texto al lexer
-lexer.lexer.input(input_text)
+print('TABLA DE ERRORES:')
+print(TablaErrores.serializarTBErrores())
+print('TABLA DE SIMBOLOS:')
+print(Enviroment.serializarTodosSimbolos())
 
-# Llamar al parser
-resultado = parser.parser(input_text)
+ast = AST(instrucciones)
+ast.getAST()
 
-# Opcional: imprimir las instrucciones obtenidas
-if resultado:
-    for instruccion in resultado:
-        print(f'Ejecutar: {instruccion.text_val}')
+Enviroment.cleanEnviroments()
+TablaErrores.cleanTablaErrores()
