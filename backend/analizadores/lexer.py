@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'bool': 'BOOL',
+    'bool': 'BOOLEAN',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -92,6 +92,7 @@ t_COMA = r','
 t_LLA = r'\{'
 t_LLC = r'\}'
 
+
 # Expresiones regulares para comentarios
 def t_COMENTARIO_UNA_LINEA(t):
     r'//.*'
@@ -155,4 +156,4 @@ def find_column(inp, token):
 def t_eof(t):  #end of file
     t.lexer.lineno = 0
     
-lex.lex()
+lexer = lex.lex()

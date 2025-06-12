@@ -1,0 +1,35 @@
+digraph {
+	0 [label = "INSTRUCCIONES"];
+	1 [label = "DECLARACION"];
+	2 [label = "a"];
+	3 [label = "INT"];
+	4 [label = "10"];
+	5 [label = "DECLARACION"];
+	6 [label = "b"];
+	7 [label = "FLOAT"];
+	8 [label = "5.5"];
+	9 [label = "DECLARACION"];
+	10 [label = "mensaje"];
+	11 [label = "STR"];
+	12 [label = "'hola\nmundo'"];
+	13 [label = "DECLARACION"];
+	14 [label = "letra"];
+	15 [label = "CHAR"];
+	16 [label = "a"];
+	0 -> 1;
+	1 -> 2;
+	1 -> 3;
+	1 -> 4;
+	0 -> 5;
+	5 -> 6;
+	5 -> 7;
+	5 -> 8;
+	0 -> 9;
+	9 -> 10;
+	9 -> 11;
+	9 -> 12;
+	0 -> 13;
+	13 -> 14;
+	13 -> 15;
+	13 -> 16;
+}
