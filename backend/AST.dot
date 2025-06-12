@@ -15,7 +15,7 @@ digraph {
 	13 [label = "DECLARACION"];
 	14 [label = "letra"];
 	15 [label = "CHAR"];
-	16 [label = "a"];
+	16 [label = "'a'"];
 	0 -> 1;
 	1 -> 2;
 	1 -> 3;

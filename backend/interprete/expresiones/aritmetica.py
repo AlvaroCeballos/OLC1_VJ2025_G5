@@ -300,12 +300,6 @@ class Aritmetica(Expresion):
             elif op1.tipo == TipoDato.FLOAT:
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = -op1.valor
-            
-            # CHAR
-            elif op1.tipo == TipoDato.CHAR:
-                resultado.tipo = TipoDato.INT
-                resultado.valor = -ord(op1.valor)
-            
             else:
                 # Agregando a la tabla de errores
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la negación. El tipo {op1.tipo.name} no es permitido.')
