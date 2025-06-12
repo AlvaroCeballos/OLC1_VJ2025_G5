@@ -8,6 +8,6 @@ FLOAT b = 5.5;
 STR mensaje = "Hola\nMundo";
 
 
-CHAR letra = a;
+CHAR letra = ;
 
 // VALIDAR QUE EL CHAR FUNCIONE UNICAMENTE CON COMILLAS SIMPLES XD
