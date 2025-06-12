@@ -9,3 +9,5 @@ STR mensaje = "Hola\nMundo";
 
 
 CHAR letra = a;
+
+// VALIDAR QUE EL CHAR FUNCIONE UNICAMENTE CON COMILLAS SIMPLES XD

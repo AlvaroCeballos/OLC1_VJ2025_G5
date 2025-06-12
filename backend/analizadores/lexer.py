@@ -92,6 +92,7 @@ t_COMA = r','
 t_LLA = r'\{'
 t_LLC = r'\}'
 
+
 # Expresiones regulares para comentarios
 def t_COMENTARIO_UNA_LINEA(t):
     r'//.*'

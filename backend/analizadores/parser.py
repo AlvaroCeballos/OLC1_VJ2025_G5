@@ -94,6 +94,12 @@ def p_instruccion_print(t):
     text_val = f'{t[1]}({t[3].text_val})'
     t[0] = Print(text_val=text_val, argumento=t[3], linea=t.lineno(1), columna=t.lexpos(1))
 
+def p_caracter(t):
+    '''
+    literal : CARACTER
+    '''
+    t[0] = Literal(f"'{t[1]}'", TipoDato.CHAR, t[1], t.lineno(1), t.lexpos(1))
+    
 def p_tipo_print(t):
     '''
     tipo_print : PRINT
