@@ -24,7 +24,7 @@ class Nodo:
     def getHijos(self):
         return self.hijos
     
-
+#Construye un arbol de sintaxis abstracto (AST) a partir de las instrucciones del programa. Y genera un archivo .dot y una imagen .png del AST.
 class AST:
     id:int = 0
     def __init__(self, instrucciones):

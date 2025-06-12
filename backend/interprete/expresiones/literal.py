@@ -5,6 +5,7 @@ from interprete.otros.retorno import Retorno
 from interprete.otros.enviroment import Enviroment
 from interprete.instrucciones.instruccion import Instruccion
 
+#Define el analisis de las secuencias de escape y el tipo de dato del literal.
 class Literal(Expresion):
     def __init__(self, text_val:str, tipo, valor, linea:int, columna:int):
         super().__init__(text_val, linea, columna)

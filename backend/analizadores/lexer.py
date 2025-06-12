@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'bool': 'BOOL',
+    'bool': 'BOOLEAN',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -155,4 +155,4 @@ def find_column(inp, token):
 def t_eof(t):  #end of file
     t.lexer.lineno = 0
     
-lex.lex()
+lexer = lex.lex()

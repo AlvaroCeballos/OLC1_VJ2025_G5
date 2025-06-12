@@ -5,36 +5,36 @@ from interprete.otros.symbol_table import TablaSimbolos
 class Enviroment():
     env_list = []
     def __init__(self, ent_anterior, ambito:str):
-        self.ent_anterior:Enviroment = ent_anterior # Entorno anterior, para poder hacer el manejo de variables globales y locales
-        self.ambito = ambito # Ambito del entorno, puede ser global o local
+        self.ent_anterior:Enviroment = ent_anterior
+        self.ambito = ambito
         self.ts_variables = TablaSimbolos()
-        self.ts_funciones = TablaSimbolos() # Se define tabla de simbolos para funciones para la fase 2
+        self.ts_funciones = TablaSimbolos()
         self.dentro_funcion = False
         self.tamanio = 0                    # Para manejo de funciones/procedimientos (es como un offset)
         Enviroment.addEnviroment(self)
-
-        # Incrementa el tamaño del entorno
+    
+    # Incrementa el tamaño del entorno
     def incrementarTamanio(self):
         self.tamanio += 1
 
     def getTamanio(self):
         return self.tamanio
-        # Funcion para agregar un ssimbolo al entorno
+
+    # Inserta un simbolo en la tabla de simbolos del entorno actual
     def insertar_simbolo(self, id:str, simbolo:Symbol):
+        #Validar si el simbolo es funcion o variable
         if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE:
             self.ts_variables.instertarSimbolo(id, simbolo)
+        #Valida si el simbolo es una funcion    
         elif simbolo.tipo_simbolo == TipoSimbolo.FUNCTION:
             self.ts_funciones.instertarSimbolo(id, simbolo)
-
-        #Funcion para verificar si existe el simbolo
+    
+    # Busca un simbolo en el entorno actual o en los entornos anteriores
     def existe_simbolo(self, id:str, tipoSimbolo:TipoSimbolo):
         ent:Enviroment = self
-
         while ent is not None:
             if(tipoSimbolo == TipoSimbolo.VARIABLE):
                 existe = ent.ts_variables.buscarSimbolo(id)
-
-        #se busca dentro de la tabla de simbolos funciones
             elif(tipoSimbolo == TipoSimbolo.FUNCTION):
                 existe = ent.ts_funciones.buscarSimbolo(id)
             if (existe is not None):
@@ -42,7 +42,7 @@ class Enviroment():
             ent = ent.ent_anterior
         return False
     
-    #Se obtiene el simbolo del entorno actual o de los anteriores
+    #Obtiene el simbolo sobre todos los entornos
     def getSimbolo(self, id:str, tipo_simbolo:TipoSimbolo):
         ent:Enviroment = self
         
@@ -56,7 +56,7 @@ class Enviroment():
             ent = ent.ent_anterior
         return None
     
-    #Se obtiene el simbolo unicamente del entorno actual
+    # Valida si un simbolo existe en el entorno actual
     def existe_simbolo_ent_actual(self, id:str, tipo_simbolo:TipoSimbolo):
         if(tipo_simbolo == TipoSimbolo.VARIABLE):
             existe = self.ts_variables.getSimbolo(id)
@@ -66,7 +66,7 @@ class Enviroment():
             return True
         return False
     
-
+    # Valida si hay una funcion en un entorno mas externo
     def dentroDeFuncion(self) -> bool:
         ent:Enviroment = self
         
@@ -82,7 +82,7 @@ class Enviroment():
     def getDentroFunction(self):
         return self.dentro_funcion
     
-    # Serializa la tabla de simbolos de un entorno
+    # Serializa la tabla de simbolos de un entorno y genera un arreglo en formato JSON
     def getTablaSimbolos(self):
         simbolos = []
         # Llenado de variables
@@ -109,12 +109,9 @@ class Enviroment():
             }
             simbolos.append(template)
                     
-
-
-
         return simbolos
-    
 
+    
     @classmethod
     def addEnviroment(cls, env):
         cls.env_list.append(env)
