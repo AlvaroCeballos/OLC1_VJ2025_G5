@@ -155,4 +155,4 @@ def find_column(inp, token):
 def t_eof(t):  #end of file
     t.lexer.lineno = 0
     
-lex.lex()
+lexer = lex.lex()
