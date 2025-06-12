@@ -46,7 +46,7 @@ class Declaracion(Instruccion):
             elif self.tipo == TipoDato.CHAR:
                 simbolo.valor = ' '
             elif self.tipo == TipoDato.BOOLEAN:
-                simbolo.valor = False
+                simbolo.valor = True
 
         env.insertar_simbolo(self.id, simbolo)
 
