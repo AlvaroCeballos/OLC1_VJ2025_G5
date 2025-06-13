@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'bool': 'BOOLEAN',
+    'boolean': 'BOOLEAN',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -39,7 +39,6 @@ tokens = [
     'POTENCIA',
     'DIVISION',
     'DECIMAL',
-    'BOOLEANO',
     'CADENAS',
     'CARACTER',
     'COMENTARIO_UNA_LINEA',
@@ -69,9 +68,9 @@ tokens = [
 # Expresiones regulares para tokens simples
 t_SUMA = r'\+'
 t_RESTA = r'-'
+t_POTENCIA = r'\*\*'
 t_MULTIPLICACION = r'\*'
 t_DIVISION = r'/'
-t_POTENCIA = r'\^'
 t_MODULO = r'%'
 t_IGUALACION = r'=='
 t_DIFERENCIACION = r'!='
@@ -117,15 +116,15 @@ def t_ENTERO(t):
 
 # Regla para cadenas de texto
 def t_CADENAS(t):
-    r'"([^"\\]|\\.)*"'
-    t.value = t.value[1:-1]  # Eliminar comillas
+    r'\"([^\\\n]|(\\.))*?\"'
+    t.value = t.value[1:-1]  # Elimina las comillas dobles
     return t
 
 # Regla para booleanos
-def t_BOOLEANO(t):
-    r'\b(true|false)\b'
-    t.value = (t.value == 'true')  # Convertir a booleano
-    return t
+#def t_BOOLEANO(t):
+ #   r'\b(true|false)\b'
+  #  t.value = (t.value == 'true')  # Convertir a booleano
+   # return t
 
 # Regla para caracteres
 def t_CARACTER(t):
@@ -137,6 +136,8 @@ def t_ID(t):
      r'[a-zA-Z_][a-zA-Z_0-9]*'
      t.type = reservadas.get(t.value.lower(),'ID')    # Para el case insensitive
      return t
+
+  # Incrementa el número de línea
 
 # Reglas especiales
 t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
