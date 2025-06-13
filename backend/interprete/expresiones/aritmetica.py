@@ -45,30 +45,30 @@ class Aritmetica(Expresion):
                 resultado.tipo = TipoDato.STR
                 resultado.valor = str(op1.valor) + str(op2.valor)
 
-            # FLOAT
+            # FLOAT/FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
-                resultado.tipo = TipoDato.INT
+                resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor + op2.valor
 
             # FLOAT/CHAR
             elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = ord(op1.valor) + ord(op2.valor)
+            
+             # FLOAT/STR
+            elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.STR):
+                resultado.tipo = TipoDato.STR
+                resultado.valor = str(op1.valor) + str(op2.valor)
 
             # BOOLEAN/STR
             elif (op1.tipo == TipoDato.BOOLEAN or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.BOOLEAN or op2.tipo == TipoDato.STR):
                 resultado.tipo = TipoDato.STR
                 resultado.valor = str(op1.valor) + str(op2.valor)
             
-            # FLOAT/STR
-            elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.STR):
-                resultado.tipo = TipoDato.STR
-                resultado.valor = str(op1.valor) + str(op2.valor)
-
             # CHAR
             elif op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
-                resultado.tipo = TipoDato.CHAR
-                resultado.valor = chr(ord(op1.valor) + ord(op2.valor))
+                resultado.tipo = TipoDato.STR
+                resultado.valor = str(ord(op1.valor) + ord(op2.valor))
             
             # CHAR/STR
             elif (op1.tipo == TipoDato.CHAR or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.CHAR or op2.tipo == TipoDato.STR):
@@ -155,7 +155,7 @@ class Aritmetica(Expresion):
                     err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la división. División por cero.')
                     TablaErrores.addError(err)
                     return resultado
-                resultado.tipo = TipoDato.INT
+                resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor // op2.valor
             
             #INT/FLOAT
@@ -175,8 +175,8 @@ class Aritmetica(Expresion):
                     err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la división. División por cero.')
                     TablaErrores.addError(err)
                     return resultado
-                resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) // ord(op2.valor)
+                resultado.tipo = TipoDato.FLOAT
+                resultado.valor = ord(op1.valor) / ord(op2.valor)
 
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
@@ -214,20 +214,10 @@ class Aritmetica(Expresion):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor ** op2.valor
 
-            #INT/CHAR
-            elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
-                resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) ** ord(op2.valor)
-
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor ** op2.valor
-            
-            # FLOAT/CHAR
-            elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
-                resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) ** ord(op2.valor)
             
             else:
                 # Agregando a la tabla de errores
@@ -255,16 +245,6 @@ class Aritmetica(Expresion):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor % op2.valor
 
-            #INT/CHAR
-            elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
-                if ord(op2.valor) == 0:
-                    # Agregando a la tabla de errores
-                    err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar el módulo. División por cero.')
-                    TablaErrores.addError(err)
-                    return resultado
-                resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) % ord(op2.valor)
-
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
                 if op2.valor == 0:
@@ -274,16 +254,6 @@ class Aritmetica(Expresion):
                     return resultado
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor % op2.valor
-            
-            # FLOAT/CHAR
-            elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
-                if ord(op2.valor) == 0:
-                    # Agregando a la tabla de errores
-                    err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar el módulo. División por cero.')
-                    TablaErrores.addError(err)
-                    return resultado
-                resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) % ord(op2.valor)
             
             else:
                 # Agregando a la tabla de errores

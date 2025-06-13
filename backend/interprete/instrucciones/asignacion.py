@@ -39,7 +39,12 @@ class Asignacion(Instruccion):
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error de asignacion de variable. No se puede asignar un valor de tipo {exp.tipo.name} a una variable de tipo {simbolo.tipo.name}')
                 TablaErrores.addError(err)
                 return self
-            simbolo.valor = int(exp.valor)
+            valor_int = int(exp.valor)
+            if not (-2147483648 <= valor_int <= 2147483647):
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'El valor {exp.valor} está fuera del rango permitido para INT')
+                TablaErrores.addError(err)
+                return self       
+            simbolo.valor = valor_int
         elif simbolo.tipo == TipoDato.FLOAT:
             if exp.tipo not in [TipoDato.FLOAT, TipoDato.INT]:
                 # Agregando error a la tabla de erorres

@@ -9,7 +9,7 @@ from interprete.otros.retorno import Retorno
 from interprete.otros.symbol import Symbol
 from interprete.otros.errores import Error, TablaErrores
 from interprete.expresiones.literal import Literal
-
+from interprete.instrucciones.asignacion import Asignacion
 
 class Declaracion(Instruccion):
     def __init__(self, text_val:str, id:str, tipo:TipoDato, valor:str, linea:int, columna:int):
@@ -36,7 +36,7 @@ class Declaracion(Instruccion):
         simbolo = Symbol(TipoSimbolo.VARIABLE, self.tipo, self.id, self.valor, env.ambito, None)
 
         # Guardando con un valor por defecto
-        if self.valor == None:
+        if self.valor is None:
             if self.tipo == TipoDato.INT:
                 simbolo.valor = 0
             elif self.tipo == TipoDato.FLOAT:
@@ -50,8 +50,12 @@ class Declaracion(Instruccion):
 
         env.insertar_simbolo(self.id, simbolo)
 
-        return self
+        if self.valor is not None:
+            asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
+            asignacion.ejecutar(env)
 
+        return self
+    
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='DECLARACION', hijos=[])

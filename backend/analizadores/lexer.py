@@ -69,9 +69,9 @@ tokens = [
 # Expresiones regulares para tokens simples
 t_SUMA = r'\+'
 t_RESTA = r'-'
+t_POTENCIA = r'\*\*'
 t_MULTIPLICACION = r'\*'
 t_DIVISION = r'/'
-t_POTENCIA = r'\^'
 t_MODULO = r'%'
 t_IGUALACION = r'=='
 t_DIFERENCIACION = r'!='
@@ -117,8 +117,8 @@ def t_ENTERO(t):
 
 # Regla para cadenas de texto
 def t_CADENAS(t):
-    r'"([^"\\]|\\.)*"'
-    t.value = t.value[1:-1]  # Eliminar comillas
+    r'\"([^\\\n]|(\\.))*?\"'
+    t.value = t.value[1:-1]  # Elimina las comillas dobles
     return t
 
 # Regla para booleanos
@@ -137,6 +137,8 @@ def t_ID(t):
      r'[a-zA-Z_][a-zA-Z_0-9]*'
      t.type = reservadas.get(t.value.lower(),'ID')    # Para el case insensitive
      return t
+
+  # Incrementa el número de línea
 
 # Reglas especiales
 t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
