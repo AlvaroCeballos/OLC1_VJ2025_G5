@@ -112,7 +112,7 @@ def p_declaracion_variable(t):
     declaracion_variable : tipo ID IGUAL expresion
     '''
     text_val = f'{t[2]} {tipoToStr(t[1])}'
-    t[0] = Declaracion(text_val, t[2], t[1], t[4].text_val, t.lineno(1), t.lexpos(1))
+    t[0] = Declaracion(text_val, t[2], t[1], t[4], t.lineno(1), t.lexpos(1))
 
 
 def p_asignacion_variable(t):
@@ -138,6 +138,8 @@ def p_expresion_aritmetica(t):
                 | expresion RESTA expresion
                 | expresion MULTIPLICACION expresion
                 | expresion DIVISION expresion
+                | expresion POTENCIA expresion
+                | expresion MODULO expresion
     '''
     text_val = f'{t[1].text_val} {t[2]} {t[3].text_val}'
     if t[2] == '+':
@@ -148,6 +150,10 @@ def p_expresion_aritmetica(t):
         t[0] = Aritmetica(text_val=text_val,op1=t[1], operador=TipoAritmetica.MULTIPLICACION, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
     elif t[2] == '/':
         t[0] = Aritmetica(text_val=text_val,op1=t[1], operador=TipoAritmetica.DIVISION, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+    elif t[2] == '**':
+        t[0] = Aritmetica(text_val=text_val,op1=t[1], operador=TipoAritmetica.POTENCIA, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+    elif t[2] == '%':
+        t[0] = Aritmetica(text_val=text_val,op1=t[1], operador=TipoAritmetica.MODULO, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
 
 def p_logica(t):
     '''
@@ -192,7 +198,8 @@ def p_entero(t):
     '''
     literal : ENTERO
     '''
-    t[0] = Literal(t[1], TipoDato.INT, int(t[1]), t.lineno(1), t.lexpos(1))
+    #t[0] = Literal(t[1], TipoDato.INT, int(t[1]), t.lineno(1), t.lexpos(1))
+    t[0] = Literal('', TipoDato.INT, t[1], t.lineno(1), find_column(t.lexer.lexdata, t.slice[1]))
 
 def p_cadena(t):
     '''
