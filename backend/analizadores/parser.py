@@ -9,6 +9,8 @@ from interprete.instrucciones.declaracion import Declaracion
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
 from interprete.expresiones.aritmetica import Aritmetica
+from interprete.expresiones.relacional import Relacional
+from interprete.expresiones.logica import Logica
 from interprete.expresiones.literal import Literal
 from interprete.expresiones.acceso import Acceso
 
@@ -46,8 +48,9 @@ def tipoToStr(tipo):
 # precedencia de operadores
 precedence = (
     ('left', 'OR'),
-    ('left', 'AND'),
     ('left', 'XOR'),
+    ('left', 'AND'),
+    
     ('right', 'NOT'),
     ('left', 'IGUALACION', 'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'DIFERENCIACION'),
     ('left', 'SUMA', 'RESTA'),
@@ -122,15 +125,27 @@ def p_asignacion_variable(t):
     text_val = f'{t[1]} = {t[3].text_val}'
     t[0] = Asignacion(text_val, t[1], t[3], t.lineno(1), t.lexpos(1))
 
+def p_literal_booleano(t):
+    '''
+    literal : TRUE
+            | FALSE
+    '''
+    valor = True if t[1].lower() == 'true' else False
+    t[0] = Literal(t[1], TipoDato.BOOLEAN, valor, t.lineno(1), t.lexpos(1))
+
 # Valores como tal. Eje. 123, "hola", var.
 def p_expresion(t):
     '''
     expresion : aritmetica
               | literal
               | relacional
-              | logica
+
     '''
     t[0] = t[1]
+
+def p_expresion_parentesis(t):
+    'expresion : PARA expresion PARC'
+    t[0] = t[2]
 
 def p_expresion_aritmetica(t):
     '''
@@ -155,25 +170,21 @@ def p_expresion_aritmetica(t):
     elif t[2] == '%':
         t[0] = Aritmetica(text_val=text_val,op1=t[1], operador=TipoAritmetica.MODULO, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
 
-def p_logica(t):
+def p_expresion_logica_binaria(t):
     '''
-    logica : expresion AND expresion
-           | expresion OR expresion
-           | NOT expresion
+    expresion : expresion OR expresion
+              | expresion AND expresion
+              | expresion XOR expresion
     '''
-    if len(t) == 4:  # AND or OR
-        text_val = f'{t[1].text_val} {t[2]} {t[3].text_val}'
-        if t[2] == 'and':
-            t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoLogico.AND, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
-        elif t[2] == 'or':
-            t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoLogico.OR, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
-    else:  # NOT
-        text_val = f'not {t[2].text_val}'
-        t[0] = Aritmetica(text_val=text_val, op1=None, operador=TipoLogico.NOT, op2=t[2], linea=t.lineno(1), columna=t.lexpos(1))
+    t[0] = Logica(t[1], t[3], t[2], t.lineno(2), t.lexpos(2))
+
+def p_expresion_logica_unaria(t):
+    'expresion : NOT expresion'
+    t[0] = Logica(None, t[2], t[1], t.lineno(1), t.lexpos(1))
 
 def p_relacional(t):
     '''
-    relacional : expresion IGUAL expresion
+    relacional : expresion IGUALACION expresion
                | expresion DIFERENCIACION expresion
                | expresion MENOR expresion
                | expresion MAYOR expresion
@@ -182,18 +193,17 @@ def p_relacional(t):
     '''
     text_val = f'{t[1].text_val} {t[2]} {t[3].text_val}'
     if t[2] == '==':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.IGUAL, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+        t[0] = Relacional(t[1], t[3], TipoRelacional.IGUALACION, t.lineno(1), t.lexpos(1))
     elif t[2] == '!=':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.DESIGUALDAD, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+        t[0] = Relacional(t[1], t[3], TipoRelacional.DIFERENCIACION, t.lineno(1), t.lexpos(1))
     elif t[2] == '<':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.MENOR, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+        t[0] = Relacional(t[1], t[3], TipoRelacional.MENOR, t.lineno(1), t.lexpos(1))
     elif t[2] == '>':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.MAYOR, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+        t[0] = Relacional(t[1], t[3], TipoRelacional.MAYOR, t.lineno(1), t.lexpos(1))
     elif t[2] == '<=':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.MENOR_IGUAL, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
+        t[0] = Relacional(t[1], t[3], TipoRelacional.MENOR_IGUAL, t.lineno(1), t.lexpos(1))
     elif t[2] == '>=':
-        t[0] = Aritmetica(text_val=text_val, op1=t[1], operador=TipoRelacional.MAYOR_IGUAL, op2=t[3], linea=t.lineno(1), columna=t.lexpos(1))
-
+        t[0] = Relacional(t[1], t[3], TipoRelacional.MAYOR_IGUAL, t.lineno(1), t.lexpos(1))
 def p_entero(t):
     '''
     literal : ENTERO
