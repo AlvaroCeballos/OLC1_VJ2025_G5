@@ -1,5 +1,6 @@
-
-INT a = 10;
-
+str a = "prueba";
+int b = 34;
+float suma = b + 10;
+float res = suma ** b;
 
 // VALIDAR QUE EL CHAR FUNCIONE UNICAMENTE CON COMILLAS SIMPLES XD
