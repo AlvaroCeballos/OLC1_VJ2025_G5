@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'bool': 'BOOL',
+    'bool': 'BOOLEAN',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -69,9 +69,9 @@ tokens = [
 # Expresiones regulares para tokens simples
 t_SUMA = r'\+'
 t_RESTA = r'-'
+t_POTENCIA = r'\*\*'
 t_MULTIPLICACION = r'\*'
 t_DIVISION = r'/'
-t_POTENCIA = r'\^'
 t_MODULO = r'%'
 t_IGUALACION = r'=='
 t_DIFERENCIACION = r'!='
@@ -91,6 +91,7 @@ t_ARROBA = r'@'
 t_COMA = r','
 t_LLA = r'\{'
 t_LLC = r'\}'
+
 
 # Expresiones regulares para comentarios
 def t_COMENTARIO_UNA_LINEA(t):
@@ -116,8 +117,8 @@ def t_ENTERO(t):
 
 # Regla para cadenas de texto
 def t_CADENAS(t):
-    r'"([^"\\]|\\.)*"'
-    t.value = t.value[1:-1]  # Eliminar comillas
+    r'\"([^\\\n]|(\\.))*?\"'
+    t.value = t.value[1:-1]  # Elimina las comillas dobles
     return t
 
 # Regla para booleanos
@@ -137,6 +138,8 @@ def t_ID(t):
      t.type = reservadas.get(t.value.lower(),'ID')    # Para el case insensitive
      return t
 
+  # Incrementa el número de línea
+
 # Reglas especiales
 t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
 
@@ -155,4 +158,4 @@ def find_column(inp, token):
 def t_eof(t):  #end of file
     t.lexer.lineno = 0
     
-lex.lex()
+lexer = lex.lex()

@@ -1,3 +1,4 @@
+#Genera una lista que retornaba los print de consola
 class Consola:  #prints
     consola:str = []
     def __init__(self):
