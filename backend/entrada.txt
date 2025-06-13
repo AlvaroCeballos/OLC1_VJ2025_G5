@@ -1,20 +1,13 @@
-// Comentario de una línea
-
-/* Comentario
-   de múltiples líneas */
 
 INT a = 10;
+
+
+       
 FLOAT b = 5.5;
-STR mensaje = "HolaMundo";
-CHAR letra = 'a';
-BOOLEAN bandera = true;
 
-a = a + 5;
-b = b - 2.5;
-a = a * 2;
-b = b / 2.0;
-a = a % 3;
-a = a ** 2;
+STR mensaje = "Hola\nMundo";
 
 
+CHAR letra = ;
 
+// VALIDAR QUE EL CHAR FUNCIONE UNICAMENTE CON COMILLAS SIMPLES XD
