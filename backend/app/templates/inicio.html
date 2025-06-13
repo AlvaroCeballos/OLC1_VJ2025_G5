@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Inicio</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 50px;
+                text-align: center;
+                background-color: #ffffff;
+            }
+            input[type='text']{
+                padding: 10px;
+                width: 250px;
+                margin-bottom: 20px;
+                font-size: 16px;
+            }
+            .btn{
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn:hover {
+            background-color: #45a049;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Pagina de Inicio</h1>
+        
+        <input type="text" placeholder="esto aun no funciona?"><br>
+
+        <button id="openFileBtn">Cargar archivo</button>
+        <input type="file" id="fileInput" style="display: none;">
+
+        <script>
+            const openFileBtn = document.getElementById('openFileBtn');
+            const fileInput = document.getElementById('fileInput');
+
+            openFileBtn.addEventListener('click', () =>{
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', () => {
+                
+                if (fileInput.files.lenght > 0){
+                    alert('archivo seleccionado: ' + fileInput.files[0].name);
+                }
+            });
+
+        </script>
+        
+    </body>
+</html>
