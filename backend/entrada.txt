@@ -1,5 +1,9 @@
 // Declaración y asignación de variables
-int a = 10;
+int a;
+int a = 100000000;
+
+print(a);
+
 float b = 3.5;
 char c = 'x';
 str s = "hola";

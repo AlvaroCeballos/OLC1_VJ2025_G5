@@ -4,7 +4,7 @@ from interprete.otros.ast import AST
 from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
 
-f = open('backend/entrada.txt', 'r')
+f = open('backend/xd.txt', 'r')
 data = f.read()
 
 instrucciones = parser.parse(data.lower())

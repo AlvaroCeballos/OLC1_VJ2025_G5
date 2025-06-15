@@ -113,9 +113,15 @@ def p_tipo_print(t):
 def p_declaracion_variable(t):
     '''
     declaracion_variable : tipo ID IGUAL expresion
+                        | tipo ID
     '''
-    text_val = f'{t[2]} {tipoToStr(t[1])}'
-    t[0] = Declaracion(text_val, t[2], t[1], t[4], t.lineno(1), t.lexpos(1))
+    if len(t) == 5:  # tipo ID IGUAL expresion
+        text_val = f'{tipoToStr(t[1])} {t[2]} = {t[4].text_val}'
+        t[0] = Declaracion(text_val, t[2], t[1], t[4], t.lineno(1), t.lexpos(1))
+    else:  # tipo ID (len(t) == 3)
+        text_val = f'{tipoToStr(t[1])} {t[2]}'
+        t[0] = Declaracion(text_val, t[2], t[1], None, t.lineno(1), t.lexpos(1))
+    
 
 
 def p_asignacion_variable(t):
