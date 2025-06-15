@@ -24,3 +24,13 @@ while(a<8){
     }
 }
 
+print("SALIMOS DEL TRIPLE WHILE");
+
+int vDecremento = 3;
+
+while (vDecremento>0){
+    vDecremento--;
+    print(vDecremento);
+    int while4 = 9;
+    print(while4);
+}

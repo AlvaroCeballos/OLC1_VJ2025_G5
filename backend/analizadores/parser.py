@@ -89,6 +89,7 @@ def p_instruccion(t):
                 | asignacion_variable PYC
                 | estructura_control
                 | incremento PYC
+                | decremento PYC
     '''
     if len(t) == 3:  # Instrucciones que terminan con PYC
         t[1].text_val += ';\n' 
@@ -136,7 +137,29 @@ def p_incremento(t):
     
     # Crear asignación: id = (id + 1)
     text_val = f'{t[1]}++'
-    t[0] = Asignacion(text_val, t[1], suma, t.lineno(1), t.lexpos(1))
+    t[0] = Asignacion(text_val, t[1], suma, t.lineno(1), t.lexpos(1))\
+    
+def p_decremento(t):
+    '''
+    decremento : ID DECREMENTO
+    '''
+    # Crear una expresión aritmética: id - 1
+    acceso_var = Acceso(t[1], t[1], linea=t.lineno(1), columna=t.lexpos(1))
+    literal_uno = Literal('1', TipoDato.INT, 1, t.lineno(1), t.lexpos(1))
+    
+    resta = Aritmetica(
+        text_val=f'{t[1]} - 1',
+        op1=acceso_var,
+        operador=TipoAritmetica.RESTA,
+        op2=literal_uno,
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+    
+    # Crear asignación: id = (id - 1)
+    text_val = f'{t[1]}--'
+    t[0] = Asignacion(text_val, t[1], resta, t.lineno(1), t.lexpos(1))
+    
 
 def p_instruccion_print(t):
     '''
