@@ -3,10 +3,12 @@ from interprete.otros.enviroment import Enviroment
 from interprete.otros.ast import AST
 from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
+from interprete.instrucciones.iWhile import While
 
 f = open('backend/xd.txt', 'r')
 data = f.read()
 
+While.reset_contador()
 instrucciones = parser.parse(data.lower())
 env = Enviroment(ent_anterior=None, ambito='Global')
 try:

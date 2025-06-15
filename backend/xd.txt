@@ -1,16 +1,17 @@
-
-int a = 100000000;
-print(a);
-
-int a = 5;
-
-print(a);
-
-int b = a + 7; 
-print(b);
+int a = 6;
 
 while(a<8){
-    a = a+1;
+    a++;
+    print("Valores de a");
     print(a);
+    int while1 = 1111;
+    while(while1 < 1113){
+        int while2 = 2;
+        print(while2);
+        print(while1);
+        while1++;
+        
+        
+    }
 }
 

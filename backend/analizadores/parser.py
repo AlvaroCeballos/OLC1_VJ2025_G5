@@ -87,13 +87,21 @@ def p_instruccion(t):
     instruccion : instruccion_print PYC
                 | declaracion_variable PYC
                 | asignacion_variable PYC
-                | instruccion_while
+                | estructura_control
+                | incremento PYC
     '''
     if len(t) == 3:  # Instrucciones que terminan con PYC
         t[1].text_val += ';\n' 
         t[0] = t[1]
     else:  # while (no lleva PYC)
         t[0] = t[1]
+
+def p_estructura_control(t):
+    '''
+    estructura_control : instruccion_while
+    '''
+    # Futuro: agregar | instruccion_if | instruccion_for | instruccion_switch
+    t[0] = t[1]
 
 def p_instruccion_while(t):
     '''
@@ -115,6 +123,27 @@ def p_instruccion_while_single(t):
     text_val = f'while({t[3].text_val}) {{}}\n'
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=[], 
                  linea=t.lineno(1), columna=t.lexpos(1))
+
+def p_incremento(t):
+    '''
+    incremento : ID INCREMENTO
+    '''
+    # Crear una expresión aritmética: id + 1
+    acceso_var = Acceso(t[1], t[1], linea=t.lineno(1), columna=t.lexpos(1))
+    literal_uno = Literal('1', TipoDato.INT, 1, t.lineno(1), t.lexpos(1))
+    
+    suma = Aritmetica(
+        text_val=f'{t[1]} + 1',
+        op1=acceso_var,
+        operador=TipoAritmetica.SUMA,
+        op2=literal_uno,
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+    
+    # Crear asignación: id = (id + 1)
+    text_val = f'{t[1]}++'
+    t[0] = Asignacion(text_val, t[1], suma, t.lineno(1), t.lexpos(1))
 
 def p_instruccion_print(t):
     '''

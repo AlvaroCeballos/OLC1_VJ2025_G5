@@ -5,34 +5,22 @@ from interprete.otros.enviroment import Enviroment
 from interprete.otros.errores import Error, TablaErrores
 
 class While(Instruccion):
+    contador_global = 0  # Contador global simple
+    
     def __init__(self, text_val:str, condicion, instrucciones, linea, columna):
         super().__init__(text_val, linea, columna)
         self.condicion = condicion
         self.instrucciones = instrucciones
-        
-        # Calcular nivel de anidamiento basado en el entorno
-        self.nivel_anidamiento = self._calcular_nivel_while()
-        self.nombre_while = f"while{self.nivel_anidamiento}"
-    
-    def _calcular_nivel_while(self):
-        # Contar cuántos while hay en la cadena de llamadas
-        import inspect
-        frame = inspect.currentframe()
-        contador = 0
-        
-        try:
-            while frame:
-                if frame.f_code.co_name == 'ejecutar' and 'While' in str(frame.f_locals.get('self', '')):
-                    contador += 1
-                frame = frame.f_back
-        finally:
-            del frame
-        
-        return contador + 1
     
     def ejecutar(self, env:Enviroment):
+        # Incrementar contador y crear nombre único
+        While.contador_global += 1
+        nombre_while = f"while{While.contador_global}"
+        
         # Crear nuevo entorno para el while
-        entorno_while = Enviroment(env, self.nombre_while)
+        entorno_while = Enviroment(env, nombre_while)
+        
+        print(f"DEBUG: Creando {nombre_while} con entorno padre: {env.ambito}")
         
         while True:
             # Evaluar condición
@@ -51,19 +39,15 @@ class While(Instruccion):
             
             # Ejecutar instrucciones del while
             for instruccion in self.instrucciones:
+                print(f"DEBUG: Ejecutando instrucción en {nombre_while}: {type(instruccion).__name__}")
                 resultado = instruccion.ejecutar(entorno_while)
-                
-                # Aquí puedes manejar break y continue en el futuro
-                # if isinstance(resultado, Break):
-                #     return resultado
-                # if isinstance(resultado, Continue):
-                #     break
         
+        print(f"DEBUG: Terminando {nombre_while}")
         return self
     
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
-        hijo = Nodo(id=id, valor=f'WHILE({self.nombre_while})', hijos=[])
+        hijo = Nodo(id=id, valor='WHILE', hijos=[])
         raiz.addHijo(hijo)
         
         # Agregar nodo de condición
@@ -82,5 +66,4 @@ class While(Instruccion):
     
     @classmethod
     def reset_contador(cls):
-        """Método para resetear el contador al inicio de cada análisis"""
-        cls.contador_while = 0
+        cls.contador_global = 0
