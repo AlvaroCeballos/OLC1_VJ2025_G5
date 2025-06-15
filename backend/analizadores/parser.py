@@ -96,18 +96,19 @@ def p_instruccion(t):
     else:  # while (no lleva PYC)
         t[0] = t[1]
 
+#Se crea funcion para poder manejar todos los tipos de ciclos anidados
 def p_estructura_control(t):
     '''
     estructura_control : instruccion_while
     '''
-    # Futuro: agregar | instruccion_if | instruccion_for | instruccion_switch
+    # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
 
 def p_instruccion_while(t):
     '''
     instruccion_while : WHILE PARA expresion PARC LLA instrucciones LLC
     '''
-    text_val = f'while({t[3].text_val}) {{\n'
+    text_val = f'while({t[3].text_val}) ' + '{\n'
     for inst in t[6]:
         text_val += f'    {inst.text_val}'
     text_val += '}\n'
@@ -115,14 +116,6 @@ def p_instruccion_while(t):
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
                  linea=t.lineno(1), columna=t.lexpos(1))
 
-# Agregar producción para while con una sola instrucción (opcional)
-def p_instruccion_while_single(t):
-    '''
-    instruccion_while : WHILE PARA expresion PARC LLA LLC
-    '''
-    text_val = f'while({t[3].text_val}) {{}}\n'
-    t[0] = While(text_val=text_val, condicion=t[3], instrucciones=[], 
-                 linea=t.lineno(1), columna=t.lexpos(1))
 
 def p_incremento(t):
     '''

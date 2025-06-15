@@ -1,17 +1,26 @@
 int a = 6;
 
 while(a<8){
+    print("While iteracion 1-------------------------------");
     a++;
     print("Valores de a");
     print(a);
     int while1 = 1111;
-    while(while1 < 1113){
+    while(a < 10){
+        print("While iteracion 2-------------------------------");
+        a++;
+        print(a);
         int while2 = 2;
         print(while2);
-        print(while1);
+        
         while1++;
-        
-        
+        print(while1);
+        while(a<12){
+            print("While iteracion 3--------------------------------");
+            a++;
+            print(a);
+            str ola = "olaa estoy en el while 3";
+        }
     }
 }
 

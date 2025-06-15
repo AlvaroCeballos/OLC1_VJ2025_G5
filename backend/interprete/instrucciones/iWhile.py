@@ -5,17 +5,18 @@ from interprete.otros.enviroment import Enviroment
 from interprete.otros.errores import Error, TablaErrores
 
 class While(Instruccion):
-    contador_global = 0  # Contador global simple
+    contador_global = 0  # Contador global para llevar control de los while anidados
     
     def __init__(self, text_val:str, condicion, instrucciones, linea, columna):
         super().__init__(text_val, linea, columna)
+        #se crean como parametros las instrucciones y la condicion
         self.condicion = condicion
         self.instrucciones = instrucciones
     
     def ejecutar(self, env:Enviroment):
-        # Incrementar contador y crear nombre único
+        # Incrementa el contador de los while y va creando nombres para identificar los scopes
         While.contador_global += 1
-        nombre_while = f"while{While.contador_global}"
+        nombre_while = f"while {While.contador_global}"
         
         # Crear nuevo entorno para el while
         entorno_while = Enviroment(env, nombre_while)
@@ -23,7 +24,7 @@ class While(Instruccion):
         print(f"DEBUG: Creando {nombre_while} con entorno padre: {env.ambito}")
         
         while True:
-            # Evaluar condición
+            # Se ejecuta la condición del while del entorno actual
             resultado_condicion = self.condicion.ejecutar(entorno_while)
             
             # Validar que la condición sea booleana
@@ -33,18 +34,18 @@ class While(Instruccion):
                 TablaErrores.addError(err)
                 break
             
-            # Si la condición es falsa, salir del ciclo
+            # Si la condición es falsa, salir del ciclo while
             if not resultado_condicion.valor:
                 break
             
             # Ejecutar instrucciones del while
             for instruccion in self.instrucciones:
-                print(f"DEBUG: Ejecutando instrucción en {nombre_while}: {type(instruccion).__name__}")
                 resultado = instruccion.ejecutar(entorno_while)
         
         print(f"DEBUG: Terminando {nombre_while}")
         return self
     
+    #función para recorrer el arbol de sintaxis abstracta
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='WHILE', hijos=[])
@@ -64,6 +65,7 @@ class While(Instruccion):
         for instruccion in self.instrucciones:
             instruccion.recorrerArbol(nodo_instrucciones)
     
+    #resetear el contador global de while
     @classmethod
     def reset_contador(cls):
         cls.contador_global = 0
