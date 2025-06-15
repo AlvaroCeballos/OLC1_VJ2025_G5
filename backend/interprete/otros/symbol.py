@@ -1,7 +1,7 @@
 from interprete.otros.tipos import *
 
 class Symbol:
-    def __init__(self, tipo_simbolo:TipoSimbolo='', tipo:TipoDato='', id:str='', valor='', ambito:str='', parametros=[], instrucciones=[], direccion:int=''):
+    def __init__(self, tipo_simbolo:TipoSimbolo=None, tipo:TipoDato=None, id:str='', valor='', ambito:str='', parametros=[], instrucciones=[], direccion:int=''):
         self.tipo_simbolo = tipo_simbolo        # Si es variable, funcion
         self.tipo = tipo                        # Para el tipo de dato o tipo de dato que retorna una funcion
         self.id = id                            # Nombre del simbolo
