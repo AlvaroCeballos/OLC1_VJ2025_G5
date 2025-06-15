@@ -5,6 +5,7 @@ from interprete.instrucciones.instruccion import Instruccion
 from interprete.instrucciones.print import Print
 from interprete.instrucciones.asignacion import Asignacion
 from interprete.instrucciones.declaracion import Declaracion
+from interprete.instrucciones.iWhile import While
 
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
@@ -86,9 +87,79 @@ def p_instruccion(t):
     instruccion : instruccion_print PYC
                 | declaracion_variable PYC
                 | asignacion_variable PYC
+                | estructura_control
+                | incremento PYC
+                | decremento PYC
     '''
-    t[1].text_val += ';\n' 
+    if len(t) == 3:  # Instrucciones que terminan con PYC
+        t[1].text_val += ';\n' 
+        t[0] = t[1]
+    else:  # while (no lleva PYC)
+        t[0] = t[1]
+
+#Se crea funcion para poder manejar todos los tipos de ciclos anidados
+def p_estructura_control(t):
+    '''
+    estructura_control : instruccion_while
+    '''
+    # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
+
+def p_instruccion_while(t):
+    '''
+    instruccion_while : WHILE PARA expresion PARC LLA instrucciones LLC
+    '''
+    text_val = f'while({t[3].text_val}) ' + '{\n'
+    for inst in t[6]:
+        text_val += f'    {inst.text_val}'
+    text_val += '}\n'
+    
+    t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
+                 linea=t.lineno(1), columna=t.lexpos(1))
+
+
+def p_incremento(t):
+    '''
+    incremento : ID INCREMENTO
+    '''
+    # Crear una expresión aritmética: id + 1
+    acceso_var = Acceso(t[1], t[1], linea=t.lineno(1), columna=t.lexpos(1))
+    literal_uno = Literal('1', TipoDato.INT, 1, t.lineno(1), t.lexpos(1))
+    
+    suma = Aritmetica(
+        text_val=f'{t[1]} + 1',
+        op1=acceso_var,
+        operador=TipoAritmetica.SUMA,
+        op2=literal_uno,
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+    
+    # Crear asignación: id = (id + 1)
+    text_val = f'{t[1]}++'
+    t[0] = Asignacion(text_val, t[1], suma, t.lineno(1), t.lexpos(1))\
+    
+def p_decremento(t):
+    '''
+    decremento : ID DECREMENTO
+    '''
+    # Crear una expresión aritmética: id - 1
+    acceso_var = Acceso(t[1], t[1], linea=t.lineno(1), columna=t.lexpos(1))
+    literal_uno = Literal('1', TipoDato.INT, 1, t.lineno(1), t.lexpos(1))
+    
+    resta = Aritmetica(
+        text_val=f'{t[1]} - 1',
+        op1=acceso_var,
+        operador=TipoAritmetica.RESTA,
+        op2=literal_uno,
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+    
+    # Crear asignación: id = (id - 1)
+    text_val = f'{t[1]}--'
+    t[0] = Asignacion(text_val, t[1], resta, t.lineno(1), t.lexpos(1))
+    
 
 def p_instruccion_print(t):
     '''
@@ -113,9 +184,15 @@ def p_tipo_print(t):
 def p_declaracion_variable(t):
     '''
     declaracion_variable : tipo ID IGUAL expresion
+                        | tipo ID
     '''
-    text_val = f'{t[2]} {tipoToStr(t[1])}'
-    t[0] = Declaracion(text_val, t[2], t[1], t[4], t.lineno(1), t.lexpos(1))
+    if len(t) == 5:  # tipo ID IGUAL expresion
+        text_val = f'{tipoToStr(t[1])} {t[2]} = {t[4].text_val}'
+        t[0] = Declaracion(text_val, t[2], t[1], t[4], t.lineno(1), t.lexpos(1))
+    else:  # tipo ID (len(t) == 3)
+        text_val = f'{tipoToStr(t[1])} {t[2]}'
+        t[0] = Declaracion(text_val, t[2], t[1], None, t.lineno(1), t.lexpos(1))
+    
 
 
 def p_asignacion_variable(t):

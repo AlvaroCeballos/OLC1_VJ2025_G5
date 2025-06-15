@@ -23,14 +23,6 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-
-        # Validar si la variable existe en la tabla de simbolos
-        if env.existe_simbolo_ent_actual(self.id, TipoSimbolo.VARIABLE):
-            # Agregando a la tabla de errores
-            err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Ya existe una variable con el nombre {self.id}.')
-            TablaErrores.addError(err)
-            return self
-        
         # Simbolo a insertar en tabla de simbolos
         print('Insertado en TS: ', self.id)
         simbolo = Symbol(TipoSimbolo.VARIABLE, self.tipo, self.id, self.valor, env.ambito, None)
@@ -48,7 +40,13 @@ class Declaracion(Instruccion):
             elif self.tipo == TipoDato.BOOLEAN:
                 simbolo.valor = True
 
+        # Siempre insertar/sobrescribir (sin verificar existencia)
         env.insertar_simbolo(self.id, simbolo)
+        
+        if env.existe_simbolo_ent_actual(self.id, TipoSimbolo.VARIABLE):
+            print(f'Variable {self.id} redeclarada, sobrescribiendo')
+        else:
+            print(f'Variable {self.id} declarada por primera vez')
 
         if self.valor is not None:
             asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
