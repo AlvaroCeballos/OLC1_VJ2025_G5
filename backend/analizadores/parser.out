@@ -1,0 +1,2592 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ARROBA
+    BREAK
+    CASE
+    COMA
+    COMENTARIO_MULTILINEA
+    COMENTARIO_UNA_LINEA
+    CONTINUE
+    DEFAULT
+    DO
+    DO_WHILE
+    ELSE
+    FOR
+    IDENTIFICADOR
+    IF
+    LLA
+    LLC
+    RETURN
+    SWITCH
+    UMENOS
+    VAR
+    WHILE
+
+Grammar
+
+Rule 0     S' -> ini
+Rule 1     ini -> instrucciones
+Rule 2     instrucciones -> instrucciones instruccion
+Rule 3     instrucciones -> instruccion
+Rule 4     instruccion -> instruccion_print PYC
+Rule 5     instruccion -> declaracion_variable PYC
+Rule 6     instruccion -> asignacion_variable PYC
+Rule 7     instruccion_print -> tipo_print PARA expresion PARC
+Rule 8     literal -> CARACTER
+Rule 9     tipo_print -> PRINT
+Rule 10    tipo_print -> PRINTLN
+Rule 11    declaracion_variable -> tipo ID IGUAL expresion
+Rule 12    asignacion_variable -> ID IGUAL expresion
+Rule 13    literal -> TRUE
+Rule 14    literal -> FALSE
+Rule 15    expresion -> aritmetica
+Rule 16    expresion -> literal
+Rule 17    expresion -> relacional
+Rule 18    expresion -> PARA expresion PARC
+Rule 19    aritmetica -> expresion SUMA expresion
+Rule 20    aritmetica -> expresion RESTA expresion
+Rule 21    aritmetica -> expresion MULTIPLICACION expresion
+Rule 22    aritmetica -> expresion DIVISION expresion
+Rule 23    aritmetica -> expresion POTENCIA expresion
+Rule 24    aritmetica -> expresion MODULO expresion
+Rule 25    expresion -> expresion OR expresion
+Rule 26    expresion -> expresion AND expresion
+Rule 27    expresion -> expresion XOR expresion
+Rule 28    expresion -> NOT expresion
+Rule 29    relacional -> expresion IGUALACION expresion
+Rule 30    relacional -> expresion DIFERENCIACION expresion
+Rule 31    relacional -> expresion MENOR expresion
+Rule 32    relacional -> expresion MAYOR expresion
+Rule 33    relacional -> expresion MENOR_IGUAL expresion
+Rule 34    relacional -> expresion MAYOR_IGUAL expresion
+Rule 35    literal -> ENTERO
+Rule 36    literal -> CADENAS
+Rule 37    literal -> DECIMAL
+Rule 38    literal -> ID
+Rule 39    tipo -> INT
+Rule 40    tipo -> FLOAT
+Rule 41    tipo -> STR
+Rule 42    tipo -> CHAR
+Rule 43    tipo -> BOOLEAN
+
+Terminals, with rules where they appear
+
+AND                  : 26
+ARROBA               : 
+BOOLEAN              : 43
+BREAK                : 
+CADENAS              : 36
+CARACTER             : 8
+CASE                 : 
+CHAR                 : 42
+COMA                 : 
+COMENTARIO_MULTILINEA : 
+COMENTARIO_UNA_LINEA : 
+CONTINUE             : 
+DECIMAL              : 37
+DEFAULT              : 
+DIFERENCIACION       : 30
+DIVISION             : 22
+DO                   : 
+DO_WHILE             : 
+ELSE                 : 
+ENTERO               : 35
+FALSE                : 14
+FLOAT                : 40
+FOR                  : 
+ID                   : 11 12 38
+IDENTIFICADOR        : 
+IF                   : 
+IGUAL                : 11 12
+IGUALACION           : 29
+INT                  : 39
+LLA                  : 
+LLC                  : 
+MAYOR                : 32
+MAYOR_IGUAL          : 34
+MENOR                : 31
+MENOR_IGUAL          : 33
+MODULO               : 24
+MULTIPLICACION       : 21
+NOT                  : 28
+OR                   : 25
+PARA                 : 7 18
+PARC                 : 7 18
+POTENCIA             : 23
+PRINT                : 9
+PRINTLN              : 10
+PYC                  : 4 5 6
+RESTA                : 20
+RETURN               : 
+STR                  : 41
+SUMA                 : 19
+SWITCH               : 
+TRUE                 : 13
+UMENOS               : 
+VAR                  : 
+WHILE                : 
+XOR                  : 27
+error                : 
+
+Nonterminals, with rules where they appear
+
+aritmetica           : 15
+asignacion_variable  : 6
+declaracion_variable : 5
+expresion            : 7 11 12 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 29 29 30 30 31 31 32 32 33 33 34 34
+ini                  : 0
+instruccion          : 2 3
+instruccion_print    : 4
+instrucciones        : 1 2
+literal              : 16
+relacional           : 17
+tipo                 : 11
+tipo_print           : 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . ini
+    (1) ini -> . instrucciones
+    (2) instrucciones -> . instrucciones instruccion
+    (3) instrucciones -> . instruccion
+    (4) instruccion -> . instruccion_print PYC
+    (5) instruccion -> . declaracion_variable PYC
+    (6) instruccion -> . asignacion_variable PYC
+    (7) instruccion_print -> . tipo_print PARA expresion PARC
+    (11) declaracion_variable -> . tipo ID IGUAL expresion
+    (12) asignacion_variable -> . ID IGUAL expresion
+    (9) tipo_print -> . PRINT
+    (10) tipo_print -> . PRINTLN
+    (39) tipo -> . INT
+    (40) tipo -> . FLOAT
+    (41) tipo -> . STR
+    (42) tipo -> . CHAR
+    (43) tipo -> . BOOLEAN
+
+    ID              shift and go to state 9
+    PRINT           shift and go to state 10
+    PRINTLN         shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    STR             shift and go to state 14
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 16
+
+    ini                            shift and go to state 1
+    instrucciones                  shift and go to state 2
+    instruccion                    shift and go to state 3
+    instruccion_print              shift and go to state 4
+    declaracion_variable           shift and go to state 5
+    asignacion_variable            shift and go to state 6
+    tipo_print                     shift and go to state 7
+    tipo                           shift and go to state 8
+
+state 1
+
+    (0) S' -> ini .
+
+
+
+state 2
+
+    (1) ini -> instrucciones .
+    (2) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . instruccion_print PYC
+    (5) instruccion -> . declaracion_variable PYC
+    (6) instruccion -> . asignacion_variable PYC
+    (7) instruccion_print -> . tipo_print PARA expresion PARC
+    (11) declaracion_variable -> . tipo ID IGUAL expresion
+    (12) asignacion_variable -> . ID IGUAL expresion
+    (9) tipo_print -> . PRINT
+    (10) tipo_print -> . PRINTLN
+    (39) tipo -> . INT
+    (40) tipo -> . FLOAT
+    (41) tipo -> . STR
+    (42) tipo -> . CHAR
+    (43) tipo -> . BOOLEAN
+
+    $end            reduce using rule 1 (ini -> instrucciones .)
+    ID              shift and go to state 9
+    PRINT           shift and go to state 10
+    PRINTLN         shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    STR             shift and go to state 14
+    CHAR            shift and go to state 15
+    BOOLEAN         shift and go to state 16
+
+    instruccion                    shift and go to state 17
+    instruccion_print              shift and go to state 4
+    declaracion_variable           shift and go to state 5
+    asignacion_variable            shift and go to state 6
+    tipo_print                     shift and go to state 7
+    tipo                           shift and go to state 8
+
+state 3
+
+    (3) instrucciones -> instruccion .
+
+    ID              reduce using rule 3 (instrucciones -> instruccion .)
+    PRINT           reduce using rule 3 (instrucciones -> instruccion .)
+    PRINTLN         reduce using rule 3 (instrucciones -> instruccion .)
+    INT             reduce using rule 3 (instrucciones -> instruccion .)
+    FLOAT           reduce using rule 3 (instrucciones -> instruccion .)
+    STR             reduce using rule 3 (instrucciones -> instruccion .)
+    CHAR            reduce using rule 3 (instrucciones -> instruccion .)
+    BOOLEAN         reduce using rule 3 (instrucciones -> instruccion .)
+    $end            reduce using rule 3 (instrucciones -> instruccion .)
+
+
+state 4
+
+    (4) instruccion -> instruccion_print . PYC
+
+    PYC             shift and go to state 18
+
+
+state 5
+
+    (5) instruccion -> declaracion_variable . PYC
+
+    PYC             shift and go to state 19
+
+
+state 6
+
+    (6) instruccion -> asignacion_variable . PYC
+
+    PYC             shift and go to state 20
+
+
+state 7
+
+    (7) instruccion_print -> tipo_print . PARA expresion PARC
+
+    PARA            shift and go to state 21
+
+
+state 8
+
+    (11) declaracion_variable -> tipo . ID IGUAL expresion
+
+    ID              shift and go to state 22
+
+
+state 9
+
+    (12) asignacion_variable -> ID . IGUAL expresion
+
+    IGUAL           shift and go to state 23
+
+
+state 10
+
+    (9) tipo_print -> PRINT .
+
+    PARA            reduce using rule 9 (tipo_print -> PRINT .)
+
+
+state 11
+
+    (10) tipo_print -> PRINTLN .
+
+    PARA            reduce using rule 10 (tipo_print -> PRINTLN .)
+
+
+state 12
+
+    (39) tipo -> INT .
+
+    ID              reduce using rule 39 (tipo -> INT .)
+
+
+state 13
+
+    (40) tipo -> FLOAT .
+
+    ID              reduce using rule 40 (tipo -> FLOAT .)
+
+
+state 14
+
+    (41) tipo -> STR .
+
+    ID              reduce using rule 41 (tipo -> STR .)
+
+
+state 15
+
+    (42) tipo -> CHAR .
+
+    ID              reduce using rule 42 (tipo -> CHAR .)
+
+
+state 16
+
+    (43) tipo -> BOOLEAN .
+
+    ID              reduce using rule 43 (tipo -> BOOLEAN .)
+
+
+state 17
+
+    (2) instrucciones -> instrucciones instruccion .
+
+    ID              reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    PRINT           reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    PRINTLN         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    INT             reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    FLOAT           reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    STR             reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    CHAR            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    BOOLEAN         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+
+
+state 18
+
+    (4) instruccion -> instruccion_print PYC .
+
+    ID              reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    PRINT           reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    PRINTLN         reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    INT             reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    FLOAT           reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    STR             reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    CHAR            reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    BOOLEAN         reduce using rule 4 (instruccion -> instruccion_print PYC .)
+    $end            reduce using rule 4 (instruccion -> instruccion_print PYC .)
+
+
+state 19
+
+    (5) instruccion -> declaracion_variable PYC .
+
+    ID              reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    PRINT           reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    PRINTLN         reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    INT             reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    FLOAT           reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    STR             reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    CHAR            reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    BOOLEAN         reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+    $end            reduce using rule 5 (instruccion -> declaracion_variable PYC .)
+
+
+state 20
+
+    (6) instruccion -> asignacion_variable PYC .
+
+    ID              reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    PRINT           reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    PRINTLN         reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    INT             reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    FLOAT           reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    STR             reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    CHAR            reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    BOOLEAN         reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+    $end            reduce using rule 6 (instruccion -> asignacion_variable PYC .)
+
+
+state 21
+
+    (7) instruccion_print -> tipo_print PARA . expresion PARC
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 25
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 22
+
+    (11) declaracion_variable -> tipo ID . IGUAL expresion
+
+    IGUAL           shift and go to state 37
+
+
+state 23
+
+    (12) asignacion_variable -> ID IGUAL . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 38
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 24
+
+    (18) expresion -> PARA . expresion PARC
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 39
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 25
+
+    (7) instruccion_print -> tipo_print PARA expresion . PARC
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            shift and go to state 40
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    XOR             shift and go to state 43
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+
+state 26
+
+    (15) expresion -> aritmetica .
+
+    PARC            reduce using rule 15 (expresion -> aritmetica .)
+    OR              reduce using rule 15 (expresion -> aritmetica .)
+    AND             reduce using rule 15 (expresion -> aritmetica .)
+    XOR             reduce using rule 15 (expresion -> aritmetica .)
+    SUMA            reduce using rule 15 (expresion -> aritmetica .)
+    RESTA           reduce using rule 15 (expresion -> aritmetica .)
+    MULTIPLICACION  reduce using rule 15 (expresion -> aritmetica .)
+    DIVISION        reduce using rule 15 (expresion -> aritmetica .)
+    POTENCIA        reduce using rule 15 (expresion -> aritmetica .)
+    MODULO          reduce using rule 15 (expresion -> aritmetica .)
+    IGUALACION      reduce using rule 15 (expresion -> aritmetica .)
+    DIFERENCIACION  reduce using rule 15 (expresion -> aritmetica .)
+    MENOR           reduce using rule 15 (expresion -> aritmetica .)
+    MAYOR           reduce using rule 15 (expresion -> aritmetica .)
+    MENOR_IGUAL     reduce using rule 15 (expresion -> aritmetica .)
+    MAYOR_IGUAL     reduce using rule 15 (expresion -> aritmetica .)
+    PYC             reduce using rule 15 (expresion -> aritmetica .)
+
+
+state 27
+
+    (16) expresion -> literal .
+
+    PARC            reduce using rule 16 (expresion -> literal .)
+    OR              reduce using rule 16 (expresion -> literal .)
+    AND             reduce using rule 16 (expresion -> literal .)
+    XOR             reduce using rule 16 (expresion -> literal .)
+    SUMA            reduce using rule 16 (expresion -> literal .)
+    RESTA           reduce using rule 16 (expresion -> literal .)
+    MULTIPLICACION  reduce using rule 16 (expresion -> literal .)
+    DIVISION        reduce using rule 16 (expresion -> literal .)
+    POTENCIA        reduce using rule 16 (expresion -> literal .)
+    MODULO          reduce using rule 16 (expresion -> literal .)
+    IGUALACION      reduce using rule 16 (expresion -> literal .)
+    DIFERENCIACION  reduce using rule 16 (expresion -> literal .)
+    MENOR           reduce using rule 16 (expresion -> literal .)
+    MAYOR           reduce using rule 16 (expresion -> literal .)
+    MENOR_IGUAL     reduce using rule 16 (expresion -> literal .)
+    MAYOR_IGUAL     reduce using rule 16 (expresion -> literal .)
+    PYC             reduce using rule 16 (expresion -> literal .)
+
+
+state 28
+
+    (17) expresion -> relacional .
+
+    PARC            reduce using rule 17 (expresion -> relacional .)
+    OR              reduce using rule 17 (expresion -> relacional .)
+    AND             reduce using rule 17 (expresion -> relacional .)
+    XOR             reduce using rule 17 (expresion -> relacional .)
+    SUMA            reduce using rule 17 (expresion -> relacional .)
+    RESTA           reduce using rule 17 (expresion -> relacional .)
+    MULTIPLICACION  reduce using rule 17 (expresion -> relacional .)
+    DIVISION        reduce using rule 17 (expresion -> relacional .)
+    POTENCIA        reduce using rule 17 (expresion -> relacional .)
+    MODULO          reduce using rule 17 (expresion -> relacional .)
+    IGUALACION      reduce using rule 17 (expresion -> relacional .)
+    DIFERENCIACION  reduce using rule 17 (expresion -> relacional .)
+    MENOR           reduce using rule 17 (expresion -> relacional .)
+    MAYOR           reduce using rule 17 (expresion -> relacional .)
+    MENOR_IGUAL     reduce using rule 17 (expresion -> relacional .)
+    MAYOR_IGUAL     reduce using rule 17 (expresion -> relacional .)
+    PYC             reduce using rule 17 (expresion -> relacional .)
+
+
+state 29
+
+    (28) expresion -> NOT . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 56
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 30
+
+    (8) literal -> CARACTER .
+
+    PARC            reduce using rule 8 (literal -> CARACTER .)
+    OR              reduce using rule 8 (literal -> CARACTER .)
+    AND             reduce using rule 8 (literal -> CARACTER .)
+    XOR             reduce using rule 8 (literal -> CARACTER .)
+    SUMA            reduce using rule 8 (literal -> CARACTER .)
+    RESTA           reduce using rule 8 (literal -> CARACTER .)
+    MULTIPLICACION  reduce using rule 8 (literal -> CARACTER .)
+    DIVISION        reduce using rule 8 (literal -> CARACTER .)
+    POTENCIA        reduce using rule 8 (literal -> CARACTER .)
+    MODULO          reduce using rule 8 (literal -> CARACTER .)
+    IGUALACION      reduce using rule 8 (literal -> CARACTER .)
+    DIFERENCIACION  reduce using rule 8 (literal -> CARACTER .)
+    MENOR           reduce using rule 8 (literal -> CARACTER .)
+    MAYOR           reduce using rule 8 (literal -> CARACTER .)
+    MENOR_IGUAL     reduce using rule 8 (literal -> CARACTER .)
+    MAYOR_IGUAL     reduce using rule 8 (literal -> CARACTER .)
+    PYC             reduce using rule 8 (literal -> CARACTER .)
+
+
+state 31
+
+    (13) literal -> TRUE .
+
+    PARC            reduce using rule 13 (literal -> TRUE .)
+    OR              reduce using rule 13 (literal -> TRUE .)
+    AND             reduce using rule 13 (literal -> TRUE .)
+    XOR             reduce using rule 13 (literal -> TRUE .)
+    SUMA            reduce using rule 13 (literal -> TRUE .)
+    RESTA           reduce using rule 13 (literal -> TRUE .)
+    MULTIPLICACION  reduce using rule 13 (literal -> TRUE .)
+    DIVISION        reduce using rule 13 (literal -> TRUE .)
+    POTENCIA        reduce using rule 13 (literal -> TRUE .)
+    MODULO          reduce using rule 13 (literal -> TRUE .)
+    IGUALACION      reduce using rule 13 (literal -> TRUE .)
+    DIFERENCIACION  reduce using rule 13 (literal -> TRUE .)
+    MENOR           reduce using rule 13 (literal -> TRUE .)
+    MAYOR           reduce using rule 13 (literal -> TRUE .)
+    MENOR_IGUAL     reduce using rule 13 (literal -> TRUE .)
+    MAYOR_IGUAL     reduce using rule 13 (literal -> TRUE .)
+    PYC             reduce using rule 13 (literal -> TRUE .)
+
+
+state 32
+
+    (14) literal -> FALSE .
+
+    PARC            reduce using rule 14 (literal -> FALSE .)
+    OR              reduce using rule 14 (literal -> FALSE .)
+    AND             reduce using rule 14 (literal -> FALSE .)
+    XOR             reduce using rule 14 (literal -> FALSE .)
+    SUMA            reduce using rule 14 (literal -> FALSE .)
+    RESTA           reduce using rule 14 (literal -> FALSE .)
+    MULTIPLICACION  reduce using rule 14 (literal -> FALSE .)
+    DIVISION        reduce using rule 14 (literal -> FALSE .)
+    POTENCIA        reduce using rule 14 (literal -> FALSE .)
+    MODULO          reduce using rule 14 (literal -> FALSE .)
+    IGUALACION      reduce using rule 14 (literal -> FALSE .)
+    DIFERENCIACION  reduce using rule 14 (literal -> FALSE .)
+    MENOR           reduce using rule 14 (literal -> FALSE .)
+    MAYOR           reduce using rule 14 (literal -> FALSE .)
+    MENOR_IGUAL     reduce using rule 14 (literal -> FALSE .)
+    MAYOR_IGUAL     reduce using rule 14 (literal -> FALSE .)
+    PYC             reduce using rule 14 (literal -> FALSE .)
+
+
+state 33
+
+    (35) literal -> ENTERO .
+
+    PARC            reduce using rule 35 (literal -> ENTERO .)
+    OR              reduce using rule 35 (literal -> ENTERO .)
+    AND             reduce using rule 35 (literal -> ENTERO .)
+    XOR             reduce using rule 35 (literal -> ENTERO .)
+    SUMA            reduce using rule 35 (literal -> ENTERO .)
+    RESTA           reduce using rule 35 (literal -> ENTERO .)
+    MULTIPLICACION  reduce using rule 35 (literal -> ENTERO .)
+    DIVISION        reduce using rule 35 (literal -> ENTERO .)
+    POTENCIA        reduce using rule 35 (literal -> ENTERO .)
+    MODULO          reduce using rule 35 (literal -> ENTERO .)
+    IGUALACION      reduce using rule 35 (literal -> ENTERO .)
+    DIFERENCIACION  reduce using rule 35 (literal -> ENTERO .)
+    MENOR           reduce using rule 35 (literal -> ENTERO .)
+    MAYOR           reduce using rule 35 (literal -> ENTERO .)
+    MENOR_IGUAL     reduce using rule 35 (literal -> ENTERO .)
+    MAYOR_IGUAL     reduce using rule 35 (literal -> ENTERO .)
+    PYC             reduce using rule 35 (literal -> ENTERO .)
+
+
+state 34
+
+    (36) literal -> CADENAS .
+
+    PARC            reduce using rule 36 (literal -> CADENAS .)
+    OR              reduce using rule 36 (literal -> CADENAS .)
+    AND             reduce using rule 36 (literal -> CADENAS .)
+    XOR             reduce using rule 36 (literal -> CADENAS .)
+    SUMA            reduce using rule 36 (literal -> CADENAS .)
+    RESTA           reduce using rule 36 (literal -> CADENAS .)
+    MULTIPLICACION  reduce using rule 36 (literal -> CADENAS .)
+    DIVISION        reduce using rule 36 (literal -> CADENAS .)
+    POTENCIA        reduce using rule 36 (literal -> CADENAS .)
+    MODULO          reduce using rule 36 (literal -> CADENAS .)
+    IGUALACION      reduce using rule 36 (literal -> CADENAS .)
+    DIFERENCIACION  reduce using rule 36 (literal -> CADENAS .)
+    MENOR           reduce using rule 36 (literal -> CADENAS .)
+    MAYOR           reduce using rule 36 (literal -> CADENAS .)
+    MENOR_IGUAL     reduce using rule 36 (literal -> CADENAS .)
+    MAYOR_IGUAL     reduce using rule 36 (literal -> CADENAS .)
+    PYC             reduce using rule 36 (literal -> CADENAS .)
+
+
+state 35
+
+    (37) literal -> DECIMAL .
+
+    PARC            reduce using rule 37 (literal -> DECIMAL .)
+    OR              reduce using rule 37 (literal -> DECIMAL .)
+    AND             reduce using rule 37 (literal -> DECIMAL .)
+    XOR             reduce using rule 37 (literal -> DECIMAL .)
+    SUMA            reduce using rule 37 (literal -> DECIMAL .)
+    RESTA           reduce using rule 37 (literal -> DECIMAL .)
+    MULTIPLICACION  reduce using rule 37 (literal -> DECIMAL .)
+    DIVISION        reduce using rule 37 (literal -> DECIMAL .)
+    POTENCIA        reduce using rule 37 (literal -> DECIMAL .)
+    MODULO          reduce using rule 37 (literal -> DECIMAL .)
+    IGUALACION      reduce using rule 37 (literal -> DECIMAL .)
+    DIFERENCIACION  reduce using rule 37 (literal -> DECIMAL .)
+    MENOR           reduce using rule 37 (literal -> DECIMAL .)
+    MAYOR           reduce using rule 37 (literal -> DECIMAL .)
+    MENOR_IGUAL     reduce using rule 37 (literal -> DECIMAL .)
+    MAYOR_IGUAL     reduce using rule 37 (literal -> DECIMAL .)
+    PYC             reduce using rule 37 (literal -> DECIMAL .)
+
+
+state 36
+
+    (38) literal -> ID .
+
+    PARC            reduce using rule 38 (literal -> ID .)
+    OR              reduce using rule 38 (literal -> ID .)
+    AND             reduce using rule 38 (literal -> ID .)
+    XOR             reduce using rule 38 (literal -> ID .)
+    SUMA            reduce using rule 38 (literal -> ID .)
+    RESTA           reduce using rule 38 (literal -> ID .)
+    MULTIPLICACION  reduce using rule 38 (literal -> ID .)
+    DIVISION        reduce using rule 38 (literal -> ID .)
+    POTENCIA        reduce using rule 38 (literal -> ID .)
+    MODULO          reduce using rule 38 (literal -> ID .)
+    IGUALACION      reduce using rule 38 (literal -> ID .)
+    DIFERENCIACION  reduce using rule 38 (literal -> ID .)
+    MENOR           reduce using rule 38 (literal -> ID .)
+    MAYOR           reduce using rule 38 (literal -> ID .)
+    MENOR_IGUAL     reduce using rule 38 (literal -> ID .)
+    MAYOR_IGUAL     reduce using rule 38 (literal -> ID .)
+    PYC             reduce using rule 38 (literal -> ID .)
+
+
+state 37
+
+    (11) declaracion_variable -> tipo ID IGUAL . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 57
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 38
+
+    (12) asignacion_variable -> ID IGUAL expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PYC             reduce using rule 12 (asignacion_variable -> ID IGUAL expresion .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    XOR             shift and go to state 43
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+
+state 39
+
+    (18) expresion -> PARA expresion . PARC
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            shift and go to state 58
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    XOR             shift and go to state 43
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+
+state 40
+
+    (7) instruccion_print -> tipo_print PARA expresion PARC .
+
+    PYC             reduce using rule 7 (instruccion_print -> tipo_print PARA expresion PARC .)
+
+
+state 41
+
+    (25) expresion -> expresion OR . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 59
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 42
+
+    (26) expresion -> expresion AND . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 60
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 43
+
+    (27) expresion -> expresion XOR . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 61
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 44
+
+    (19) aritmetica -> expresion SUMA . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 62
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 45
+
+    (20) aritmetica -> expresion RESTA . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 63
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 46
+
+    (21) aritmetica -> expresion MULTIPLICACION . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 64
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 47
+
+    (22) aritmetica -> expresion DIVISION . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 65
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 48
+
+    (23) aritmetica -> expresion POTENCIA . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 66
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 49
+
+    (24) aritmetica -> expresion MODULO . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 67
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 50
+
+    (29) relacional -> expresion IGUALACION . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 68
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 51
+
+    (30) relacional -> expresion DIFERENCIACION . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 69
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 52
+
+    (31) relacional -> expresion MENOR . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 70
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 53
+
+    (32) relacional -> expresion MAYOR . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 71
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 54
+
+    (33) relacional -> expresion MENOR_IGUAL . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 72
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 55
+
+    (34) relacional -> expresion MAYOR_IGUAL . expresion
+    (15) expresion -> . aritmetica
+    (16) expresion -> . literal
+    (17) expresion -> . relacional
+    (18) expresion -> . PARA expresion PARC
+    (25) expresion -> . expresion OR expresion
+    (26) expresion -> . expresion AND expresion
+    (27) expresion -> . expresion XOR expresion
+    (28) expresion -> . NOT expresion
+    (19) aritmetica -> . expresion SUMA expresion
+    (20) aritmetica -> . expresion RESTA expresion
+    (21) aritmetica -> . expresion MULTIPLICACION expresion
+    (22) aritmetica -> . expresion DIVISION expresion
+    (23) aritmetica -> . expresion POTENCIA expresion
+    (24) aritmetica -> . expresion MODULO expresion
+    (8) literal -> . CARACTER
+    (13) literal -> . TRUE
+    (14) literal -> . FALSE
+    (35) literal -> . ENTERO
+    (36) literal -> . CADENAS
+    (37) literal -> . DECIMAL
+    (38) literal -> . ID
+    (29) relacional -> . expresion IGUALACION expresion
+    (30) relacional -> . expresion DIFERENCIACION expresion
+    (31) relacional -> . expresion MENOR expresion
+    (32) relacional -> . expresion MAYOR expresion
+    (33) relacional -> . expresion MENOR_IGUAL expresion
+    (34) relacional -> . expresion MAYOR_IGUAL expresion
+
+    PARA            shift and go to state 24
+    NOT             shift and go to state 29
+    CARACTER        shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
+    ENTERO          shift and go to state 33
+    CADENAS         shift and go to state 34
+    DECIMAL         shift and go to state 35
+    ID              shift and go to state 36
+
+    expresion                      shift and go to state 73
+    aritmetica                     shift and go to state 26
+    literal                        shift and go to state 27
+    relacional                     shift and go to state 28
+
+state 56
+
+    (28) expresion -> NOT expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 28 (expresion -> NOT expresion .)
+    OR              reduce using rule 28 (expresion -> NOT expresion .)
+    AND             reduce using rule 28 (expresion -> NOT expresion .)
+    XOR             reduce using rule 28 (expresion -> NOT expresion .)
+    PYC             reduce using rule 28 (expresion -> NOT expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+  ! SUMA            [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! RESTA           [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! DIVISION        [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! POTENCIA        [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MODULO          [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! IGUALACION      [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! DIFERENCIACION  [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MENOR           [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MAYOR           [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 28 (expresion -> NOT expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+
+
+state 57
+
+    (11) declaracion_variable -> tipo ID IGUAL expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PYC             reduce using rule 11 (declaracion_variable -> tipo ID IGUAL expresion .)
+    OR              shift and go to state 41
+    AND             shift and go to state 42
+    XOR             shift and go to state 43
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+
+state 58
+
+    (18) expresion -> PARA expresion PARC .
+
+    PARC            reduce using rule 18 (expresion -> PARA expresion PARC .)
+    OR              reduce using rule 18 (expresion -> PARA expresion PARC .)
+    AND             reduce using rule 18 (expresion -> PARA expresion PARC .)
+    XOR             reduce using rule 18 (expresion -> PARA expresion PARC .)
+    SUMA            reduce using rule 18 (expresion -> PARA expresion PARC .)
+    RESTA           reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MULTIPLICACION  reduce using rule 18 (expresion -> PARA expresion PARC .)
+    DIVISION        reduce using rule 18 (expresion -> PARA expresion PARC .)
+    POTENCIA        reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MODULO          reduce using rule 18 (expresion -> PARA expresion PARC .)
+    IGUALACION      reduce using rule 18 (expresion -> PARA expresion PARC .)
+    DIFERENCIACION  reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MENOR           reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MAYOR           reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MENOR_IGUAL     reduce using rule 18 (expresion -> PARA expresion PARC .)
+    MAYOR_IGUAL     reduce using rule 18 (expresion -> PARA expresion PARC .)
+    PYC             reduce using rule 18 (expresion -> PARA expresion PARC .)
+
+
+state 59
+
+    (25) expresion -> expresion OR expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 25 (expresion -> expresion OR expresion .)
+    OR              reduce using rule 25 (expresion -> expresion OR expresion .)
+    PYC             reduce using rule 25 (expresion -> expresion OR expresion .)
+    AND             shift and go to state 42
+    XOR             shift and go to state 43
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+  ! AND             [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! XOR             [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! SUMA            [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! RESTA           [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! DIVISION        [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! POTENCIA        [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MODULO          [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! IGUALACION      [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! DIFERENCIACION  [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MENOR           [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MAYOR           [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 25 (expresion -> expresion OR expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+
+
+state 60
+
+    (26) expresion -> expresion AND expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 26 (expresion -> expresion AND expresion .)
+    OR              reduce using rule 26 (expresion -> expresion AND expresion .)
+    AND             reduce using rule 26 (expresion -> expresion AND expresion .)
+    XOR             reduce using rule 26 (expresion -> expresion AND expresion .)
+    PYC             reduce using rule 26 (expresion -> expresion AND expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+  ! SUMA            [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! RESTA           [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! DIVISION        [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! POTENCIA        [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MODULO          [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! IGUALACION      [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! DIFERENCIACION  [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MENOR           [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MAYOR           [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 26 (expresion -> expresion AND expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+
+
+state 61
+
+    (27) expresion -> expresion XOR expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 27 (expresion -> expresion XOR expresion .)
+    OR              reduce using rule 27 (expresion -> expresion XOR expresion .)
+    XOR             reduce using rule 27 (expresion -> expresion XOR expresion .)
+    PYC             reduce using rule 27 (expresion -> expresion XOR expresion .)
+    AND             shift and go to state 42
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+    IGUALACION      shift and go to state 50
+    DIFERENCIACION  shift and go to state 51
+    MENOR           shift and go to state 52
+    MAYOR           shift and go to state 53
+    MENOR_IGUAL     shift and go to state 54
+    MAYOR_IGUAL     shift and go to state 55
+
+  ! AND             [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! SUMA            [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! RESTA           [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! DIVISION        [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! POTENCIA        [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MODULO          [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! IGUALACION      [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! DIFERENCIACION  [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MENOR           [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MAYOR           [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 27 (expresion -> expresion XOR expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! XOR             [ shift and go to state 43 ]
+
+
+state 62
+
+    (19) aritmetica -> expresion SUMA expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    OR              reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    AND             reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    XOR             reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    SUMA            reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    RESTA           reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    IGUALACION      reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    DIFERENCIACION  reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    MENOR           reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    MAYOR           reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    MENOR_IGUAL     reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    MAYOR_IGUAL     reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    PYC             reduce using rule 19 (aritmetica -> expresion SUMA expresion .)
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! MULTIPLICACION  [ reduce using rule 19 (aritmetica -> expresion SUMA expresion .) ]
+  ! DIVISION        [ reduce using rule 19 (aritmetica -> expresion SUMA expresion .) ]
+  ! POTENCIA        [ reduce using rule 19 (aritmetica -> expresion SUMA expresion .) ]
+  ! MODULO          [ reduce using rule 19 (aritmetica -> expresion SUMA expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 63
+
+    (20) aritmetica -> expresion RESTA expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    OR              reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    AND             reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    XOR             reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    SUMA            reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    RESTA           reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    IGUALACION      reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    DIFERENCIACION  reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    MENOR           reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    MAYOR           reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    MENOR_IGUAL     reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    MAYOR_IGUAL     reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    PYC             reduce using rule 20 (aritmetica -> expresion RESTA expresion .)
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! MULTIPLICACION  [ reduce using rule 20 (aritmetica -> expresion RESTA expresion .) ]
+  ! DIVISION        [ reduce using rule 20 (aritmetica -> expresion RESTA expresion .) ]
+  ! POTENCIA        [ reduce using rule 20 (aritmetica -> expresion RESTA expresion .) ]
+  ! MODULO          [ reduce using rule 20 (aritmetica -> expresion RESTA expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 64
+
+    (21) aritmetica -> expresion MULTIPLICACION expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    OR              reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    AND             reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    XOR             reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    SUMA            reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    RESTA           reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    MULTIPLICACION  reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    DIVISION        reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    IGUALACION      reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    DIFERENCIACION  reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    MENOR           reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    MAYOR           reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    MENOR_IGUAL     reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    MAYOR_IGUAL     reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    PYC             reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .)
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! POTENCIA        [ reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .) ]
+  ! MODULO          [ reduce using rule 21 (aritmetica -> expresion MULTIPLICACION expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! MULTIPLICACION  [ shift and go to state 46 ]
+  ! DIVISION        [ shift and go to state 47 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 65
+
+    (22) aritmetica -> expresion DIVISION expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    OR              reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    AND             reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    XOR             reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    SUMA            reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    RESTA           reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    MULTIPLICACION  reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    DIVISION        reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    IGUALACION      reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    DIFERENCIACION  reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    MENOR           reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    MAYOR           reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    MENOR_IGUAL     reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    MAYOR_IGUAL     reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    PYC             reduce using rule 22 (aritmetica -> expresion DIVISION expresion .)
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! POTENCIA        [ reduce using rule 22 (aritmetica -> expresion DIVISION expresion .) ]
+  ! MODULO          [ reduce using rule 22 (aritmetica -> expresion DIVISION expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! MULTIPLICACION  [ shift and go to state 46 ]
+  ! DIVISION        [ shift and go to state 47 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 66
+
+    (23) aritmetica -> expresion POTENCIA expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    OR              reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    AND             reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    XOR             reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    SUMA            reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    RESTA           reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MULTIPLICACION  reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    DIVISION        reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    POTENCIA        reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MODULO          reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    IGUALACION      reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    DIFERENCIACION  reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MENOR           reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MAYOR           reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MENOR_IGUAL     reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    MAYOR_IGUAL     reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+    PYC             reduce using rule 23 (aritmetica -> expresion POTENCIA expresion .)
+
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! MULTIPLICACION  [ shift and go to state 46 ]
+  ! DIVISION        [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 48 ]
+  ! MODULO          [ shift and go to state 49 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 67
+
+    (24) aritmetica -> expresion MODULO expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    OR              reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    AND             reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    XOR             reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    SUMA            reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    RESTA           reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MULTIPLICACION  reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    DIVISION        reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    POTENCIA        reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MODULO          reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    IGUALACION      reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    DIFERENCIACION  reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MENOR           reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MAYOR           reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MENOR_IGUAL     reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    MAYOR_IGUAL     reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+    PYC             reduce using rule 24 (aritmetica -> expresion MODULO expresion .)
+
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! SUMA            [ shift and go to state 44 ]
+  ! RESTA           [ shift and go to state 45 ]
+  ! MULTIPLICACION  [ shift and go to state 46 ]
+  ! DIVISION        [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 48 ]
+  ! MODULO          [ shift and go to state 49 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 68
+
+    (29) relacional -> expresion IGUALACION expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    OR              reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    AND             reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    XOR             reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    IGUALACION      reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    DIFERENCIACION  reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    MENOR           reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    MAYOR           reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    MENOR_IGUAL     reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    MAYOR_IGUAL     reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    PYC             reduce using rule 29 (relacional -> expresion IGUALACION expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! RESTA           [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! DIVISION        [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! POTENCIA        [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! MODULO          [ reduce using rule 29 (relacional -> expresion IGUALACION expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 69
+
+    (30) relacional -> expresion DIFERENCIACION expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    OR              reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    AND             reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    XOR             reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    IGUALACION      reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    DIFERENCIACION  reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    MENOR           reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    MAYOR           reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    MENOR_IGUAL     reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    MAYOR_IGUAL     reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    PYC             reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! RESTA           [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! DIVISION        [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! POTENCIA        [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! MODULO          [ reduce using rule 30 (relacional -> expresion DIFERENCIACION expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 70
+
+    (31) relacional -> expresion MENOR expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    OR              reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    AND             reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    XOR             reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    IGUALACION      reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    DIFERENCIACION  reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    MENOR           reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    MAYOR           reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    MENOR_IGUAL     reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    MAYOR_IGUAL     reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    PYC             reduce using rule 31 (relacional -> expresion MENOR expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! RESTA           [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! DIVISION        [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! POTENCIA        [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! MODULO          [ reduce using rule 31 (relacional -> expresion MENOR expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 71
+
+    (32) relacional -> expresion MAYOR expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    OR              reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    AND             reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    XOR             reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    IGUALACION      reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    DIFERENCIACION  reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    MENOR           reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    MAYOR           reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    MENOR_IGUAL     reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    MAYOR_IGUAL     reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    PYC             reduce using rule 32 (relacional -> expresion MAYOR expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! RESTA           [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! DIVISION        [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! POTENCIA        [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! MODULO          [ reduce using rule 32 (relacional -> expresion MAYOR expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 72
+
+    (33) relacional -> expresion MENOR_IGUAL expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    OR              reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    AND             reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    XOR             reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    IGUALACION      reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    DIFERENCIACION  reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    MENOR           reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    MAYOR           reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    MENOR_IGUAL     reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    MAYOR_IGUAL     reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    PYC             reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! RESTA           [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! DIVISION        [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! POTENCIA        [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! MODULO          [ reduce using rule 33 (relacional -> expresion MENOR_IGUAL expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+
+
+state 73
+
+    (34) relacional -> expresion MAYOR_IGUAL expresion .
+    (25) expresion -> expresion . OR expresion
+    (26) expresion -> expresion . AND expresion
+    (27) expresion -> expresion . XOR expresion
+    (19) aritmetica -> expresion . SUMA expresion
+    (20) aritmetica -> expresion . RESTA expresion
+    (21) aritmetica -> expresion . MULTIPLICACION expresion
+    (22) aritmetica -> expresion . DIVISION expresion
+    (23) aritmetica -> expresion . POTENCIA expresion
+    (24) aritmetica -> expresion . MODULO expresion
+    (29) relacional -> expresion . IGUALACION expresion
+    (30) relacional -> expresion . DIFERENCIACION expresion
+    (31) relacional -> expresion . MENOR expresion
+    (32) relacional -> expresion . MAYOR expresion
+    (33) relacional -> expresion . MENOR_IGUAL expresion
+    (34) relacional -> expresion . MAYOR_IGUAL expresion
+
+    PARC            reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    OR              reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    AND             reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    XOR             reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    IGUALACION      reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    DIFERENCIACION  reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    MENOR           reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    MAYOR           reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    MENOR_IGUAL     reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    MAYOR_IGUAL     reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    PYC             reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .)
+    SUMA            shift and go to state 44
+    RESTA           shift and go to state 45
+    MULTIPLICACION  shift and go to state 46
+    DIVISION        shift and go to state 47
+    POTENCIA        shift and go to state 48
+    MODULO          shift and go to state 49
+
+  ! SUMA            [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! RESTA           [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! MULTIPLICACION  [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! DIVISION        [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! POTENCIA        [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! MODULO          [ reduce using rule 34 (relacional -> expresion MAYOR_IGUAL expresion .) ]
+  ! OR              [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 42 ]
+  ! XOR             [ shift and go to state 43 ]
+  ! IGUALACION      [ shift and go to state 50 ]
+  ! DIFERENCIACION  [ shift and go to state 51 ]
+  ! MENOR           [ shift and go to state 52 ]
+  ! MAYOR           [ shift and go to state 53 ]
+  ! MENOR_IGUAL     [ shift and go to state 54 ]
+  ! MAYOR_IGUAL     [ shift and go to state 55 ]
+

@@ -20,6 +20,7 @@ class Acceso(Expresion):
         # Si no existe la variable en alguna tabla de simbolos
         if not env.existe_simbolo(self.id, TipoSimbolo.VARIABLE):
             # Agregando a la tabla de erorres
+            #Verifica si la variable esta repetida en el archivo de entrada
             err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'No existe una variable con el nombre {self.id}')
             TablaErrores.addError(err)
             return resultado
