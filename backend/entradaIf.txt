@@ -1,0 +1,30 @@
+INT x = 5;
+INT y = 10;
+
+
+IF (x < y) {
+    println("Tipo1: x < y");
+}
+
+
+IF (x > y) {
+    println("Tipo2: x > y");
+} ELSE {
+    println("Tipo2: else bloque");
+}
+
+
+IF (x == y) {
+    println("Tipo3: x == y");
+} ELSE IF (y > x) {
+    println("Tipo3: else if bloque");
+}
+
+
+IF (x == y) {
+    println("Tipo4: x == y");
+} ELSE IF (y < x) {
+    println("Tipo4: else if bloque");
+} ELSE {
+    println("Tipo4: else final");
+}

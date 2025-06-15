@@ -6,6 +6,7 @@ from interprete.instrucciones.print import Print
 from interprete.instrucciones.asignacion import Asignacion
 from interprete.instrucciones.declaracion import Declaracion
 from interprete.instrucciones.iWhile import While
+from interprete.instrucciones.instruccion_if import Instruccion_if
 
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
@@ -101,6 +102,7 @@ def p_instruccion(t):
 def p_estructura_control(t):
     '''
     estructura_control : instruccion_while
+                       | instruccion_if
     '''
     # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
@@ -116,6 +118,49 @@ def p_instruccion_while(t):
     
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
                  linea=t.lineno(1), columna=t.lexpos(1))
+
+
+def p_instruccion_if(t):
+    ''' 
+    instruccion_if : base_if
+                   | base_if ELSE LLA instrucciones LLC
+                   | base_if ELSE instruccion_if                 
+    '''
+    if len(t) == 2: # Solo base_if
+        t[0] = t[1]
+    elif len(t) == 6: # if con else
+        t[0] = Instruccion_if(
+            text_val=f'if ({t[1].condicion.text_val}) {{...}} else {{...}}',
+            condicion=t[1].condicion,
+            instrucciones_if=t[1].instrucciones_if,
+            instrucciones_else=t[4],  # Lista de instrucciones del else
+            linea=t.lineno(1),
+            columna=t.lexpos(1)
+        )
+    else: # if con else if  
+        t[0] = Instruccion_if(
+            text_val=f'if ({t[1].condicion.text_val}) {{...}} else {t[3].text_val}',
+            condicion=t[1].condicion,
+            instrucciones_if=t[1].instrucciones_if,
+            instrucciones_else=[t[3]],  # Otra instrucción if para el else if
+            linea=t.lineno(1),
+            columna=t.lexpos(1)
+        )    
+        
+
+def p_base_if(t):
+    ''' 
+    base_if : IF PARA expresion PARC LLA instrucciones LLC
+    '''
+    text_val = f'if({t[3].text_val}) {{...}}'
+    t[0] = Instruccion_if(
+        text_val=text_val,
+        condicion=t[3],
+        instrucciones_if=t[6],
+        instrucciones_else=None,  # Por ahora no hay else
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )        
 
 
 def p_incremento(t):
