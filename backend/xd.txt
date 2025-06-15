@@ -9,3 +9,8 @@ print(a);
 int b = a + 7; 
 print(b);
 
+while(a<8){
+    a = a+1;
+    print(a);
+}
+
