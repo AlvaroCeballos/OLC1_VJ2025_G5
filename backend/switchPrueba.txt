@@ -1,0 +1,22 @@
+int x = 2;
+int y = 0;
+
+switch(x) {
+    
+    case 1:
+        print("uno");
+        y = 10;
+        break;
+    case 2:
+        int a = 10;
+        print("soy gay");
+        print(a+10);
+        y = 20;
+        break;  
+    case 3:
+        print("tres");
+        y = 30;
+        break;
+    
+}
+

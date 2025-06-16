@@ -58,6 +58,7 @@ tokens = [
     'PARA',
     'PARC',
     'PYC',
+    'DOS_PUNTOS',
     'ARROBA',
     'COMA',
     'LLA',
@@ -88,6 +89,7 @@ t_NOT = r'!'
 t_PARA = r'\('
 t_PARC = r'\)'
 t_PYC = r';'
+t_DOS_PUNTOS = r':'
 t_ARROBA = r'@'
 t_COMA = r','
 t_LLA = r'\{'
