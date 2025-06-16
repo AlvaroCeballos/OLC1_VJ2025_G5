@@ -6,6 +6,8 @@ from interprete.otros.retorno import Retorno
 from interprete.otros.tipos import TipoDato
 
 class Instruccion_if(Instruccion):
+    contador_global = 0  # Contador global para llevar control de los if anidados
+
     def __init__(self, text_val: str, condicion, instrucciones_if, instrucciones_else=None, linea: int = 0, columna: int = 0):
         super().__init__(text_val, linea, columna)
         self.condicion = condicion                       # Expresión booleana
@@ -13,8 +15,12 @@ class Instruccion_if(Instruccion):
         self.instrucciones_else = instrucciones_else     # None, lista o instancia de If para "else"/"else if"
 
     def ejecutar(self, env: Enviroment):
+        Instruccion_if.contador_global += 1
+        nombre_if = f"if {Instruccion_if.contador_global}"
+        env_if = Enviroment(ent_anterior=env, ambito=nombre_if)
+        
+        # Ejecutar la condición del if
         resultado = self.condicion.ejecutar(env)
-
         if resultado.tipo != TipoDato.BOOLEAN:
             err = Error(
                 tipo='Semántico',
@@ -28,16 +34,19 @@ class Instruccion_if(Instruccion):
         # Ejecutar bloque "if"
         if resultado.valor:
             for instr in self.instrucciones_if:
-                instr.ejecutar(env)
-        # Ejecutar bloque "else" o "else if"
+                instr.ejecutar(env_if)
         elif self.instrucciones_else:
-            # Si es una lista (bloque de instrucciones)
+            # Manejar ELSE como un nuevo entorno
+            nombre_else = f"{nombre_if} else"
+            env_else = Enviroment(ent_anterior=env, ambito=nombre_else)
+            
+            
             if isinstance(self.instrucciones_else, list):
                 for instr in self.instrucciones_else:
-                    instr.ejecutar(env)
+                    instr.ejecutar(env_else)
             # Si es otra instrucción (p.ej. otro If para "else if")
             else:
-                self.instrucciones_else.ejecutar(env)
+                self.instrucciones_else.ejecutar(env_else)
 
         return self
 
