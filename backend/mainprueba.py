@@ -5,7 +5,7 @@ from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
 from interprete.instrucciones.iWhile import While
 
-f = open('backend/entrada.txt', 'r')
+f = open('backend/entradaIf.txt', 'r')
 data = f.read()
 
 While.reset_contador()
