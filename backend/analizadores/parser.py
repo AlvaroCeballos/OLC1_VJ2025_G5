@@ -326,6 +326,7 @@ def p_relacional(t):
         t[0] = Relacional(t[1], t[3], TipoRelacional.MENOR_IGUAL, t.lineno(1), t.lexpos(1))
     elif t[2] == '>=':
         t[0] = Relacional(t[1], t[3], TipoRelacional.MAYOR_IGUAL, t.lineno(1), t.lexpos(1))
+
 def p_entero(t):
     '''
     literal : ENTERO
