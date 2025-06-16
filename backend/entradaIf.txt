@@ -1,0 +1,13 @@
+INT x = 5;
+INT y = 10;
+BOOLEAN flag = true;
+
+IF (flag) {
+    STR nombre = "nicole";
+    IF (flag){
+        println(nombre);
+        INT edad = 20;
+    }
+    println(edad);
+}
+
