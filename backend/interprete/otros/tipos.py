@@ -20,8 +20,8 @@ class TipoAritmetica(Enum):
     NEGACION = 7
 
 class TipoRelacional(Enum):
-    IGUALDAD = 1
-    DESIGUALDAD = 2
+    IGUALACION = 1
+    DIFERENCIACION = 2
     MENOR_IGUAL = 3
     MAYOR_IGUAL = 4
     MENOR = 5

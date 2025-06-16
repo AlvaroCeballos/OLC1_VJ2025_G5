@@ -1,6 +1,51 @@
-str a = "prueba";
-int b = 34;
-float suma = b + 10;
-float res = suma ** b;
+// Declaración y asignación de variables
+int a;
+int a = 100000000;
 
-// VALIDAR QUE EL CHAR FUNCIONE UNICAMENTE CON COMILLAS SIMPLES XD
+print(a);
+
+float b = 3.5;
+char c = 'x';
+str s = "hola";
+boolean flag = true;
+
+// Operaciones aritméticas
+int suma = a + 5;
+float mult = b * 2.0;
+int potencia = a ** 2;
+int modulo = suma % 4;
+
+// Operaciones relacionales
+boolean igual = a == suma;
+boolean distinto = b != mult;
+boolean menor = a < suma;
+boolean mayorIgual = suma >= a;
+boolean char_vs_int = c < a;      // compara ASCII de 'x' con 10
+boolean str_igual = s == "hola";
+
+// Operaciones lógicas
+boolean conjuncion = flag && (a < suma);
+boolean disyuncion = flag || false;
+boolean negacion = !flag;
+boolean xor_test = flag ^ false;
+
+// Imprimir resultados
+print(a);
+print(b);
+print(c);
+print(s);
+print(flag);
+print(suma);
+print(mult);
+print(potencia);
+print(modulo);
+print(igual);
+print(distinto);
+print(menor);
+print(mayorIgual);
+print(char_vs_int);
+print(str_igual);
+print(conjuncion);
+print(disyuncion);
+print(negacion);
+print(xor_test);

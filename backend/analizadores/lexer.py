@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'bool': 'BOOLEAN',
+    'boolean': 'BOOLEAN',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
@@ -39,7 +39,6 @@ tokens = [
     'POTENCIA',
     'DIVISION',
     'DECIMAL',
-    'BOOLEANO',
     'CADENAS',
     'CARACTER',
     'COMENTARIO_UNA_LINEA',
@@ -64,6 +63,8 @@ tokens = [
     'LLA',
     'LLC',
     'UMENOS',
+    'INCREMENTO',
+    'DECREMENTO',
 ] + list(reservadas.values())
 
 # Expresiones regulares para tokens simples
@@ -91,6 +92,8 @@ t_ARROBA = r'@'
 t_COMA = r','
 t_LLA = r'\{'
 t_LLC = r'\}'
+t_INCREMENTO = r'\+\+'
+t_DECREMENTO = r'--'
 
 
 # Expresiones regulares para comentarios
@@ -122,10 +125,10 @@ def t_CADENAS(t):
     return t
 
 # Regla para booleanos
-def t_BOOLEANO(t):
-    r'\b(true|false)\b'
-    t.value = (t.value == 'true')  # Convertir a booleano
-    return t
+#def t_BOOLEANO(t):
+ #   r'\b(true|false)\b'
+  #  t.value = (t.value == 'true')  # Convertir a booleano
+   # return t
 
 # Regla para caracteres
 def t_CARACTER(t):
