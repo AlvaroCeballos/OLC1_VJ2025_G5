@@ -1,0 +1,36 @@
+int a = 6;
+
+while(a<8){
+    print("While iteracion 1-------------------------------");
+    a++;
+    print("Valores de a");
+    print(a);
+    int while1 = 1111;
+    while(a < 10){
+        print("While iteracion 2-------------------------------");
+        a++;
+        print(a);
+        int while2 = 2;
+        print(while2);
+        
+        while1++;
+        print(while1);
+        while(a<12){
+            print("While iteracion 3--------------------------------");
+            a++;
+            print(a);
+            str ola = "olaa estoy en el while 3";
+        }
+    }
+}
+
+print("SALIMOS DEL TRIPLE WHILE");
+
+int vDecremento = 3;
+
+while (vDecremento>0){
+    vDecremento--;
+    print(vDecremento);
+    int while4 = 9;
+    print(while4);
+}

@@ -63,6 +63,8 @@ tokens = [
     'LLA',
     'LLC',
     'UMENOS',
+    'INCREMENTO',
+    'DECREMENTO',
 ] + list(reservadas.values())
 
 # Expresiones regulares para tokens simples
@@ -90,6 +92,8 @@ t_ARROBA = r'@'
 t_COMA = r','
 t_LLA = r'\{'
 t_LLC = r'\}'
+t_INCREMENTO = r'\+\+'
+t_DECREMENTO = r'--'
 
 
 # Expresiones regulares para comentarios
