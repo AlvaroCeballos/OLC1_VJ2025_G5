@@ -25,7 +25,8 @@ class Declaracion(Instruccion):
     def ejecutar(self, env:Enviroment):
         # Simbolo a insertar en tabla de simbolos
         print('Insertado en TS: ', self.id)
-        simbolo = Symbol(TipoSimbolo.VARIABLE, self.tipo, self.id, self.valor, env.ambito, None)
+        retorno = self.valor.ejecutar(env) if isinstance(self.valor, Expresion) else self.valor
+        simbolo = Symbol(TipoSimbolo.VARIABLE, retorno.tipo, self.id, retorno.valor, env.ambito, None)
 
         # Guardando con un valor por defecto
         if self.valor is None:
