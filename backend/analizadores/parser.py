@@ -9,6 +9,7 @@ from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iCase import Case
 from interprete.instrucciones.iSwitch import Switch
 from interprete.instrucciones.iBrake import Break
+from interprete.instrucciones.iFor import For 
 from interprete.instrucciones.instruccion_if import Instruccion_if
 from interprete.instrucciones.iDoWhile import DoWhile
 
@@ -109,6 +110,7 @@ def p_estructura_control(t):
                        | instruccion_if
                        | instruccion_switch
                        | instruccion_dowhile
+                       | instruccion_for
     '''
     # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
@@ -124,7 +126,35 @@ def p_instruccion_while(t):
     
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
                  linea=t.lineno(1), columna=t.lexpos(1))
+#expresion para estructura for
+def p_instruccion_for(t):
+    '''
+    instruccion_for : FOR PARA declaracion_variable PYC expresion PYC actualizacion PARC LLA instrucciones LLC
+    
+    '''
+    text_val = f'for ({t[3].text_val}; {t[5].text_val}; {t[7].text_val}) ' + '{\n'
+    for inst in t[10]:
+        text_val += f'    {inst.text_val}'
+    text_val += '}\n'
 
+    t[0] = For(
+        text_val= text_val,
+        inicializacion = t[3],
+        condicion = t[5],
+        incremento = t[7],
+        instrucciones = t[10],
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
+
+#expresion para actualizacion
+def p_actualizacion(t):
+    '''actualizacion : incremento
+                   | decremento
+                   | expresion
+                   | asignacion_variable
+    '''
+    t[0] = t[1]
 #expresin para definir estructura switch
 def p_instruccion_switch(t):
     '''
