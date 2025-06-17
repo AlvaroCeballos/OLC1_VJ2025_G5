@@ -5,7 +5,7 @@ from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
-f = open('backend/forPrueba.txt', 'r', encoding='utf-8')
+f = open('backend/entradaDoWhile.txt', 'r', encoding='utf-8')
 data = f.read()
 
 While.reset_contador()
