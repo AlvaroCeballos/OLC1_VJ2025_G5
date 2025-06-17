@@ -23,32 +23,31 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-        # Simbolo a insertar en tabla de simbolos
         print('Insertado en TS: ', self.id)
-        retorno = self.valor.ejecutar(env) if isinstance(self.valor, Expresion) else self.valor
-        simbolo = Symbol(TipoSimbolo.VARIABLE, retorno.tipo, self.id, retorno.valor, env.ambito, None)
-
-        # Guardando con un valor por defecto
-        if self.valor is None:
-            if self.tipo == TipoDato.INT:
-                simbolo.valor = 0
-            elif self.tipo == TipoDato.FLOAT:
-                simbolo.valor = 0.0
-            elif self.tipo == TipoDato.STR:
-                simbolo.valor = ' '
-            elif self.tipo == TipoDato.CHAR:
-                simbolo.valor = ' '
-            elif self.tipo == TipoDato.BOOLEAN:
-                simbolo.valor = True
-
-        # Siempre insertar/sobrescribir (sin verificar existencia)
-        env.insertar_simbolo(self.id, simbolo)
-        
-        if env.existe_simbolo_ent_actual(self.id, TipoSimbolo.VARIABLE):
-            print(f'Variable {self.id} redeclarada, sobrescribiendo')
+        if self.valor is not None and isinstance(self.valor, Expresion):
+            retorno = self.valor.ejecutar(env)
+            tipo = retorno.tipo
+            valor = retorno.valor
         else:
-            print(f'Variable {self.id} declarada por primera vez')
+            # Valor por defecto según el tipo
+            tipo = self.tipo
+            if self.tipo == TipoDato.INT:
+                valor = 0
+            elif self.tipo == TipoDato.FLOAT:
+                valor = 0.0
+            elif self.tipo == TipoDato.STR:
+                valor = ' '
+            elif self.tipo == TipoDato.CHAR:
+                valor = ' '
+            elif self.tipo == TipoDato.BOOLEAN:
+                valor = True
+            else:
+                valor = None
 
+        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor, env.ambito, None)
+        env.insertar_simbolo(self.id, simbolo)
+
+        # Si hay inicialización, ejecuta la asignación
         if self.valor is not None:
             asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
             asignacion.ejecutar(env)
