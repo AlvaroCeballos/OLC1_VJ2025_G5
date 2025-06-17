@@ -1,13 +1,9 @@
-INT x = 5;
-INT y = 10;
-BOOLEAN flag = true;
-
-IF (flag) {
-    STR nombre = "nicole";
-    IF (flag){
-        println(nombre);
-        INT edad = 20;
-    }
-    println(edad);
+IF (1){
+	PRINTLN("ESTO ES UN ERROR");
+} ELSE IF (0) {
+	PRINTLN("ESTO TAMBIEN ESTA MAL");
+} ELSE { 
+	PRINTLN("ESTO IGUAL ESTA MAL");
 }
+
 
