@@ -5,7 +5,11 @@ from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
 from interprete.instrucciones.iWhile import While
 
-f = open('backend/entradaIf.txt', 'r')
+<<<<<<< Updated upstream
+f = open('backend/entradaWhile.txt', 'r')
+=======
+f = open('backend/entradaFinal.txt', 'r')
+>>>>>>> Stashed changes
 data = f.read()
 
 While.reset_contador()
