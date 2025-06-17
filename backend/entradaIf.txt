@@ -1,13 +1,11 @@
-INT x = 5;
-INT y = 10;
-BOOLEAN flag = true;
+INT A;
+FLOAT B;
+CHAR C; 
+BOOLEAN D;
+STR E;
 
-IF (flag) {
-    STR nombre = "nicole";
-    IF (flag){
-        println(nombre);
-        INT edad = 20;
-    }
-    println(edad);
-}
-
+PRINTLN(A);
+PRINTLN(B);
+PRINTLN(C);
+PRINTLN(D);
+PRINTLN(E);
