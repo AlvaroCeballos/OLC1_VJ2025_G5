@@ -27,7 +27,7 @@ class Declaracion(Instruccion):
         print('Insertado en TS: ', self.id)
         retorno = self.valor.ejecutar(env) if isinstance(self.valor, Expresion) else self.valor
         simbolo = Symbol(TipoSimbolo.VARIABLE, retorno.tipo, self.id, retorno.valor, env.ambito, None)
-
+        env.insertar_simbolo(self.id, simbolo)
         # Guardando con un valor por defecto
         if self.valor is None:
             if self.tipo == TipoDato.INT:
@@ -42,12 +42,12 @@ class Declaracion(Instruccion):
                 simbolo.valor = True
 
         # Siempre insertar/sobrescribir (sin verificar existencia)
-        env.insertar_simbolo(self.id, simbolo)
+        #
         
-        if env.existe_simbolo_ent_actual(self.id, TipoSimbolo.VARIABLE):
-            print(f'Variable {self.id} redeclarada, sobrescribiendo')
-        else:
-            print(f'Variable {self.id} declarada por primera vez')
+        #if env.existe_simbolo_ent_actual(self.id, TipoSimbolo.VARIABLE):
+            #print(f'Variable {self.id} redeclarada, sobrescribiendo')
+        #else:
+            #print(f'Variable {self.id} declarada por primera vez')
 
         if self.valor is not None:
             asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
