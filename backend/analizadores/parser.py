@@ -6,6 +6,12 @@ from interprete.instrucciones.print import Print
 from interprete.instrucciones.asignacion import Asignacion
 from interprete.instrucciones.declaracion import Declaracion
 from interprete.instrucciones.iWhile import While
+from interprete.instrucciones.iCase import Case
+from interprete.instrucciones.iSwitch import Switch
+from interprete.instrucciones.iBrake import Break
+from interprete.instrucciones.iFor import For 
+from interprete.instrucciones.instruccion_if import Instruccion_if
+from interprete.instrucciones.iDoWhile import DoWhile
 
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
@@ -101,6 +107,10 @@ def p_instruccion(t):
 def p_estructura_control(t):
     '''
     estructura_control : instruccion_while
+                       | instruccion_if
+                       | instruccion_switch
+                       | instruccion_dowhile
+                       | instruccion_for
     '''
     # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
@@ -116,6 +126,155 @@ def p_instruccion_while(t):
     
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
                  linea=t.lineno(1), columna=t.lexpos(1))
+#expresion para estructura for
+def p_instruccion_for(t):
+    '''
+    instruccion_for : FOR PARA declaracion_variable PYC expresion PYC actualizacion PARC LLA instrucciones LLC
+    
+    '''
+    text_val = f'for ({t[3].text_val}; {t[5].text_val}; {t[7].text_val}) ' + '{\n'
+    for inst in t[10]:
+        text_val += f'    {inst.text_val}'
+    text_val += '}\n'
+
+    t[0] = For(
+        text_val= text_val,
+        inicializacion = t[3],
+        condicion = t[5],
+        incremento = t[7],
+        instrucciones = t[10],
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
+
+#expresion para actualizacion
+def p_actualizacion(t):
+    '''actualizacion : incremento
+                   | decremento
+                   | expresion
+                   | asignacion_variable
+    '''
+    t[0] = t[1]
+#expresin para definir estructura switch
+def p_instruccion_switch(t):
+    '''
+    instruccion_switch : SWITCH PARA expresion PARC LLA lista_case default_opcional LLC
+    '''
+    t[0] = Switch(
+        text_val = '...',
+        condicion = t[3],
+        casos = t[6],
+        default = t[7],
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
+
+def p_instruccion_dowhile(t):
+    '''
+    instruccion_dowhile : DO LLA instrucciones LLC WHILE PARA expresion PARC PYC
+    '''
+    text_val = 'do {\n'
+    for inst in t[3]:
+        text_val += f'    {inst.text_val}'
+    text_val += '} while(' + f'{t[7].text_val}' + ');\n'
+    
+    t[0] = DoWhile(text_val=text_val, instrucciones=t[3], condicion=t[7], 
+                   linea=t.lineno(1), columna=t.lexpos(1))
+
+def p_instrucciones_empty(t):
+    '''
+    instrucciones : 
+    '''
+    t[0] = []
+#expresion que define la lista de los cases
+
+def p_lista_case(t):
+    '''
+    lista_case : lista_case case_unico
+                | case_unico
+
+    '''
+    if len(t) == 3:
+        t[0] = t[1] +[t[2]]
+    else:
+        t[0] = [t[1]]
+#definimos la estructura de un case
+def p_case_unico(t):
+    '''
+    case_unico : CASE expresion DOS_PUNTOS instrucciones break_opcional
+    '''
+    instrucciones = t[4]
+    if t[5] is not None:
+        instrucciones += [t[5]]
+    t[0] = Case(
+        text_val = 'case',
+        condicion = t[2],
+        instrucciones = instrucciones,
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
+
+def p_break_opcional(t):
+    '''
+    break_opcional : BREAK PYC
+                   | 
+    '''
+    if len(t) > 1:
+        t[0] = Break('break', t.lineno(1), t.lexpos(1))
+    else:
+        t[0] = None
+    
+#definimos la estructura de un default
+def p_default_opcional(t):
+    '''
+    default_opcional : DEFAULT DOS_PUNTOS instrucciones PYC
+                      | 
+    '''
+    if len(t) >1:
+        t[0] = t[3]
+    else:
+        t[0] = []
+def p_instruccion_if(t):
+    ''' 
+    instruccion_if : base_if
+                   | base_if ELSE LLA instrucciones LLC
+                   | base_if ELSE instruccion_if                 
+    '''
+    if len(t) == 2: # Solo base_if
+        t[0] = t[1]
+    elif len(t) == 6: # if con else
+        t[0] = Instruccion_if(
+            text_val=f'if ({t[1].condicion.text_val}) {{...}} else {{...}}',
+            condicion=t[1].condicion,
+            instrucciones_if=t[1].instrucciones_if,
+            instrucciones_else=t[4],  # Lista de instrucciones del else
+            linea=t.lineno(1),
+            columna=t.lexpos(1)
+        )
+    else: # if con else if  
+        t[0] = Instruccion_if(
+            text_val=f'if ({t[1].condicion.text_val}) {{...}} else {t[3].text_val}',
+            condicion=t[1].condicion,
+            instrucciones_if=t[1].instrucciones_if,
+            instrucciones_else=[t[3]],  # Otra instrucción if para el else if
+            linea=t.lineno(1),
+            columna=t.lexpos(1)
+        )    
+        
+
+def p_base_if(t):
+    ''' 
+    base_if : IF PARA expresion PARC LLA instrucciones LLC
+    '''
+    text_val = f'if({t[3].text_val}) {{...}}'
+    t[0] = Instruccion_if(
+        text_val=text_val,
+        condicion=t[3],
+        instrucciones_if=t[6],
+        instrucciones_else=None,  # Por ahora no hay else
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )        
 
 
 def p_incremento(t):
@@ -281,6 +440,7 @@ def p_relacional(t):
         t[0] = Relacional(t[1], t[3], TipoRelacional.MENOR_IGUAL, t.lineno(1), t.lexpos(1))
     elif t[2] == '>=':
         t[0] = Relacional(t[1], t[3], TipoRelacional.MAYOR_IGUAL, t.lineno(1), t.lexpos(1))
+
 def p_entero(t):
     '''
     literal : ENTERO
