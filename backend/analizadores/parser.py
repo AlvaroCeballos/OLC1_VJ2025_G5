@@ -176,7 +176,7 @@ def p_instruccion_dowhile(t):
     text_val = 'do {\n'
     for inst in t[3]:
         text_val += f'    {inst.text_val}'
-    text_val += f'}} while({t[7].text_val});\n'
+    text_val += '} while(' + f'{t[7].text_val}' + ');\n'
     
     t[0] = DoWhile(text_val=text_val, instrucciones=t[3], condicion=t[7], 
                    linea=t.lineno(1), columna=t.lexpos(1))
