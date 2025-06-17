@@ -6,6 +6,9 @@ from interprete.instrucciones.print import Print
 from interprete.instrucciones.asignacion import Asignacion
 from interprete.instrucciones.declaracion import Declaracion
 from interprete.instrucciones.iWhile import While
+from interprete.instrucciones.iCase import Case
+from interprete.instrucciones.iSwitch import Switch
+from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.instruccion_if import Instruccion_if
 
 from interprete.expresiones.expresion import Expresion
@@ -103,6 +106,7 @@ def p_estructura_control(t):
     '''
     estructura_control : instruccion_while
                        | instruccion_if
+                       | instruccion_switch
     '''
     # estrcutura control | instruccion_if | instruccion_for | instruccion_switch
     t[0] = t[1]
@@ -119,7 +123,68 @@ def p_instruccion_while(t):
     t[0] = While(text_val=text_val, condicion=t[3], instrucciones=t[6], 
                  linea=t.lineno(1), columna=t.lexpos(1))
 
+#expresin para definir estructura switch
+def p_instruccion_switch(t):
+    '''
+    instruccion_switch : SWITCH PARA expresion PARC LLA lista_case default_opcional LLC
+    '''
+    t[0] = Switch(
+        text_val = '...',
+        condicion = t[3],
+        casos = t[6],
+        default = t[7],
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
 
+#expresion que define la lista de los cases
+
+def p_lista_case(t):
+    '''
+    lista_case : lista_case case_unico
+                | case_unico
+
+    '''
+    if len(t) == 3:
+        t[0] = t[1] +[t[2]]
+    else:
+        t[0] = [t[1]]
+#definimos la estructura de un case
+def p_case_unico(t):
+    '''
+    case_unico : CASE expresion DOS_PUNTOS instrucciones break_opcional
+    '''
+    instrucciones = t[4]
+    if t[5] is not None:
+        instrucciones += [t[5]]
+    t[0] = Case(
+        text_val = 'case',
+        condicion = t[2],
+        instrucciones = instrucciones,
+        linea = t.lineno(1),
+        columna = t.lexpos(1)
+    )
+
+def p_break_opcional(t):
+    '''
+    break_opcional : BREAK PYC
+                   | 
+    '''
+    if len(t) > 1:
+        t[0] = Break('break', t.lineno(1), t.lexpos(1))
+    else:
+        t[0] = None
+    
+#definimos la estructura de un default
+def p_default_opcional(t):
+    '''
+    default_opcional : DEFAULT DOS_PUNTOS instrucciones PYC
+                      | 
+    '''
+    if len(t) >1:
+        t[0] = t[3]
+    else:
+        t[0] = []
 def p_instruccion_if(t):
     ''' 
     instruccion_if : base_if
