@@ -15,15 +15,15 @@ class Print(Instruccion):
 
         # Validar que no haya un error en la expresion
         if exp.tipo == TipoDato.ERROR:
-            print("Semántico", f'Error en la expresión de la funcion print()', self.linea, self.columna)
+            print("Semántico", f'Error en la expresión de la funcion println()', self.linea, self.columna)
             return self
-        
-        #print(f'Consola: {exp.valor}')
         Consola.addConsola(exp.valor)
+        print(f'Consola: {exp.valor}')
+
     
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
-        hijo = Nodo(id=id, valor='PRINT', hijos=[])
+        hijo = Nodo(id=id, valor='PRINTLN', hijos=[])
         raiz.addHijo(hijo)                                    
         self.argumento.recorrerArbol(hijo)
     

@@ -73,19 +73,20 @@ def p_inicio(t):
     '''
     ini : instrucciones
     '''
-    t[0] = t[1]
+    t[0] = t[1] if t[1] is not None else []
     print('Entrada correcta')
 
 def p_instrucciones(t):
     '''
     instrucciones : instrucciones instruccion
     '''
-    if t[1] is None:
-        t[1] = []
-    if t[2] is None:
-        t[2] = []
-    t[1].append(t[2])
-    t[0] = t[1]
+    #if t[1] is None:
+     #   t[1] = []
+    #if t[2] is None:
+     #   t[2] = []
+    #t[1].append(t[2])
+    #t[0] = t[1]
+    t[0] = t[1] + [t[2]]
 
 def p_instrucciones_empty(t):
     'instrucciones : '
@@ -102,7 +103,7 @@ def p_instrucciones_instruccion(t):
 
 def p_instruccion(t):
     '''
-    instruccion : instruccion_print PYC
+    instruccion : instruccion_println
                 | declaracion_variable PYC
                 | asignacion_variable PYC
                 | estructura_control
@@ -316,11 +317,9 @@ def p_decremento(t):
     t[0] = Asignacion(text_val, t[1], resta, t.lineno(1), t.lexpos(1))
     
 
-def p_instruccion_print(t):
-    '''
-    instruccion_print : tipo_print PARA expresion PARC
-    '''
-    text_val = f'{t[1]}({t[3].text_val})'
+def p_instruccion_println(t):
+    'instruccion_println : PRINTLN PARA expresion PARC PYC'
+    text_val = f'println({t[3].text_val})'
     t[0] = Print(text_val=text_val, argumento=t[3], linea=t.lineno(1), columna=t.lexpos(1))
 
 def p_caracter(t):
@@ -329,12 +328,7 @@ def p_caracter(t):
     '''
     t[0] = Literal(f"'{t[1]}'", TipoDato.CHAR, t[1], t.lineno(1), t.lexpos(1))
     
-def p_tipo_print(t):
-    '''
-    tipo_print : PRINT
-               | PRINTLN
-    '''
-    t[0] = t[1]
+
 
 def p_declaracion_variable(t):
     '''
@@ -511,7 +505,12 @@ def p_error(t):
             descripcion=f'No se esperaba token: {t.value}'
         )
         TablaErrores.addError(err)
-        parser.errok()  # Permite continuar el análisis
+        # Saltar tokens hasta el siguiente punto y coma o fin de archivo
+        while True:
+            tok = parser.token()
+            if not tok or tok.type == 'PYC':
+                break
+        parser.errok()
     else:
         err = Error(
             tipo='Sintáctico',
