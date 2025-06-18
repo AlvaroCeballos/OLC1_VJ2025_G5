@@ -14,6 +14,7 @@ class DoWhile(Instruccion):
         self.condicion = condicion
     
     def ejecutar(self, env:Enviroment):
+        entorno_dowhile = Enviroment(env, 'dowhile')
         # Incrementa el contador de los do-while y va creando nombres para identificar los scopes
         DoWhile.contador_global += 1
         nombre_dowhile = f"dowhile{DoWhile.contador_global}"
@@ -28,12 +29,16 @@ class DoWhile(Instruccion):
             # Se ejecutan primero las instrucciones
             for instruccion in self.instrucciones:
                 resultado = instruccion.ejecutar(entorno_dowhile)
+                if resultado == 'break':
+                    return
+                if resultado == 'continue':
+                    break
             
             #Se evalúa la condición después de ejecutar las instrucciones
             resultado_condicion = self.condicion.ejecutar(entorno_dowhile)
             
             # Validar que la condición sea booleana
-            if resultado_condicion.tipo != TipoDato.BOOLEAN:
+            if resultado_condicion.tipo != TipoDato.BOOL:
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
                           descripcion=f'La condición del do-while debe ser de tipo boolean')
                 TablaErrores.addError(err)

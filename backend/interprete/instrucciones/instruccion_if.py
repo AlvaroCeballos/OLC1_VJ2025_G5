@@ -21,7 +21,7 @@ class Instruccion_if(Instruccion):
         
         # Ejecutar la condición del if
         resultado = self.condicion.ejecutar(env)
-        if resultado.tipo != TipoDato.BOOLEAN:
+        if resultado.tipo != TipoDato.BOOL:
             err = Error(
                 tipo='Semántico',
                 linea=self.linea,
