@@ -6,13 +6,13 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'boolean': 'BOOLEAN',
+    'bool': 'BOOL',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
     'true': 'TRUE',
     'false': 'FALSE',
-    'id': 'ID',
+    #'id': 'ID',
     'else': 'ELSE',
     'switch': 'SWITCH',
     'case': 'CASE',
@@ -20,7 +20,7 @@ reservadas = {
     'while': 'WHILE',
     'for': 'FOR',
     'break': 'BREAK',
-    'print': 'PRINT',
+    #'print': 'PRINT',
     'println': 'PRINTLN',
     'return': 'RETURN',
     'continue': 'CONTINUE',
@@ -30,6 +30,7 @@ reservadas = {
 
 # Lista de tokens
 tokens = [
+    'ID',
     'ENTERO',
     'SUMA',
     'RESTA',
@@ -143,7 +144,9 @@ def t_ID(t):
      return t
 
   # Incrementa el número de línea
-
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 # Reglas especiales
 t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
 
@@ -153,7 +156,6 @@ def t_error(t):
     err = Error(tipo='Léxico', linea=t.lexer.lineno, columna=find_column(t.lexer.lexdata, t), descripcion=f'Caracter no reconocido: {t.value[0]}')
     TablaErrores.addError(err)
     t.lexer.skip(1)
-
 
 def find_column(inp, token):
     line_start = inp.rfind('\n', 0, token.lexpos + 1) + 1

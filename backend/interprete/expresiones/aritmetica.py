@@ -12,18 +12,32 @@ class Aritmetica(Expresion):
         self.op2 = op2
         self.operador = operador
     
-    def ejecutar(self, env:Enviroment):
-        op1:Retorno = self.op1.ejecutar(env)
-        op2:Retorno = self.op2.ejecutar(env)
+    def ejecutar(self, env:Enviroment):      
         resultado = Retorno(tipo=TipoDato.ERROR, valor=None)
 
+        if self.operador == TipoAritmetica.NEGACION:
+            op = self.op2.ejecutar(env)
+            if op.tipo == TipoDato.INT:
+                resultado.tipo = TipoDato.INT
+                resultado.valor = -op.valor
+            elif op.tipo == TipoDato.FLOAT:
+                resultado.tipo = TipoDato.FLOAT
+                resultado.valor = -op.valor
+            else:
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna,
+                            descripcion=f'Error al realizar la negación. El tipo {op.tipo.name} no es permitido.')
+                TablaErrores.addError(err)
+            return resultado
+        
+        op1:Retorno = self.op1.ejecutar(env)
+        op2:Retorno = self.op2.ejecutar(env)
         # Que no haya error en los operandos
         if op1.tipo == TipoDato.ERROR or op2.tipo == TipoDato.ERROR:
             # Agregando a la tabla de errores
             err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la operación aritmética.')
             TablaErrores.addError(err)
             return resultado
-
+    
         if self.operador == TipoAritmetica.SUMA:
             # INT
             if op1.tipo == TipoDato.INT and op2.tipo == TipoDato.INT:
@@ -61,7 +75,7 @@ class Aritmetica(Expresion):
                 resultado.valor = str(op1.valor) + str(op2.valor)
 
             # BOOLEAN/STR
-            elif (op1.tipo == TipoDato.BOOLEAN or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.BOOLEAN or op2.tipo == TipoDato.STR):
+            elif (op1.tipo == TipoDato.BOOL or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.BOOL or op2.tipo == TipoDato.STR):
                 resultado.tipo = TipoDato.STR
                 resultado.valor = str(op1.valor) + str(op2.valor)
             

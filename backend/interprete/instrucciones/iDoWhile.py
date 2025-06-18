@@ -5,15 +5,16 @@ from interprete.otros.enviroment import Enviroment
 from interprete.otros.errores import Error, TablaErrores
 
 class DoWhile(Instruccion):
-    contador_global = 0  # Contador global para llevar control de los do-while anidados
+    contador_global = 0  
     
     def __init__(self, text_val:str, instrucciones, condicion, linea, columna):
         super().__init__(text_val, linea, columna)
-        # Nota: instrucciones ANTES que condicion (diferente al while normal)
+        # A diferencia del while, el atributo de instrucciones va antes de la condicion
         self.instrucciones = instrucciones
         self.condicion = condicion
     
     def ejecutar(self, env:Enviroment):
+        entorno_dowhile = Enviroment(env, 'dowhile')
         # Incrementa el contador de los do-while y va creando nombres para identificar los scopes
         DoWhile.contador_global += 1
         nombre_dowhile = f"dowhile{DoWhile.contador_global}"
@@ -23,17 +24,21 @@ class DoWhile(Instruccion):
         
         print(f"DEBUG: Creando {nombre_dowhile} con entorno padre: {env.ambito}")
         
-        # DO-WHILE siempre ejecuta AL MENOS UNA VEZ
+        # Se ejecuta como minimo 1 vez
         while True:
-            # Ejecutar instrucciones del do-while PRIMERO (diferencia clave)
+            # Se ejecutan primero las instrucciones
             for instruccion in self.instrucciones:
                 resultado = instruccion.ejecutar(entorno_dowhile)
+                if resultado == 'break':
+                    return
+                if resultado == 'continue':
+                    break
             
-            # DESPUÉS evaluar la condición
+            #Se evalúa la condición después de ejecutar las instrucciones
             resultado_condicion = self.condicion.ejecutar(entorno_dowhile)
             
             # Validar que la condición sea booleana
-            if resultado_condicion.tipo != TipoDato.BOOLEAN:
+            if resultado_condicion.tipo != TipoDato.BOOL:
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
                           descripcion=f'La condición del do-while debe ser de tipo boolean')
                 TablaErrores.addError(err)
@@ -46,13 +51,12 @@ class DoWhile(Instruccion):
         print(f"DEBUG: Terminando {nombre_dowhile}")
         return self
     
-    # Función para recorrer el árbol de sintaxis abstracta
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='DO-WHILE', hijos=[])
         raiz.addHijo(hijo)
         
-        # Agregar nodo de instrucciones PRIMERO
+        # Se agrega primero el nodo de instrucciones
         id = AST.generarId()
         nodo_instrucciones = Nodo(id=id, valor='INSTRUCCIONES', hijos=[])
         hijo.addHijo(nodo_instrucciones)
@@ -60,7 +64,7 @@ class DoWhile(Instruccion):
         for instruccion in self.instrucciones:
             instruccion.recorrerArbol(nodo_instrucciones)
         
-        # Agregar nodo de condición DESPUÉS
+        # Se agrega el nodo de la condicion
         id = AST.generarId()
         nodo_condicion = Nodo(id=id, valor='CONDICION', hijos=[])
         hijo.addHijo(nodo_condicion)

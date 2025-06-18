@@ -1,51 +1,19 @@
-// Declaración y asignación de variables
-int a;
-int a = 100000000;
+// ENTEROS
 
-print(a);
+PRINTLN("INT + INT:");
+PRINTLN(1+1); // RES: 2
 
-float b = 3.5;
-char c = 'x';
-str s = "hola";
-boolean flag = true;
+PRINTLN("INT + FLOAT:");
+PRINTLN(1+1.1); // RES: 2.1
 
-// Operaciones aritméticas
-int suma = a + 5;
-float mult = b * 2.0;
-int potencia = a ** 2;
-int modulo = suma % 4;
+PRINTLN("INT + BOOL:"); // BOOL SE PUEDE ASIGNAR A INT, PERO NO SE PUEDE SUMAR
+PRINTLN(1+TRUE); // RES: ERROR SEMANTICO
 
-// Operaciones relacionales
-boolean igual = a == suma;
-boolean distinto = b != mult;
-boolean menor = a < suma;
-boolean mayorIgual = suma >= a;
-boolean char_vs_int = c < a;      // compara ASCII de 'x' con 10
-boolean str_igual = s == "hola";
+PRINTLN("INT + DECIMAL:");
+PRINTLN(1+1.1); // RES: 2.1
 
-// Operaciones lógicas
-boolean conjuncion = flag && (a < suma);
-boolean disyuncion = flag || false;
-boolean negacion = !flag;
-boolean xor_test = flag ^ false;
+PRINTLN("INT + CHAR:"); // SE USA EL ASCII
+PRINTLN(1+'$'); // RES: 37 
 
-// Imprimir resultados
-print(a);
-print(b);
-print(c);
-print(s);
-print(flag);
-print(suma);
-print(mult);
-print(potencia);
-print(modulo);
-print(igual);
-print(distinto);
-print(menor);
-print(mayorIgual);
-print(char_vs_int);
-print(str_igual);
-print(conjuncion);
-print(disyuncion);
-print(negacion);
-print(xor_test);
+PRINTLN("INT + STR:"); // SE USA UNA CONCATENACION
+PRINTLN("HOLA 2+"+1+">"); // RES: HOLA 2+1>

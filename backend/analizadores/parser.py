@@ -12,6 +12,8 @@ from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.iFor import For 
 from interprete.instrucciones.instruccion_if import Instruccion_if
 from interprete.instrucciones.iDoWhile import DoWhile
+from interprete.instrucciones.iBrake import Break
+from interprete.instrucciones.pcontinue import Continue
 
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
@@ -45,8 +47,8 @@ def tipoToStr(tipo):
     elif tipo == TipoDato.STR:
         return 'str'
     #Cambiar por BOOL
-    elif tipo == TipoDato.BOOLEAN:
-        return 'boolean'
+    elif tipo == TipoDato.BOOL:
+        return 'bool'
     elif tipo == TipoDato.CHAR:
         return 'char'
     elif isinstance(tipo, TipoChars):
@@ -54,16 +56,16 @@ def tipoToStr(tipo):
 
 # precedencia de operadores
 precedence = (
+    ('right', 'UMENOS'),
     ('left', 'OR'),
     ('left', 'XOR'),
-    ('left', 'AND'),
-    
+    ('left', 'AND'),   
     ('right', 'NOT'),
     ('left', 'IGUALACION', 'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'DIFERENCIACION'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTIPLICACION', 'DIVISION'),
     ('nonassoc', 'POTENCIA', 'MODULO'),
-    ('right', 'UMENOS'),
+    
 )
 
 # Definición de la gramática
@@ -71,26 +73,37 @@ def p_inicio(t):
     '''
     ini : instrucciones
     '''
-    t[0] = t[1]
+    t[0] = t[1] if t[1] is not None else []
     print('Entrada correcta')
 
 def p_instrucciones(t):
     '''
     instrucciones : instrucciones instruccion
     '''
-    t[1].append(t[2])
-    t[0] = t[1]
+    #if t[1] is None:
+     #   t[1] = []
+    #if t[2] is None:
+     #   t[2] = []
+    #t[1].append(t[2])
+    #t[0] = t[1]
+    t[0] = t[1] + [t[2]]
 
+def p_instrucciones_empty(t):
+    'instrucciones : '
+    t[0] = []
 
 def p_instrucciones_instruccion(t):
     '''
     instrucciones : instruccion
     '''
-    t[0] = [t[1]]
+    if t[1] is None:
+        t[0] = []
+    else:
+        t[0] = [t[1]]
 
 def p_instruccion(t):
     '''
-    instruccion : instruccion_print PYC
+    instruccion : instruccion_println
                 | declaracion_variable PYC
                 | asignacion_variable PYC
                 | estructura_control
@@ -169,6 +182,7 @@ def p_instruccion_switch(t):
         columna = t.lexpos(1)
     )
 
+#expresion para definir estructura do while
 def p_instruccion_dowhile(t):
     '''
     instruccion_dowhile : DO LLA instrucciones LLC WHILE PARA expresion PARC PYC
@@ -176,16 +190,11 @@ def p_instruccion_dowhile(t):
     text_val = 'do {\n'
     for inst in t[3]:
         text_val += f'    {inst.text_val}'
-    text_val += f'}} while({t[7].text_val});\n'
+    text_val += '} while(' + f'{t[7].text_val}' + ');\n'
     
     t[0] = DoWhile(text_val=text_val, instrucciones=t[3], condicion=t[7], 
                    linea=t.lineno(1), columna=t.lexpos(1))
 
-def p_instrucciones_empty(t):
-    '''
-    instrucciones : 
-    '''
-    t[0] = []
 #expresion que define la lista de los cases
 
 def p_lista_case(t):
@@ -201,11 +210,9 @@ def p_lista_case(t):
 #definimos la estructura de un case
 def p_case_unico(t):
     '''
-    case_unico : CASE expresion DOS_PUNTOS instrucciones break_opcional
+    case_unico : CASE expresion DOS_PUNTOS instrucciones
     '''
-    instrucciones = t[4]
-    if t[5] is not None:
-        instrucciones += [t[5]]
+    instrucciones = t[4] if t[4] is not None else []
     t[0] = Case(
         text_val = 'case',
         condicion = t[2],
@@ -214,23 +221,13 @@ def p_case_unico(t):
         columna = t.lexpos(1)
     )
 
-def p_break_opcional(t):
-    '''
-    break_opcional : BREAK PYC
-                   | 
-    '''
-    if len(t) > 1:
-        t[0] = Break('break', t.lineno(1), t.lexpos(1))
-    else:
-        t[0] = None
-    
 #definimos la estructura de un default
 def p_default_opcional(t):
     '''
-    default_opcional : DEFAULT DOS_PUNTOS instrucciones PYC
-                      | 
+    default_opcional : DEFAULT DOS_PUNTOS instrucciones
+                     | 
     '''
-    if len(t) >1:
+    if len(t) > 1:
         t[0] = t[3]
     else:
         t[0] = []
@@ -320,11 +317,9 @@ def p_decremento(t):
     t[0] = Asignacion(text_val, t[1], resta, t.lineno(1), t.lexpos(1))
     
 
-def p_instruccion_print(t):
-    '''
-    instruccion_print : tipo_print PARA expresion PARC
-    '''
-    text_val = f'{t[1]}({t[3].text_val})'
+def p_instruccion_println(t):
+    'instruccion_println : PRINTLN PARA expresion PARC PYC'
+    text_val = f'println({t[3].text_val})'
     t[0] = Print(text_val=text_val, argumento=t[3], linea=t.lineno(1), columna=t.lexpos(1))
 
 def p_caracter(t):
@@ -333,12 +328,7 @@ def p_caracter(t):
     '''
     t[0] = Literal(f"'{t[1]}'", TipoDato.CHAR, t[1], t.lineno(1), t.lexpos(1))
     
-def p_tipo_print(t):
-    '''
-    tipo_print : PRINT
-               | PRINTLN
-    '''
-    t[0] = t[1]
+
 
 def p_declaracion_variable(t):
     '''
@@ -367,7 +357,7 @@ def p_literal_booleano(t):
             | FALSE
     '''
     valor = True if t[1].lower() == 'true' else False
-    t[0] = Literal(t[1], TipoDato.BOOLEAN, valor, t.lineno(1), t.lexpos(1))
+    t[0] = Literal(t[1], TipoDato.BOOL, valor, t.lineno(1), t.lexpos(1))
 
 # Valores como tal. Eje. 123, "hola", var.
 def p_expresion(t):
@@ -414,9 +404,16 @@ def p_expresion_logica_binaria(t):
     '''
     t[0] = Logica(t[1], t[3], t[2], t.lineno(2), t.lexpos(2))
 
-def p_expresion_logica_unaria(t):
-    'expresion : NOT expresion'
-    t[0] = Logica(None, t[2], t[1], t.lineno(1), t.lexpos(1))
+def p_expresion_umenos(t):
+    'expresion : RESTA expresion %prec UMENOS'
+    t[0] = Aritmetica(
+        text_val='-',
+        op1=None,
+        operador=TipoAritmetica.NEGACION,
+        op2=t[2],  # <-- t[2] debe ser una expresión válida
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
 
 def p_relacional(t):
     '''
@@ -472,7 +469,7 @@ def p_tipo(t):
         | FLOAT
         | STR
         | CHAR
-        | BOOLEAN
+        | BOOL
     '''
     if(t[1] == 'int'):
         t[0] = TipoDato.INT;
@@ -480,8 +477,8 @@ def p_tipo(t):
         t[0] = TipoDato.FLOAT;
     elif(t[1] == 'char'):
         t[0] = TipoDato.CHAR;
-    elif(t[1] == 'boolean'):
-        t[0] = TipoDato.BOOLEAN;
+    elif(t[1] == 'bool'):
+        t[0] = TipoDato.BOOL;
     elif(t[1] == 'str'):
         if len(t) == 2:
             t[0] = TipoDato.STR
@@ -489,17 +486,39 @@ def p_tipo(t):
             text_val = f'STR({t[3].text_val})'
             t[0] = TipoChars(text_val, TipoDato.STR, t[2]);
 
+# Declaración de instrucciones adicionales de break y continue
+def p_instruccion_break(t):
+    'instruccion : BREAK PYC'
+    t[0] = Break('break', t.lineno(1), t.lexpos(1))
+
+def p_instruccion_continue(t):
+    'instruccion : CONTINUE PYC'
+    t[0] = Continue('continue', t.lineno(1), t.lexpos(1))
+
 # Error sintáctico
 def p_error(t):
     if t is not None:
-        # Agregando a la tabla de erorres
-        err = Error(tipo='Sintáctico', linea=t.lineno, columna=find_column(t.lexer.lexdata, t), descripcion=f'No se esperaba token: {t.value}')
-        # Se descarta el token, y el analizador continua
-        parser.errok() 
+        err = Error(
+            tipo='Sintáctico',
+            linea=t.lineno,
+            columna=find_column(t.lexer.lexdata, t),
+            descripcion=f'No se esperaba token: {t.value}'
+        )
+        TablaErrores.addError(err)
+        # Saltar tokens hasta el siguiente punto y coma o fin de archivo
+        while True:
+            tok = parser.token()
+            if not tok or tok.type == 'PYC':
+                break
+        parser.errok()
     else:
-        # Agregando a la tabla de erorres
-        err = Error(tipo='Sintáctico', linea=0, columna=0, descripcion=f'Final inesperado.')
-    TablaErrores.addError(err)
+        err = Error(
+            tipo='Sintáctico',
+            linea=0,
+            columna=0,
+            descripcion='Final inesperado.'
+        )
+        TablaErrores.addError(err)
 
 # Build the parser
 parser = yacc(debug=True)
