@@ -18,8 +18,8 @@ class Print(Instruccion):
             print("Semántico", f'Error en la expresión de la funcion print()', self.linea, self.columna)
             return self
         
-        print(f'Consola: {exp.valor}')
-        # Consola.addConsola(exp.valor)
+        #print(f'Consola: {exp.valor}')
+        Consola.addConsola(exp.valor)
     
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
