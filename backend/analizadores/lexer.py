@@ -20,7 +20,6 @@ reservadas = {
     'while': 'WHILE',
     'for': 'FOR',
     'break': 'BREAK',
-    'do-while': 'DO_WHILE',
     'print': 'PRINT',
     'println': 'PRINTLN',
     'return': 'RETURN',
