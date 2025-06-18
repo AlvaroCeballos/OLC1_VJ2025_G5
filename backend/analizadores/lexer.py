@@ -6,7 +6,7 @@ from interprete.otros.errores import *
 reservadas = {
     'int': 'INT',
     'float': 'FLOAT',
-    'boolean': 'BOOLEAN',
+    'bool': 'BOOL',
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',

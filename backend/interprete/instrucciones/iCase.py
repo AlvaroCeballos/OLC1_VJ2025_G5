@@ -8,7 +8,7 @@ class Case(Instruccion):
     def __init__(self, text_val: str, condicion, instrucciones, linea: int, columna: int):
         super().__init__(text_val, linea, columna)
         self.condicion = condicion
-        self.instrucciones = instrucciones
+        self.instrucciones = instrucciones if instrucciones is not None else []
 
     def ejecutar(self, env: Enviroment):
         #condicion del case

@@ -5,12 +5,14 @@ from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
-f = open('backend/entradaDoWhile.txt', 'r', encoding='utf-8')
+f = open('backend/entrada.txt', 'r', encoding='utf-8')
 data = f.read()
 
 While.reset_contador()
 DoWhile.reset_contador() 
 instrucciones = parser.parse(data.lower())
+if instrucciones is None:
+    instrucciones = []
 env = Enviroment(ent_anterior=None, ambito='Global')
 try:
     for instruccion in instrucciones:

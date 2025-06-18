@@ -4,9 +4,10 @@ from interprete.otros.symbol_table import TablaSimbolos
 
 class Enviroment():
     env_list = []
-    def __init__(self, ent_anterior, ambito:str):
+    def __init__(self, ent_anterior, ambito:str, nombre:str="Global"):
         self.ent_anterior:Enviroment = ent_anterior
         self.ambito = ambito
+        self.nombre = nombre
         self.ts_variables = TablaSimbolos()
         self.ts_funciones = TablaSimbolos()
         self.dentro_funcion = False

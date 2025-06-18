@@ -16,22 +16,22 @@ class Logica(Expresion):
     def ejecutar(self, env: Enviroment):
         if self.operador == '!':
             der = self.derecha.ejecutar(env)
-            if der.tipo != TipoDato.BOOLEAN:
+            if der.tipo != TipoDato.BOOL:
                 TablaErrores.addError(Error('Semántico', self.linea, self.columna, 'NOT solo acepta booleanos'))
                 return Retorno(tipo=TipoDato.ERROR, valor=None)
-            return Retorno(tipo=TipoDato.BOOLEAN, valor=not der.valor)
+            return Retorno(tipo=TipoDato.BOOL, valor=not der.valor)
         else:
             izq = self.izquierda.ejecutar(env)
             der = self.derecha.ejecutar(env)
-            if izq.tipo != TipoDato.BOOLEAN or der.tipo != TipoDato.BOOLEAN:
+            if izq.tipo != TipoDato.BOOL or der.tipo != TipoDato.BOOL:
                 TablaErrores.addError(Error('Semántico', self.linea, self.columna, f'{self.operador.upper()} solo acepta booleanos'))
                 return Retorno(tipo=TipoDato.ERROR, valor=None)
             if self.operador == '&&':
-                return Retorno(tipo=TipoDato.BOOLEAN, valor=izq.valor and der.valor)
+                return Retorno(tipo=TipoDato.BOOL, valor=izq.valor and der.valor)
             elif self.operador == '||':
-                return Retorno(tipo=TipoDato.BOOLEAN, valor=izq.valor or der.valor)
+                return Retorno(tipo=TipoDato.BOOL, valor=izq.valor or der.valor)
             elif self.operador == '^':
-                return Retorno(tipo=TipoDato.BOOLEAN, valor=izq.valor != der.valor)
+                return Retorno(tipo=TipoDato.BOOL, valor=izq.valor != der.valor)
         return Retorno(tipo=TipoDato.ERROR, valor=None)
     
     def recorrerArbol(self, raiz: Nodo):
