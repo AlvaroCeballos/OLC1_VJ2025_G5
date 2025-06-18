@@ -57,9 +57,9 @@ def tipoToStr(tipo):
 # precedencia de operadores
 precedence = (
     ('right', 'UMENOS'),
+    ('left', 'AND'), 
     ('left', 'OR'),
     ('left', 'XOR'),
-    ('left', 'AND'),   
     ('right', 'NOT'),
     ('left', 'IGUALACION', 'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'DIFERENCIACION'),
     ('left', 'SUMA', 'RESTA'),
@@ -111,9 +111,12 @@ def p_instruccion(t):
                 | decremento PYC
     '''
     if len(t) == 3:  # Instrucciones que terminan con PYC
-        t[1].text_val += ';\n' 
-        t[0] = t[1]
-    else:  # while (no lleva PYC)
+        if t[1] is not None and hasattr(t[1], 'text_val'):
+            t[1].text_val += ';\n'
+            t[0] = t[1]
+        else:
+            t[0] = None  # Instrucción inválida, ignórala
+    else:  # while, for, if, etc.
         t[0] = t[1]
 
 #Se crea funcion para poder manejar todos los tipos de ciclos anidados
@@ -438,6 +441,12 @@ def p_relacional(t):
     elif t[2] == '>=':
         t[0] = Relacional(t[1], t[3], TipoRelacional.MAYOR_IGUAL, t.lineno(1), t.lexpos(1))
 
+#expresion not unario
+def p_expresion_not(t):
+    'expresion : NOT expresion %prec NOT'
+    # Solo derecha, izquierda es None
+    t[0] = Logica(None, t[2], '!', t.lineno(1), t.lexpos(1))
+
 def p_entero(t):
     '''
     literal : ENTERO
@@ -495,6 +504,12 @@ def p_instruccion_continue(t):
     'instruccion : CONTINUE PYC'
     t[0] = Continue('continue', t.lineno(1), t.lexpos(1))
 
+
+def p_declaracion_variable_error(t):
+    'declaracion_variable : ID ID'
+    # No hacer nada, solo sincronizar
+    t[0] = None
+
 # Error sintáctico
 def p_error(t):
     if t is not None:
@@ -505,10 +520,10 @@ def p_error(t):
             descripcion=f'No se esperaba token: {t.value}'
         )
         TablaErrores.addError(err)
-        # Saltar tokens hasta el siguiente punto y coma o fin de archivo
+        # Saltar tokens hasta el siguiente punto y coma o llave de cierre
         while True:
             tok = parser.token()
-            if not tok or tok.type in ('PYC','LLC'):
+            if not tok or tok.type in ('PYC', 'LLC'):
                 break
         parser.errok()
     else:
