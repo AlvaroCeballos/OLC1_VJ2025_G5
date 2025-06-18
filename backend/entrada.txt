@@ -1,19 +1,23 @@
-// ENTEROS
+println("---------------------------------------------------------------------------");
+println("------------------------- NEGACIÓN UNARIA ---------------------------------");
+println("---------------------------------------------------------------------------");
 
-PRINTLN("INT + INT:");
-PRINTLN(1+1); // RES: 2
+// DECIMAL
 
-PRINTLN("INT + FLOAT:");
-PRINTLN(1+1.1); // RES: 2.1
+PRINTLN("- DECIMAL:");
+PRINTLN(-3.14); // RES: -3.14
 
-PRINTLN("INT + BOOL:"); // BOOL SE PUEDE ASIGNAR A INT, PERO NO SE PUEDE SUMAR
-PRINTLN(1+TRUE); // RES: ERROR SEMANTICO
+// BOOLEANO
 
-PRINTLN("INT + DECIMAL:");
-PRINTLN(1+1.1); // RES: 2.1
+PRINTLN("- BOOL:");
+PRINTLN(-TRUE); // RES: ERROR SEMÁNTICO
 
-PRINTLN("INT + CHAR:"); // SE USA EL ASCII
-PRINTLN(1+'$'); // RES: 37 
+// CARÁCTER
 
-PRINTLN("INT + STR:"); // SE USA UNA CONCATENACION
-PRINTLN("HOLA 2+"+1+">"); // RES: HOLA 2+1>
+PRINTLN("- CHAR:");
+PRINTLN(-'A'); // RES: ERROR SEMÁNTICO
+
+// CADENA
+
+PRINTLN("- STRING:");
+PRINTLN(-"texto"); // RES: ERROR SEMÁNTICO
