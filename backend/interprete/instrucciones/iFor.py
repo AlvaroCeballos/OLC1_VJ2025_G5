@@ -12,29 +12,22 @@ class For(Instruccion):
         self.instrucciones = instrucciones
 
     def ejecutar(self, env:Enviroment):
-        #incializacion del for
-        #creamos un entorno para el for
-        entorno_for = Enviroment(env, 'for')
-        #ejecutamos la inicializacion
+        entorno_for = Enviroment(env, 'for', 'for')
+        # Ejecuta la inicialización
         if self.inicializacion:
             self.inicializacion.ejecutar(entorno_for)
-        #utilizamos un while para la condicion del for
         while True:
-            #verificamos la condicion
             resultado_cond = self.condicion.ejecutar(entorno_for)
-            
-            if resultado_cond.tipo != TipoDato.BOOLEAN or not resultado_cond.valor:
+            if resultado_cond.tipo != TipoDato.BOOL or not resultado_cond.valor:
                 break
-            print(f"DEBUG: resultado_cond.tipo = {resultado_cond.tipo}, valor = {resultado_cond.valor}")
-            #si la condicion del if  es verdadera entonces ejecutamos las instrucciones
-            for instruccion in self.instrucciones:
+            # Ejecuta instrucciones del cuerpo
+            for instruccion in (self.instrucciones if self.instrucciones is not None else []):
                 resultado = instruccion.ejecutar(entorno_for)
                 if resultado == 'break':
-                    return
+                    return  # Sale completamente del ciclo
                 if resultado == 'continue':
-                    break
-                
-            #ejecutamos la actualizacion
+                    break  # Sale del for interno, pero sigue con la siguiente iteración del while
+            # Ejecuta la actualización solo si no hubo break
             if self.incremento:
                 self.incremento.ejecutar(entorno_for)
 

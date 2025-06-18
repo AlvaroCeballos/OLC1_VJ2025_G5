@@ -30,7 +30,7 @@ class Relacional(Expresion):
         elif tipo_izq == TipoDato.STR and tipo_der == TipoDato.STR:
             valido = True
         # BOOLEAN solo con BOOLEAN
-        elif tipo_izq == TipoDato.BOOLEAN and tipo_der == TipoDato.BOOLEAN:
+        elif tipo_izq == TipoDato.BOOL and tipo_der == TipoDato.BOOL:
             valido = True
 
         if not valido:
@@ -76,7 +76,7 @@ class Relacional(Expresion):
             TablaErrores.addError(err)
             return Retorno(tipo=TipoDato.ERROR, valor=None)
 
-        return Retorno(tipo=TipoDato.BOOLEAN, valor=resultado)
+        return Retorno(tipo=TipoDato.BOOL, valor=resultado)
     
     def recorrerArbol(self, raiz: Nodo):
         id = AST.generarId()

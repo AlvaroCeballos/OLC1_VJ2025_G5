@@ -14,6 +14,7 @@ class While(Instruccion):
         self.instrucciones = instrucciones
     
     def ejecutar(self, env:Enviroment):
+        entorno_while = Enviroment(env, 'while', 'while')
         # Incrementa el contador de los while y va creando nombres para identificar los scopes
         While.contador_global += 1
         nombre_while = f"while {While.contador_global}"
@@ -28,7 +29,7 @@ class While(Instruccion):
             resultado_condicion = self.condicion.ejecutar(entorno_while)
             
             # Validar que la condición sea booleana
-            if resultado_condicion.tipo != TipoDato.BOOLEAN:
+            if resultado_condicion.tipo != TipoDato.BOOL:
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
                           descripcion=f'La condición del while debe ser de tipo boolean')
                 TablaErrores.addError(err)
@@ -41,6 +42,10 @@ class While(Instruccion):
             # Ejecutar instrucciones del while
             for instruccion in self.instrucciones:
                 resultado = instruccion.ejecutar(entorno_while)
+                if resultado == 'break':
+                    return
+                if resultado == 'continue':
+                    break  # Sale del for, pero sigue el while
         
         print(f"DEBUG: Terminando {nombre_while}")
         return self

@@ -11,36 +11,81 @@ class Aritmetica(Expresion):
         self.op1 = op1
         self.op2 = op2
         self.operador = operador
+
     
     def ejecutar(self, env:Enviroment):
-        op1:Retorno = self.op1.ejecutar(env)
-        op2:Retorno = self.op2.ejecutar(env)
+
+        def get_valor_ascii(valor, tipo):
+            if tipo == TipoDato.CHAR:
+                return ord(valor)
+            return valor  
+            
         resultado = Retorno(tipo=TipoDato.ERROR, valor=None)
 
+        if self.operador == TipoAritmetica.NEGACION:
+            op = self.op2.ejecutar(env)
+            if op.tipo == TipoDato.INT:
+                resultado.tipo = TipoDato.INT
+                resultado.valor = -op.valor
+            elif op.tipo == TipoDato.FLOAT:
+                resultado.tipo = TipoDato.FLOAT
+                resultado.valor = -op.valor
+            else:
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna,
+                            descripcion=f'Error al realizar la negación. El tipo {op.tipo.name} no es permitido.')
+                TablaErrores.addError(err)
+            return resultado
+        
+        op1:Retorno = self.op1.ejecutar(env)
+        op2:Retorno = self.op2.ejecutar(env)
         # Que no haya error en los operandos
         if op1.tipo == TipoDato.ERROR or op2.tipo == TipoDato.ERROR:
             # Agregando a la tabla de errores
             err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la operación aritmética.')
             TablaErrores.addError(err)
             return resultado
-
+    
         if self.operador == TipoAritmetica.SUMA:
+            # --- BLOQUE PARA BOOLEANOS ---
+            if op1.tipo == TipoDato.BOOL or op2.tipo == TipoDato.BOOL:
+                # Solo permitir concatenación con string
+                if op1.tipo == TipoDato.STR or op2.tipo == TipoDato.STR:
+                    resultado.tipo = TipoDato.STR
+                    resultado.valor = str(op1.valor) + str(op2.valor)
+                else:
+                    # Error: suma no permitida con booleanos
+                    resultado.tipo = TipoDato.ERROR
+                    resultado.valor = None
+                    err = Error(
+                        tipo='Semántico',
+                        linea=self.linea,
+                        columna=self.columna,
+                        descripcion='Error al realizar lo suma. La suma de los tipos no es permitida.'
+                    )
+                    TablaErrores.addError(err)
+                return resultado
+
             # INT
             if op1.tipo == TipoDato.INT and op2.tipo == TipoDato.INT:
                 resultado.tipo = TipoDato.INT
                 resultado.valor = op1.valor + op2.valor
             
-            #INT/FLOAT
+            # INT/FLOAT
             elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.FLOAT) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.FLOAT):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor + op2.valor
 
-            #INT/CHAR
-            elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
-                resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) + ord(op2.valor)
+            # CHAR + CHAR (concatenación)
+            elif op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
+                resultado.tipo = TipoDato.STR
+                resultado.valor = op1.valor + op2.valor
             
-            #INT/STR
+            # INT/CHAR (suma ASCII)
+            elif (op1.tipo == TipoDato.INT and op2.tipo == TipoDato.CHAR) or (op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.INT):
+                resultado.tipo = TipoDato.INT
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) + get_valor_ascii(op2.valor, op2.tipo)
+            
+            # INT/STR
             elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.STR):
                 resultado.tipo = TipoDato.STR
                 resultado.valor = str(op1.valor) + str(op2.valor)
@@ -53,23 +98,17 @@ class Aritmetica(Expresion):
             # FLOAT/CHAR
             elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) + ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) + get_valor_ascii(op2.valor, op2.tipo)
             
-             # FLOAT/STR
+            # FLOAT/STR
             elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.STR):
                 resultado.tipo = TipoDato.STR
                 resultado.valor = str(op1.valor) + str(op2.valor)
 
-            # BOOLEAN/STR
-            elif (op1.tipo == TipoDato.BOOLEAN or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.BOOLEAN or op2.tipo == TipoDato.STR):
-                resultado.tipo = TipoDato.STR
-                resultado.valor = str(op1.valor) + str(op2.valor)
-            
             # CHAR
             elif op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
                 resultado.tipo = TipoDato.STR
-                resultado.valor = str(ord(op1.valor) + ord(op2.valor))
-            
+                resultado.valor = op1.valor + op2.valor
             # CHAR/STR
             elif (op1.tipo == TipoDato.CHAR or op1.tipo == TipoDato.STR) and (op2.tipo == TipoDato.CHAR or op2.tipo == TipoDato.STR):
                 resultado.tipo = TipoDato.STR
@@ -86,6 +125,19 @@ class Aritmetica(Expresion):
                 TablaErrores.addError(err)
 
         if self.operador == TipoAritmetica.RESTA:
+
+            # CHAR - CHAR: ERROR
+            if op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
+                resultado.tipo = TipoDato.ERROR
+                resultado.valor = None
+                err = Error(
+                    tipo='Semántico',
+                    linea=self.linea,
+                    columna=self.columna,
+                    descripcion='Error al realizar la resta. La resta de los tipos no es permitida.'
+                )
+                TablaErrores.addError(err)
+                return resultado
             # INT
             if op1.tipo == TipoDato.INT and op2.tipo == TipoDato.INT:
                 resultado.tipo = TipoDato.INT
@@ -99,7 +151,7 @@ class Aritmetica(Expresion):
             #INT/CHAR
             elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) - ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) - get_valor_ascii(op2.valor, op2.tipo)
 
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
@@ -109,7 +161,7 @@ class Aritmetica(Expresion):
             # FLOAT/CHAR
             elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) - ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) - get_valor_ascii(op2.valor, op2.tipo)
             
             else:
                 # Agregando a la tabla de errores
@@ -117,6 +169,19 @@ class Aritmetica(Expresion):
                 TablaErrores.addError(err)
             
         if self.operador == TipoAritmetica.MULTIPLICACION:
+
+            # CHAR * CHAR: ERROR
+            if op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
+                resultado.tipo = TipoDato.ERROR
+                resultado.valor = None
+                err = Error(
+                    tipo='Semántico',
+                    linea=self.linea,
+                    columna=self.columna,
+                    descripcion='Error al realizar la multiplicación. La multiplicación de los tipos no es permitida.'
+                )
+                TablaErrores.addError(err)
+                return resultado
             #INT
             if op1.tipo == TipoDato.INT and op2.tipo == TipoDato.INT:
                 resultado.tipo = TipoDato.INT
@@ -130,7 +195,7 @@ class Aritmetica(Expresion):
             #INT/CHAR
             elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.INT
-                resultado.valor = ord(op1.valor) * ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) * get_valor_ascii(op2.valor, op2.tipo)
 
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
@@ -140,7 +205,7 @@ class Aritmetica(Expresion):
             # FLOAT/CHAR
             elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
                 resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) * ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) * get_valor_ascii(op2.valor, op2.tipo)
             
             else:
                 # Agregando a la tabla de errores
@@ -148,6 +213,19 @@ class Aritmetica(Expresion):
                 TablaErrores.addError(err)
 
         if self.operador == TipoAritmetica.DIVISION:
+
+            # CHAR / CHAR: ERROR 
+            if op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.CHAR:
+                resultado.tipo = TipoDato.ERROR
+                resultado.valor = None
+                err = Error(
+                    tipo='Semántico',
+                    linea=self.linea,
+                    columna=self.columna,
+                    descripcion='Error al realizar la división. La división de los tipos no es permitida.'
+                )
+                TablaErrores.addError(err)
+                return resultado
             # INT
             if op1.tipo == TipoDato.INT and op2.tipo == TipoDato.INT:
                 if op2.valor == 0:
@@ -168,15 +246,16 @@ class Aritmetica(Expresion):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor / op2.valor
 
-            #INT/CHAR
-            elif (op1.tipo == TipoDato.INT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.INT or op2.tipo == TipoDato.CHAR):
-                if ord(op2.valor) == 0:
-                    # Agregando a la tabla de errores
+            # INT/CHAR y CHAR/INT
+            elif (op1.tipo == TipoDato.INT and op2.tipo == TipoDato.CHAR) or (op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.INT):
+                divisor = get_valor_ascii(op2.valor, op2.tipo)
+                if divisor == 0:
+                    # error...
                     err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la división. División por cero.')
                     TablaErrores.addError(err)
                     return resultado
                 resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) / ord(op2.valor)
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) / divisor
 
             #FLOAT
             elif op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.FLOAT:
@@ -188,16 +267,17 @@ class Aritmetica(Expresion):
                 resultado.tipo = TipoDato.FLOAT
                 resultado.valor = op1.valor / op2.valor
             
-            # FLOAT/CHAR
-            elif (op1.tipo == TipoDato.FLOAT or op1.tipo == TipoDato.CHAR) and (op2.tipo == TipoDato.FLOAT or op2.tipo == TipoDato.CHAR):
-                if ord(op2.valor) == 0:
-                    # Agregando a la tabla de errores
+            # FLOAT/CHAR y CHAR/FLOAT
+            elif (op1.tipo == TipoDato.FLOAT and op2.tipo == TipoDato.CHAR) or (op1.tipo == TipoDato.CHAR and op2.tipo == TipoDato.FLOAT):
+                divisor = get_valor_ascii(op2.valor, op2.tipo)
+                if divisor == 0:
+                    # error...
                     err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la división. División por cero.')
                     TablaErrores.addError(err)
                     return resultado
                 resultado.tipo = TipoDato.FLOAT
-                resultado.valor = ord(op1.valor) / ord(op2.valor)
-            
+                resultado.valor = get_valor_ascii(op1.valor, op1.tipo) / divisor
+                        
             else:
                 # Agregando a la tabla de errores
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error al realizar la división. La división de los tipos no es permitida.')
@@ -289,10 +369,14 @@ class Aritmetica(Expresion):
         elif self.operador == TipoAritmetica.MODULO: tipo = '%'
         hijo = Nodo(id=id, valor=tipo, hijos=[])
         raiz.addHijo(hijo)
-        self.op1.recorrerArbol(hijo)
         if self.operador == TipoAritmetica.NEGACION:
+            if self.op2 is not None:
+                self.op2.recorrerArbol(hijo)
             return
-        self.op2.recorrerArbol(hijo)
+        if self.op1 is not None:
+            self.op1.recorrerArbol(hijo)
+        if self.op2 is not None:
+            self.op2.recorrerArbol(hijo)
     
     
     
