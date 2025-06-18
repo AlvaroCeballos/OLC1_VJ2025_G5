@@ -39,7 +39,7 @@ class Declaracion(Instruccion):
                 valor = ' '
             elif self.tipo == TipoDato.CHAR:
                 valor = ' '
-            elif self.tipo == TipoDato.BOOLEAN:
+            elif self.tipo == TipoDato.BOOL:
                 valor = True
             else:
                 valor = None
