@@ -139,9 +139,11 @@ def t_CARACTER(t):
     return t
 
 def t_ID(t):
-     r'[a-zA-Z_][a-zA-Z_0-9]*'
-     t.type = reservadas.get(t.value.lower(),'ID')    # Para el case insensitive
-     return t
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t_lower = t.value.lower()
+    t.type = reservadas.get(t_lower, 'ID')  # Para el case insensitive
+    t.value = t_lower  # <-- Esto hace que el valor sea siempre minúscula
+    return t
 
   # Incrementa el número de línea
 def t_newline(t):

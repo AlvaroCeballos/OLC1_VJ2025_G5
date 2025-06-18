@@ -508,7 +508,7 @@ def p_error(t):
         # Saltar tokens hasta el siguiente punto y coma o fin de archivo
         while True:
             tok = parser.token()
-            if not tok or tok.type == 'PYC':
+            if not tok or tok.type in ('PYC','LLC'):
                 break
         parser.errok()
     else:
