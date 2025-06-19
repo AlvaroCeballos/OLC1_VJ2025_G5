@@ -66,22 +66,22 @@ class Asignacion(Instruccion):
                 TablaErrores.addError(err)
                 return self
             simbolo.valor = str(exp.valor)
-        elif simbolo.tipo == TipoDato.BOOLEAN:
-            if exp.tipo != TipoDato.BOOLEAN:
+        elif simbolo.tipo == TipoDato.BOOL:
+            if exp.tipo != TipoDato.BOOL:
                 # Agregando error a la tabla de erorres
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error de asignacion de variable. No se puede asignar un valor de tipo {exp.tipo.name} a una variable de tipo {simbolo.tipo.name}')
                 TablaErrores.addError(err)
                 return self
             simbolo.valor = bool(exp.valor)
         elif simbolo.tipo == TipoDato.UNDEFINED:
-            if exp.tipo not in [TipoDato.INT, TipoDato.FLOAT, TipoDato.STR, TipoDato.CHAR, TipoDato.BOOLEAN]:
+            if exp.tipo not in [TipoDato.INT, TipoDato.FLOAT, TipoDato.STR, TipoDato.CHAR, TipoDato.BOOL]:
                 # Agregando error a la tabla de erorres
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error de asignacion de variable. No se puede asignar un valor de tipo {exp.tipo.name} a una variable de tipo {simbolo.tipo.name}')
                 TablaErrores.addError(err)
                 return self
             simbolo.valor = exp.valor
         elif simbolo.tipo == TipoDato.NULL:
-            if exp.tipo not in [TipoDato.INT, TipoDato.FLOAT, TipoDato.STR, TipoDato.CHAR, TipoDato.BOOLEAN]:
+            if exp.tipo not in [TipoDato.INT, TipoDato.FLOAT, TipoDato.STR, TipoDato.CHAR, TipoDato.BOOL]:
                 # Agregando error a la tabla de erorres
                 err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, descripcion=f'Error de asignacion de variable. No se puede asignar un valor de tipo {exp.tipo.name} a una variable de tipo {simbolo.tipo.name}')
                 TablaErrores.addError(err)
