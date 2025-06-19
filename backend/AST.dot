@@ -1,5 +1,6 @@
 digraph {
 	0 [label = "INSTRUCCIONES"];
+<<<<<<< HEAD
 	29 [label = "DECLARACION"];
 	30 [label = "a"];
 	31 [label = "INT"];
@@ -12,4 +13,6 @@ digraph {
 	29 -> 32;
 	0 -> 33;
 	33 -> 34;
+=======
+>>>>>>> develop
 }

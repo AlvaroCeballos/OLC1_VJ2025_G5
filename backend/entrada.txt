@@ -1,19 +1,48 @@
-// ENTEROS
+// VALORES POR DEFECTO
 
-PRINTLN("INT + INT:");
-PRINTLN(1+1); // RES: 2
+INT A;
+FLOAT B;
+CHAR C; // PUEDE O NO TENER REPRESENTACION PERO DEBE APARECER EL SALTO DE LINEA
+BOOL D;
+//STRING E;
 
-PRINTLN("INT + FLOAT:");
-PRINTLN(1+1.1); // RES: 2.1
+PRINTLN(A);
+PRINTLN(B);
+PRINTLN(C);
+PRINTLN(D);
+//PRINTLN(E);
 
-PRINTLN("INT + BOOL:"); // BOOL SE PUEDE ASIGNAR A INT, PERO NO SE PUEDE SUMAR
-PRINTLN(1+TRUE); // RES: ERROR SEMANTICO
+a++; // RES: 1
+b--; // RES: -1.0
 
-PRINTLN("INT + DECIMAL:");
-PRINTLN(1+1.1); // RES: 2.1
 
-PRINTLN("INT + CHAR:"); // SE USA EL ASCII
-PRINTLN(1+'$'); // RES: 37 
+println("---------------------------------------------------------------------------");
+println("---------------------------- IF -------------------------------------------");
+println("---------------------------------------------------------------------------");
 
-PRINTLN("INT + STR:"); // SE USA UNA CONCATENACION
-PRINTLN("HOLA 2+"+1+">"); // RES: HOLA 2+1>
+IF (A == 1 && B == -1 || D){
+	PRINTLN("CORRECTO");
+	$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+}ELSE{
+	PRINTLN("INCORRECTO");
+	$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+}
+
+
+// IF ANIDADO + SCOPE IF
+IF (A == 1 && B == -1 || D){
+	BOOL FLAG; 
+	PRINTLN("CORRECTO IF_ANIDADO_1");
+	IF (FLAG){
+		INT Z = "ERROR SEMANTICO";
+		INT X = 2; //VALIDAR SCOPE
+		PRINTLN("CORRECTO IF_ANIDADO_2");
+	}ELSE{
+		PRINTLN("INCORRECTO");
+	}
+	PRINT("ESTO DEBERIA EJECUTARSE");
+	PRINT(X); //ESTO NO DEBERIA EJECUTARSE
+}ELSE{
+	PRINTLN("INCORRECTO");
+
+}

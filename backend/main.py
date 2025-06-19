@@ -12,7 +12,7 @@ data = f.read()
 While.reset_contador()
 DoWhile.reset_contador() 
 lexer.lineno = 1
-instrucciones = parser.parse(data.lower(), lexer=lexer)
+instrucciones = parser.parse(data, lexer=lexer)
 env = Enviroment(ent_anterior=None, ambito='Global')
 if instrucciones is None:
     instrucciones = []
