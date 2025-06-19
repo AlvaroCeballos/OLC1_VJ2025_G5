@@ -1,48 +1,14 @@
-// VALORES POR DEFECTO
+PRINTLN("STRING == STRING:");
+PRINTLN("hola" == "hola"); // RES: TRUE
 
-INT A;
-FLOAT B;
-CHAR C; // PUEDE O NO TENER REPRESENTACION PERO DEBE APARECER EL SALTO DE LINEA
-BOOL D;
-//STRING E;
+PRINTLN("STRING != STRING:");
+PRINTLN("hola" != "adiós"); // RES: TRUE
 
-PRINTLN(A);
-PRINTLN(B);
-PRINTLN(C);
-PRINTLN(D);
-//PRINTLN(E);
+PRINTLN("STRING < STRING:");
+PRINTLN("abc" < "def"); // RES: ERROR SEMÁNTICO
 
-a++; // RES: 1
-b--; // RES: -1.0
+PRINTLN("STRING == INT:");
+PRINTLN("5" == 5); // RES: ERROR SEMÁNTICO
 
-
-println("---------------------------------------------------------------------------");
-println("---------------------------- IF -------------------------------------------");
-println("---------------------------------------------------------------------------");
-
-IF (A == 1 && B == -1 || D){
-	PRINTLN("CORRECTO");
-	$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-}ELSE{
-	PRINTLN("INCORRECTO");
-	$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-}
-
-
-// IF ANIDADO + SCOPE IF
-IF (A == 1 && B == -1 || D){
-	BOOL FLAG; 
-	PRINTLN("CORRECTO IF_ANIDADO_1");
-	IF (FLAG){
-		INT Z = "ERROR SEMANTICO";
-		INT X = 2; //VALIDAR SCOPE
-		PRINTLN("CORRECTO IF_ANIDADO_2");
-	}ELSE{
-		PRINTLN("INCORRECTO");
-	}
-	PRINT("ESTO DEBERIA EJECUTARSE");
-	PRINT(X); //ESTO NO DEBERIA EJECUTARSE
-}ELSE{
-	PRINTLN("INCORRECTO");
-
-}
+PRINTLN("STRING == CHAR:");
+PRINTLN("A" == 'A'); // RES: ERROR SEMÁNTICO
