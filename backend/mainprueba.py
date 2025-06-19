@@ -2,10 +2,11 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 from analizadores.parser import parser
+from analizadores.lexer import lexer
 from interprete.otros.enviroment import Enviroment
 from interprete.otros.ast import AST
 from interprete.otros.consola import Consola
-from interprete.otros.errores import TablaErrores
+from interprete.otros.errores import TablaErrores, Error
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
 
@@ -24,13 +25,25 @@ def datas():
 
         While.reset_contador()
         DoWhile.reset_contador() 
-        instrucciones = parser.parse(data.lower())
-        env = Enviroment(ent_anterior=None, ambito='Global')
+        Enviroment.cleanEnviroments()
+        TablaErrores.cleanTablaErrores()
+        Consola.cleanConsola()
+        lexer.lineno = 1
+
+        # Parse y ejecución
         try:
+            instrucciones = parser.parse(data.lower(), lexer=lexer) or []
+            env = Enviroment(ent_anterior=None, ambito='Global')
+            
             for instruccion in instrucciones:
-                instruccion.ejecutar(env)
+                if instruccion:
+                    try:
+                        instruccion.ejecutar(env)
+                    except Exception as e:
+                        TablaErrores.addError(Error('Ejecución', 0, 0, str(e)))
+                        
         except Exception as e:
-            print(f"Error inesperado: {e}")
+            TablaErrores.addError(Error('Fatal', 0, 0, str(e)))
 
         ast = AST(instrucciones)
         ast.getAST()    
