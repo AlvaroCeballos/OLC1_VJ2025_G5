@@ -1,3 +1,4 @@
+#Genera una lista que retornaba los print de consola
 class Consola:  #prints
     consola:str = []
     def __init__(self):
@@ -12,7 +13,6 @@ class Consola:  #prints
     @classmethod
     def addConsola(cls, datos:str):
         cls.consola.append(datos)
-        # cls.consola += f'{datos}\n'
     
     @classmethod
     def getConsola(cls):
