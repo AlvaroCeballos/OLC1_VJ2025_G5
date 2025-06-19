@@ -3,36 +3,53 @@ from analizadores.lexer import lexer
 from interprete.otros.enviroment import Enviroment
 from interprete.otros.ast import AST
 from interprete.otros.consola import Consola
-from interprete.otros.errores import TablaErrores
+from interprete.otros.errores import TablaErrores, Error
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
-f = open('backend/entrada.txt', 'r', encoding='utf-8')
+
+# Setup
+f = open('backend/entradaDoWhile.txt', 'r', encoding='utf-8')
 data = f.read()
 
+# Reset
 While.reset_contador()
 DoWhile.reset_contador() 
+Enviroment.cleanEnviroments()
+TablaErrores.cleanTablaErrores()
+Consola.cleanConsola()
 lexer.lineno = 1
-instrucciones = parser.parse(data, lexer=lexer)
-env = Enviroment(ent_anterior=None, ambito='Global')
-if instrucciones is None:
-    instrucciones = []
+
+# Parse y ejecución
 try:
+    instrucciones = parser.parse(data.lower(), lexer=lexer) or []
+    env = Enviroment(ent_anterior=None, ambito='Global')
+    
     for instruccion in instrucciones:
-        if instruccion is not None:
-            instruccion.ejecutar(env)
+        if instruccion:
+            try:
+                instruccion.ejecutar(env)
+            except Exception as e:
+                TablaErrores.addError(Error('Ejecución', 0, 0, str(e)))
+                
 except Exception as e:
-    print(f"Error inesperado: {e}")
+    TablaErrores.addError(Error('Fatal', 0, 0, str(e)))
 
+# Resultados
+for linea in Consola.getConsola():
+    print(f">>> {linea}")
 
-print('TABLA DE SIMBOLOS:')
+print('\nTABLA DE SÍMBOLOS:')
 print(Enviroment.serializarTodosSimbolos())
-print('TABLA DE ERRORES:')
+
+print('\nTABLA DE ERRORES:')
 print(TablaErrores.serializarTBErrores())
 
-ast = AST(instrucciones)
-ast.getAST()
-
-
+# Cleanup
+try:
+    ast = AST(instrucciones)
+    ast.getAST()
+except:
+    pass
 
 Enviroment.cleanEnviroments()
 TablaErrores.cleanTablaErrores()
