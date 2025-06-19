@@ -1,0 +1,166 @@
+:root {
+  --bg-light: #f8f4f9;
+  --grad-start: #fbc2eb;
+  --grad-end: #a6c1ee;
+  --surface: #ffffff;
+  --surface-alt: #f2eefe;
+  --text-dark: #333333;
+  --accent: #d6336c;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Reset y cuerpo */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--bg-light);
+  color: var(--text-dark);
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+/* Contenedor principal */
+.home-container {
+  width: 90%;
+  max-width: 1200px;
+}
+
+.editor-section {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--shadow);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.control-form .buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--grad-start),
+    var(--grad-end)
+  );
+}
+.btn {
+  background: linear-gradient(135deg, var(--grad-end), var(--grad-start));
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  color: var(--surface);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: opacity 0.2s;
+}
+.btn:hover {
+  opacity: 0.85;
+}
+
+.file-input::file-selector-button {
+  margin-right: 1rem;
+  background: linear-gradient(135deg, var(--grad-end), var(--grad-start));
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  color: var(--surface);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.file-input::file-selector-button:hover {
+  opacity: 0.85;
+}
+
+/* Editor */
+.editor {
+  background: var(--surface-alt) !important;
+  text-align: left;
+}
+
+.tabs-section {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--shadow);
+  height: 300px;
+  max-height: 300px;
+  max-width: 850px;
+  overflow: auto; 
+}
+
+/* Paneles */
+.tab-panel {
+  
+  background: var(--surface);
+}
+
+.tab-list {
+  display: flex;
+  background: var(--surface-alt);
+}
+.tab-list .react-tabs__tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: background 0.2s, color 0.2s;
+}
+.tab-list .react-tabs__tab--selected {
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  color: var(--surface);
+}
+
+/* Tablas */
+.striped-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.striped-table th,
+.striped-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--shadow);
+}
+.striped-table th {
+  background: var(--surface-alt);
+  color: var(--accent);
+}
+.striped-table tbody tr:nth-child(even) {
+  background: var(--surface-alt);
+}
+
+.ast-image-container {
+  flex: 1;
+  overflow: auto;
+}
+
+.ast-image {
+  max-width: none;
+  width: auto;
+  height: auto;
+  transition: transform 0.1s ease-out;
+  transform-origin: top left;
+}
+
+@media (max-width: 768px) {
+  .control-form .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn,
+  .file-input::file-selector-button {
+    width: 100%;
+  }
+  .editor {
+    height: 250px !important;
+    text-align: left;
+  }
+}
