@@ -36,7 +36,7 @@ class AST:
         raiz = Nodo(id=0, valor='INSTRUCCIONES', hijos=[])
 
         try:
-            for instruccion in self.instrucciones:
+            for instruccion in filter(None, self.instrucciones):
                 instruccion.recorrerArbol(raiz)
         except TypeError as e:
                 return
