@@ -25,6 +25,7 @@ from interprete.expresiones.acceso import Acceso
 
 from interprete.otros.tipos import *
 from interprete.otros.errores import *
+from interprete.otros.errores import Error, TablaErrores
 
 tokens = lexer.tokens
 
@@ -87,6 +88,39 @@ def p_instrucciones(t):
     #t[1].append(t[2])
     #t[0] = t[1]
     t[0] = t[1] + [t[2]]
+
+
+def p_instruccion_error_print(t):
+    '''
+    instruccion : error PYC
+    '''
+    # Error en instrucción con punto y coma - ya manejado por p_error
+    t[0] = None
+
+def p_instruccion_error_estructura(t):
+    '''
+    estructura_control : error
+    '''
+    # Error en estructura de control - ya manejado por p_error
+    t[0] = None
+
+def p_instrucciones_error(t):
+    '''
+    instrucciones : instrucciones error
+                  | error
+    '''
+    # Si hay error en una instrucción, continuar con las demás
+    if len(t) == 3:  # instrucciones error
+        t[0] = t[1] if t[1] is not None else []
+    else:  # solo error
+        t[0] = []
+
+def p_expresion_error(t):
+    '''
+    expresion : error
+    '''
+    # Error en expresión - retornar expresión nula
+    t[0] = Literal('ERROR', TipoDato.ERROR, None, 0, 0)
 
 def p_instrucciones_empty(t):
     'instrucciones : '
@@ -520,18 +554,18 @@ def p_error(t):
             descripcion=f'No se esperaba token: {t.value}'
         )
         TablaErrores.addError(err)
-        # Saltar tokens hasta el siguiente punto y coma o llave de cierre
-        while True:
-            tok = parser.token()
-            if not tok or tok.type in ('PYC', 'LLC'):
-                break
+        
+        print(f"DEBUG: Error sintáctico en '{t.value}' línea {t.lineno}")
+        
+        # Estrategia simple: saltar el token problemático
         parser.errok()
+        
     else:
         err = Error(
             tipo='Sintáctico',
             linea=0,
             columna=0,
-            descripcion='Final inesperado.'
+            descripcion='Final inesperado del archivo'
         )
         TablaErrores.addError(err)
 
