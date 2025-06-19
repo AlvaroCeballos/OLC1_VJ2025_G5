@@ -1,3 +1,18 @@
 digraph {
 	0 [label = "INSTRUCCIONES"];
+<<<<<<< HEAD
+	29 [label = "DECLARACION"];
+	30 [label = "a"];
+	31 [label = "INT"];
+	32 [label = "<interprete.expresiones.literal.Literal object at 0x00000258410C0710>"];
+	33 [label = "PRINTLN"];
+	34 [label = "a"];
+	0 -> 29;
+	29 -> 30;
+	29 -> 31;
+	29 -> 32;
+	0 -> 33;
+	33 -> 34;
+=======
+>>>>>>> develop
 }
