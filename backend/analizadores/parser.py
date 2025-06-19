@@ -58,6 +58,7 @@ def tipoToStr(tipo):
 # precedencia de operadores
 precedence = (
     ('right', 'UMENOS'),
+    
     ('left', 'AND'), 
     ('left', 'OR'),
     ('left', 'XOR'),
