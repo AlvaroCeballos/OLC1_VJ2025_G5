@@ -9,6 +9,8 @@ from interprete.otros.consola import Consola
 from interprete.otros.errores import TablaErrores, Error
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
+from interprete.instrucciones.iSwitch import Switch
+from interprete.instrucciones.iFor import For
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origin": "*"}})
@@ -26,13 +28,15 @@ def datas():
         While.reset_contador()
         DoWhile.reset_contador() 
         Enviroment.cleanEnviroments()
+        Switch.reset_contador()
+        For.reset_contador() 
         TablaErrores.cleanTablaErrores()
         Consola.cleanConsola()
         lexer.lineno = 1
 
         # Parse y ejecución
         try:
-            instrucciones = parser.parse(data.lower(), lexer=lexer) or []
+            instrucciones = parser.parse(data, lexer=lexer) or []
             env = Enviroment(ent_anterior=None, ambito='Global')
             
             for instruccion in instrucciones:
@@ -54,7 +58,12 @@ def datas():
         env_serializado = Enviroment.serializarTodosSimbolos()    
 
 
-        tuple = {'ListConsole': Consola.getConsola(), 'ListError': TablaErrores.serializarTBErrores(), 'ListSymbol': env_serializado}
+        tuple = {'ListConsole': Consola.getConsola(), 
+                 'ListError': TablaErrores.serializarTBErrores(), 
+                 'ListSymbol': env_serializado}
+
+        #print("DEBUG - Enviando al frontend:")
+        #print("ListConsole:", Consola.getConsola())
 
         Enviroment.cleanEnviroments()
         TablaErrores.cleanTablaErrores()

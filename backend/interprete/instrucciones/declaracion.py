@@ -23,7 +23,7 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-        print('Insertado en TS: ', self.id)
+        #print('Insertado en TS: ', self.id)
         if self.valor is not None and isinstance(self.valor, Expresion):
             retorno = self.valor.ejecutar(env)
             tipo = retorno.tipo
@@ -58,13 +58,20 @@ class Declaracion(Instruccion):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='DECLARACION', hijos=[])
         raiz.addHijo(hijo)
+        
         id = AST.generarId()
         hijo.addHijo(Nodo(id=id, valor=self.id, hijos=[]))
+        
         id = AST.generarId()
         hijo.addHijo(Nodo(id=id, valor=self.tipo.name, hijos=[]))
+        
         if self.valor is not None:
             id = AST.generarId()
-            hijo.addHijo(Nodo(id=id, valor=self.valor, hijos=[]))
+            # Si es un objeto Literal, obtener su valor
+            if hasattr(self.valor, 'valor'):
+                hijo.addHijo(Nodo(id=id, valor=str(self.valor.valor), hijos=[]))
+            else:
+                hijo.addHijo(Nodo(id=id, valor=str(self.valor), hijos=[]))
         else:
             id = AST.generarId()
             hijo.addHijo(Nodo(id=id, valor='None', hijos=[]))
