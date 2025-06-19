@@ -149,8 +149,10 @@ def t_ID(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-# Reglas especiales
-t_ignore = ' \t\r\n'  # Ignora espacios y tabulaciones
+    # NO RETURN - correcto para saltos de línea
+
+# Mover esta función ANTES de t_ignore
+t_ignore = ' \t'  # Quitar \r\n de aquí ya que se maneja en t_newline
 
 # Manejo de errores
 def t_error(t):
