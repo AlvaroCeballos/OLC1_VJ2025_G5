@@ -1,23 +1,40 @@
-INT m = 0;
+//---------------------------------- Prueba println case insensitive ----------------------------------
 
-DO {
-    INT n = 0;
-    print("WHILE 1--------------------------");
-    DO {
-        print("WHILE 2--------------------------");
-        PRINTLN("m = " + m + ", n = " + n);
-        int dowai;
-        IF (n == 1 && m == 1) {
-            n = n + 1;
-            print("Entramos al if xd");
-            PRINTLN("n = " + n);
-        }
-        PRINTLN("m = " + m + ", n = " + n);
-        IF (m == 2 && n == 0) {
-        }
-        n = n + 1;
-        PRINTLN("n = " + n);
-    } WHILE (n < 3);
-    m = m + 1;
-    PRINTLN("m = " + m);
-} WHILE (m < 3);
+PrInTlN("Println basico: 1");
+
+//---------------------------------- Prueba recuperacion errores ----------------------------------
+int a;
+Print(Esto es un error);
+
+/*
+	Esto deberia ignorarse
+*/
+
+// ---------------------------------- Expresiones ----------------------------------
+
+println("---------------------------------------------------------------------------");
+println("---------------------------------- SUMAS ----------------------------------");
+println("---------------------------------------------------------------------------");
+
+// ENTEROS
+
+PRINTLN("INT + INT:");
+PRINTLN(1+1); // RES: 2
+
+PRINTLN("INT + FLOAT:");
+PRINTLN(1+1.1); // RES: 2.1
+
+PRINTLN("INT + BOOL:"); // BOOL SE PUEDE ASIGNAR A INT, PERO NO SE PUEDE SUMAR
+PRINTLN(1+TRUE); // RES: ERROR SEMANTICO
+
+PRINTLN("INT + DECIMAL:");
+PRINTLN(1+1.1); // RES: 2.1
+
+PRINTLN("INT + CHAR:"); // SE USA EL ASCII
+PRINTLN(1+'$'); // RES: 37 
+
+PRINTLN("INT + STR:"); // SE USA UNA CONCATENACION
+PRINTLN("HOLA 2+"+1+">"); // RES: HOLA 2+1>
+
+int numero = 5;
+println(numero);

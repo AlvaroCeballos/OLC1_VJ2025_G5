@@ -2,12 +2,15 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 from analizadores.parser import parser
+from analizadores.lexer import lexer
 from interprete.otros.enviroment import Enviroment
 from interprete.otros.ast import AST
 from interprete.otros.consola import Consola
-from interprete.otros.errores import TablaErrores
+from interprete.otros.errores import TablaErrores, Error
 from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
+from interprete.instrucciones.iSwitch import Switch
+from interprete.instrucciones.iFor import For
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origin": "*"}})
@@ -24,13 +27,27 @@ def datas():
 
         While.reset_contador()
         DoWhile.reset_contador() 
-        instrucciones = parser.parse(data.lower())
-        env = Enviroment(ent_anterior=None, ambito='Global')
+        Enviroment.cleanEnviroments()
+        Switch.reset_contador()
+        For.reset_contador() 
+        TablaErrores.cleanTablaErrores()
+        Consola.cleanConsola()
+        lexer.lineno = 1
+
+        # Parse y ejecución
         try:
+            instrucciones = parser.parse(data, lexer=lexer) or []
+            env = Enviroment(ent_anterior=None, ambito='Global')
+            
             for instruccion in instrucciones:
-                instruccion.ejecutar(env)
+                if instruccion:
+                    try:
+                        instruccion.ejecutar(env)
+                    except Exception as e:
+                        TablaErrores.addError(Error('Ejecución', 0, 0, str(e)))
+                        
         except Exception as e:
-            print(f"Error inesperado: {e}")
+            TablaErrores.addError(Error('Fatal', 0, 0, str(e)))
 
         ast = AST(instrucciones)
         ast.getAST()    
@@ -41,7 +58,12 @@ def datas():
         env_serializado = Enviroment.serializarTodosSimbolos()    
 
 
-        tuple = {'ListConsole': Consola.getConsola(), 'ListError': TablaErrores.serializarTBErrores(), 'ListSymbol': env_serializado}
+        tuple = {'ListConsole': Consola.getConsola(), 
+                 'ListError': TablaErrores.serializarTBErrores(), 
+                 'ListSymbol': env_serializado}
+
+        #print("DEBUG - Enviando al frontend:")
+        #print("ListConsole:", Consola.getConsola())
 
         Enviroment.cleanEnviroments()
         TablaErrores.cleanTablaErrores()
