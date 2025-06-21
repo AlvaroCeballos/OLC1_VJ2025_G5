@@ -52,7 +52,7 @@ const Home = () => {
         entrada,
         { headers: { "Content-Type": "text/plain" } }
       );
-
+      console.log("Respuesta del backend:", response.data);
       setMensajes(response.data.ListConsole);
       setErrores(response.data.ListError);
       setSimbolos(response.data.ListSymbol);

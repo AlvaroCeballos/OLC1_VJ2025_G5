@@ -12,7 +12,7 @@ class Consola:  #prints
 
     @classmethod
     def addConsola(cls, datos:str):
-        cls.consola.append(datos)
+        cls.consola.append(str(datos))
     
     @classmethod
     def getConsola(cls):

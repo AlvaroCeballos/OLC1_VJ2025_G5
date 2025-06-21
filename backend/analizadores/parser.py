@@ -12,8 +12,8 @@ from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.iFor import For 
 from interprete.instrucciones.instruccion_if import Instruccion_if
 from interprete.instrucciones.iDoWhile import DoWhile
-from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.pcontinue import Continue
+from interprete.otros.enviroment import Enviroment
 
 from interprete.expresiones.expresion import Expresion
 from interprete.expresiones.tipoChars import TipoChars
@@ -22,6 +22,7 @@ from interprete.expresiones.relacional import Relacional
 from interprete.expresiones.logica import Logica
 from interprete.expresiones.literal import Literal
 from interprete.expresiones.acceso import Acceso
+from interprete.expresiones.nativas import Seno, Coseno, Inv
 
 from interprete.otros.tipos import *
 from interprete.otros.errores import *
@@ -58,6 +59,7 @@ def tipoToStr(tipo):
 # precedencia de operadores
 precedence = (
     ('right', 'UMENOS'),
+    
     ('left', 'AND'), 
     ('left', 'OR'),
     ('left', 'XOR'),
@@ -409,6 +411,34 @@ def p_expresion(t):
 def p_expresion_parentesis(t):
     'expresion : PARA expresion PARC'
     t[0] = t[2]
+
+def p_expresion_nativa(t):
+    ''' 
+    expresion : SENO PARA expresion PARC
+              | COSENO PARA expresion PARC
+              | INV PARA expresion PARC
+    '''
+    func = t[1].upper() #t1 = seno
+    args = t[3]  #t3 = expresion
+    #SENO
+    if func == 'SENO':
+        t[0] = Seno(text_val=f'seno({args.text_val})', 
+                    argumento=args, 
+                    linea=t.lineno(1), 
+                    columna=t.lexpos(1))
+        
+    elif func == 'COSENO':
+        t[0] = Coseno(text_val=f'coseno({args.text_val})', 
+                    argumento=args, 
+                    linea=t.lineno(1), 
+                    columna=t.lexpos(1))
+
+    elif func == 'INV':
+        t[0] = Inv(text_val=f'inv({args.text_val})', 
+                    argumento=args, 
+                    linea=t.lineno(1), 
+                    columna=t.lexpos(1))
+
 
 def p_expresion_aritmetica(t):
     '''

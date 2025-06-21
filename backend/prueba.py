@@ -8,7 +8,7 @@ from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
 
 # Setup
-f = open('backend/entradaDoWhile.txt', 'r', encoding='utf-8')
+f = open('backend/entrada.txt', 'r', encoding='utf-8')
 data = f.read()
 
 # Reset
@@ -21,7 +21,7 @@ lexer.lineno = 1
 
 # Parse y ejecución
 try:
-    instrucciones = parser.parse(data.lower(), lexer=lexer) or []
+    instrucciones = parser.parse(data, lexer=lexer) or []
     env = Enviroment(ent_anterior=None, ambito='Global')
     
     for instruccion in instrucciones:
