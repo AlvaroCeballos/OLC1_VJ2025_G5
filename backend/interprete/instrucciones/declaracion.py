@@ -23,28 +23,27 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-        #print('Insertado en TS: ', self.id)
         if self.valor is not None and isinstance(self.valor, Expresion):
             retorno = self.valor.ejecutar(env)
             tipo = retorno.tipo
-            valor = retorno.valor
+            self.valor = retorno.valor
         else:
             # Valor por defecto según el tipo
             tipo = self.tipo
             if self.tipo == TipoDato.INT:
-                valor = 0
+                self.valor = 0
             elif self.tipo == TipoDato.FLOAT:
-                valor = 0.0
+                self.valor = 0.0
             elif self.tipo == TipoDato.STR:
-                valor = ' '
+                self.valor = ' '
             elif self.tipo == TipoDato.CHAR:
-                valor = ' '
+                self.valor = ' '
             elif self.tipo == TipoDato.BOOL:
-                valor = True
+                self.valor = True
             else:
-                valor = None
+                self.valor = None
 
-        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor, env.ambito, None)
+        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, self.valor, env.ambito, None)
         env.insertar_simbolo(self.id, simbolo)
 
         # Si hay inicialización, ejecuta la asignación

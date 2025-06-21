@@ -10,7 +10,7 @@ reservadas = {
     'char': 'CHAR',
     'str': 'STR',
     'if': 'IF',
-    'true': 'TRUE',
+    'true': 'TRUE', 
     'false': 'FALSE',
     #'id': 'ID',
     'else': 'ELSE',
@@ -26,6 +26,9 @@ reservadas = {
     'continue': 'CONTINUE',
     'var': 'VAR',
     'do': 'DO',
+    'seno': 'SENO',
+    'coseno': 'COSENO',
+    'inv': 'INV'
 }
 
 # Lista de tokens
@@ -96,7 +99,6 @@ t_LLA = r'\{'
 t_LLC = r'\}'
 t_INCREMENTO = r'\+\+'
 t_DECREMENTO = r'--'
-
 
 # Expresiones regulares para comentarios
 def t_COMENTARIO_UNA_LINEA(t):
