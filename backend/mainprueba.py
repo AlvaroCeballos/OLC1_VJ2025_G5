@@ -11,6 +11,7 @@ from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
 from interprete.instrucciones.iSwitch import Switch
 from interprete.instrucciones.iFor import For
+from interprete.otros.reporteVectores import ReporteVectores 
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origin": "*"}})
@@ -19,8 +20,7 @@ cors = CORS(app, resources={r"/*": {"origin": "*"}})
 def hello_world():
     return "<p>Hello, World!</p>"
 
-
-@app.route("/datas" , methods=['POST'])
+@app.route("/datas", methods=['POST'])
 def datas():
     if request.method == 'POST':
         data = request.data.decode('utf-8')
@@ -31,6 +31,7 @@ def datas():
         Switch.reset_contador()
         For.reset_contador() 
         TablaErrores.cleanTablaErrores()
+        ReporteVectores.cleanReporteVectores()  # ← Solo agregar esta línea
         Consola.cleanConsola()
         lexer.lineno = 1
 
@@ -55,20 +56,19 @@ def datas():
         # Guardar la tabla de simbolos antes de limpiar el Enviroment
         # Para que no se dupliquen las declaraciones, asignaciones, etc.
         # Y esto es lo que se va a enviar
-        env_serializado = Enviroment.serializarTodosSimbolos()    
+        env_serializado = Enviroment.serializarTodosSimbolos()
+        vectores_serializados = ReporteVectores.serializarVectores()  # ← Solo agregar esta línea
 
-
+        # ← Modificar solo esta parte - agregar ListVector
         tuple = {'ListConsole': Consola.getConsola(), 
                  'ListError': TablaErrores.serializarTBErrores(), 
-                 'ListSymbol': env_serializado}
-
-        #print("DEBUG - Enviando al frontend:")
-        #print("ListConsole:", Consola.getConsola())
+                 'ListSymbol': env_serializado,
+                 'ListVector': vectores_serializados}  # ← Solo agregar esta línea
 
         Enviroment.cleanEnviroments()
         TablaErrores.cleanTablaErrores()
         Consola.cleanConsola()
-        
+        ReporteVectores.cleanReporteVectores()  # ← Solo agregar esta línea
         
         return jsonify(tuple) 
     
@@ -76,7 +76,6 @@ def datas():
 def ast():
     image_path = 'AST.png'
     return send_file(image_path, mimetype='image/png')
-
 
 if __name__=='__main__':
     app.run(debug = True, port = 5000)

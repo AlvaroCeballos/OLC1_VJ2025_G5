@@ -28,7 +28,8 @@ reservadas = {
     'do': 'DO',
     'seno': 'SENO',
     'coseno': 'COSENO',
-    'inv': 'INV'
+    'inv': 'INV',
+    'vector': 'VECTOR',
 }
 
 # Lista de tokens
@@ -69,6 +70,8 @@ tokens = [
     'UMENOS',
     'INCREMENTO',
     'DECREMENTO',
+    'CORCHETE_ABRE',
+    'CORCHETE_CIERRA',
 ] + list(reservadas.values())
 
 # Expresiones regulares para tokens simples
@@ -99,6 +102,8 @@ t_LLA = r'\{'
 t_LLC = r'\}'
 t_INCREMENTO = r'\+\+'
 t_DECREMENTO = r'--'
+t_CORCHETE_ABRE = r'\[' 
+t_CORCHETE_CIERRA = r'\]'
 
 # Expresiones regulares para comentarios
 def t_COMENTARIO_UNA_LINEA(t):
