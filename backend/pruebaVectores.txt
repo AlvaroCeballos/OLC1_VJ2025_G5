@@ -1,0 +1,22 @@
+// ===== PRUEBA DE VECTORES MULTIDIMENSIONALES =====
+
+// Vector 1D simple
+Vector[int] vec1d(5) = [10, 20, 30, 40, 50];
+
+// Matriz 2D (3x3)
+Vector[int] matriz3x3(3, 3) = [1, 2, 3], [4, 5, 6], [7, 8, 9];
+
+// Tensor 3D (2x2x2) 
+Vector[float] tensor3d(2, 2, 2) = [1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [7.7, 8.8];
+
+// Vector con diferentes tipos
+Vector[bool] booleanos(4) = [true, false, true, false];
+
+// Vector sin valores iniciales (se inicializa con valores por defecto)
+Vector[int] vectorVacio(2, 3);
+
+// Vector de caracteres
+Vector[char] caracteres(6) = ['a', 'b', 'c', 'd', 'e', 'f'];
+
+// Vector de strings 2D
+Vector[str] textos(2, 2) = ["hola", "mundo"], ["java", "script"];
