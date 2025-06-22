@@ -35,7 +35,6 @@ class ReporteVectores:
             filas, columnas = dimensiones[0], dimensiones[1]
             estrategia = f"Matriz 2D: almacenamiento por filas (row-major)\n"
             estrategia += f"Dimensiones: {filas}x{columnas}\n"
-            estrategia += f"Fórmula: matriz[i][j] = posición (i * {columnas} + j)\n"
             estrategia += f"Mapeo de índices:\n"
             
             # Mostrar mapeo de índices
@@ -53,7 +52,6 @@ class ReporteVectores:
             dim1, dim2, dim3 = dimensiones[0], dimensiones[1], dimensiones[2]
             estrategia = f"Tensor 3D: almacenamiento por capas\n"
             estrategia += f"Dimensiones: {dim1}x{dim2}x{dim3}\n"
-            estrategia += f"Fórmula: tensor[i][j][k] = posición (i * {dim2 * dim3} + j * {dim3} + k)\n"
             estrategia += f"Datos lineales: {datos}"
             return estrategia
         
