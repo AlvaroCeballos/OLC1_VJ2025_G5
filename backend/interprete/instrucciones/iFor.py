@@ -22,11 +22,11 @@ class For(Instruccion):
         # Crear nuevo entorno para el for
         entorno_for = Enviroment(env, nombre_for)
         
-        print(f"DEBUG: Creando {nombre_for} con entorno padre: {env.ambito}")
+        #print(f"DEBUG: Creando {nombre_for} con entorno padre: {env.ambito}")
         
         # Ejecutar la inicialización en el entorno del for
         if self.inicializacion:
-            print(f"DEBUG: Ejecutando inicialización en {nombre_for}")
+            #print(f"DEBUG: Ejecutando inicialización en {nombre_for}")
             self.inicializacion.ejecutar(entorno_for)
         
         # Ciclo principal del for
@@ -47,26 +47,26 @@ class For(Instruccion):
             
             # Si la condición es falsa, salir del for
             if not resultado_cond.valor:
-                print(f"DEBUG: Condición falsa, saliendo de {nombre_for}")
+                #print(f"DEBUG: Condición falsa, saliendo de {nombre_for}")
                 break
             
             # Ejecutar instrucciones del cuerpo del for
             for instruccion in (self.instrucciones if self.instrucciones is not None else []):
                 resultado = instruccion.ejecutar(entorno_for)
                 if resultado == 'break':
-                    print(f"DEBUG: Break encontrado, saliendo de {nombre_for}")
-                    print(f"DEBUG: Terminando {nombre_for}")
+                    #print(f"DEBUG: Break encontrado, saliendo de {nombre_for}")
+                    #print(f"DEBUG: Terminando {nombre_for}")
                     return  # Sale completamente del ciclo
                 if resultado == 'continue':
-                    print(f"DEBUG: Continue encontrado, siguiente iteración de {nombre_for}")
+                    #print(f"DEBUG: Continue encontrado, siguiente iteración de {nombre_for}")
                     break  # Sale del for interno, pero sigue con la siguiente iteración del while
             
             # Ejecutar la actualización solo si no hubo break
             if self.incremento:
-                print(f"DEBUG: Ejecutando incremento en {nombre_for}")
+                #print(f"DEBUG: Ejecutando incremento en {nombre_for}")
                 self.incremento.ejecutar(entorno_for)
         
-        print(f"DEBUG: Terminando {nombre_for}")
+        #print(f"DEBUG: Terminando {nombre_for}")
         return self
 
     def recorrerArbol(self, raiz):

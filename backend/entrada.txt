@@ -1,14 +1,17 @@
-PRINTLN("STRING == STRING:");
-PRINTLN("hola" == "hola"); // RES: TRUE
+INT m = 0;
 
-PRINTLN("STRING != STRING:");
-PRINTLN("hola" != "adiós"); // RES: TRUE
-
-PRINTLN("STRING < STRING:");
-PRINTLN("abc" < "def"); // RES: ERROR SEMÁNTICO
-
-PRINTLN("STRING == INT:");
-PRINTLN("5" == 5); // RES: ERROR SEMÁNTICO
-
-PRINTLN("STRING == CHAR:");
-PRINTLN("A" == 'A'); // RES: ERROR SEMÁNTICO
+DO {
+    INT n = 0;
+    DO {
+        IF (n == 1 && m == 1) {
+            n = n + 1;
+            CONTINUE;
+        }
+        PRINTLN("m = " + m + ", n = " + n);
+        IF (m == 2 && n == 0) {
+            BREAK;
+        }
+        n = n + 1;
+    } WHILE (n < 3);
+    m = m + 1;
+} WHILE (m < 3);
