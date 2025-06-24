@@ -9,7 +9,6 @@ from interprete.otros.retorno import Retorno
 from interprete.otros.symbol import Symbol
 from interprete.otros.errores import Error, TablaErrores
 from interprete.expresiones.literal import Literal
-from interprete.instrucciones.asignacion import Asignacion
 
 class Declaracion(Instruccion):
     def __init__(self, text_val:str, id:str, tipo:TipoDato, valor:str, linea:int, columna:int):
@@ -23,33 +22,37 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-        #print('Insertado en TS: ', self.id)
+        # Evaluar la expresión si existe
         if self.valor is not None and isinstance(self.valor, Expresion):
             retorno = self.valor.ejecutar(env)
             tipo = retorno.tipo
-            valor = retorno.valor
+            valor_final = retorno.valor
+            expresion_original = self.valor  # Guardar la expresión original
         else:
             # Valor por defecto según el tipo
             tipo = self.tipo
             if self.tipo == TipoDato.INT:
-                valor = 0
+                valor_final = 0
             elif self.tipo == TipoDato.FLOAT:
-                valor = 0.0
+                valor_final = 0.0
             elif self.tipo == TipoDato.STR:
-                valor = ' '
+                valor_final = ' '
             elif self.tipo == TipoDato.CHAR:
-                valor = ' '
+                valor_final = ' '
             elif self.tipo == TipoDato.BOOL:
-                valor = True
+                valor_final = True
             else:
-                valor = None
+                valor_final = None
+            expresion_original = None
 
-        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor, env.ambito, None)
+        # Crear símbolo (esto permite sobreescribir si ya existe)
+        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor_final, env.ambito, None)
         env.insertar_simbolo(self.id, simbolo)
 
-        # Si hay inicialización, ejecuta la asignación
-        if self.valor is not None:
-            asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
+        # Si había una expresión inicial, hacer la asignación CORRECTAMENTE
+        if expresion_original is not None:
+            from interprete.instrucciones.asignacion import Asignacion
+            asignacion = Asignacion(self.text_val, self.id, expresion_original, self.linea, self.columna)
             asignacion.ejecutar(env)
 
         return self
@@ -75,5 +78,3 @@ class Declaracion(Instruccion):
         else:
             id = AST.generarId()
             hijo.addHijo(Nodo(id=id, valor='None', hijos=[]))
-        
-
