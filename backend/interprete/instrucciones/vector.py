@@ -56,6 +56,23 @@ class Vector(Instruccion):
             if vector_lineal is None:  # Error en procesamiento
                 return self
         
+        #agregar el vector a la tabla de símbolos
+        simbolo = Symbol(
+            tipo_simbolo = TipoSimbolo.VECTOR,
+            tipo=self.tipo_dato,
+            id=self.id,
+            valor={
+                'dimensiones': dimensiones_evaluadas,
+                'datos': vector_lineal,
+                'tamanio_total': tamanio_total
+            },
+            ambito=env.ambito,
+            parametros=[],                 
+            instrucciones=[],                   
+            direccion=''
+        )
+        env.insertar_simbolo(self.id, simbolo)
+
         # SOLO REPORTAR EL VECTOR - NO AGREGAR A TABLA DE SÍMBOLOS
         ReporteVectores.addVector(
             id_vector=self.id,

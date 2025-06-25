@@ -8,7 +8,7 @@ from interprete.instrucciones.iWhile import While
 from interprete.instrucciones.iDoWhile import DoWhile
 
 # Setup
-f = open('backend/pruebaVectores.txt', 'r', encoding='utf-8')
+f = open('backend/entrada.txt', 'r', encoding='utf-8')
 data = f.read()
 
 # Reset
