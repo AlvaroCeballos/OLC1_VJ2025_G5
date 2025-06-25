@@ -1,10 +1,4 @@
 Vector[int] vec_ejemplo (2,2) = [1,2],[1,5];
-
-Int a = vec_ejemplo[0][0]; // Esto es valido
-vec_ejemplo[0][1] = vec_ejemplo[1][0]; // Esto es valido
-IF ( vec_ejemplo[0][1] == 1){
-Println("Esto también es valido");
-}
-
-int b = vec_ejemplo[1][1];
-println(b);
+Vector[int] vec_shuffled (2,2) = shuffle(vec_ejemplo);
+Vector[int] vec_original (5) = [1,4,3,2,5];
+Vector[int] vec_sorted (5) = sort(vec_original);
