@@ -12,6 +12,7 @@ from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.iFor import For 
 from interprete.instrucciones.instruccion_if import Instruccion_if
 from interprete.instrucciones.iDoWhile import DoWhile
+from interprete.instrucciones.iBrake import Break
 from interprete.instrucciones.pcontinue import Continue
 from interprete.otros.enviroment import Enviroment
 
@@ -28,6 +29,10 @@ from interprete.instrucciones.vector import Vector
 from interprete.otros.tipos import *
 from interprete.otros.errores import *
 from interprete.otros.errores import Error, TablaErrores
+
+from interprete.instrucciones.vector import Vector
+from interprete.instrucciones.asignacionVector import AsignacionVector
+from interprete.expresiones.accesoVector import AccesoVector
 
 tokens = lexer.tokens
 
@@ -69,6 +74,7 @@ precedence = (
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTIPLICACION', 'DIVISION'),
     ('nonassoc', 'POTENCIA', 'MODULO'),
+
     
 )
 
@@ -214,6 +220,29 @@ def p_lista_expresiones(t):
         t[0] = t[1] + [t[3]]
     else:  # expresion
         t[0] = [t[1]]
+#Asignacion y acceso de vectores
+def p_asignacion_vector(t):
+    '''
+    asignacion_variable : ID lista_indices IGUAL expresion
+    '''
+    text_val = f'{t[1]}[{"][".join([idx.text_val for idx in t[2]])}] = {t[4].text_val}'
+    t[0] = AsignacionVector(text_val, t[1], t[2], t[4], t.lineno(1), t.lexpos(1))
+
+def p_lista_indices(t):
+    '''
+    lista_indices : lista_indices CORCHETE_ABRE expresion CORCHETE_CIERRA
+                 | CORCHETE_ABRE expresion CORCHETE_CIERRA
+    '''
+    if len(t) == 5:  # lista_indices [expresion]
+        t[0] = t[1] + [t[3]]
+    else:  # [expresion]
+        t[0] = [t[2]]
+
+def p_acceso_vector(t):
+    '''
+    literal : ID lista_indices
+    '''
+    t[0] = AccesoVector(t[1], t[2], t.lineno(1), t.lexpos(1))
 
 #Se crea funcion para poder manejar todos los tipos de ciclos anidados
 def p_estructura_control(t):

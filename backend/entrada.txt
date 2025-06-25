@@ -1,17 +1,10 @@
-INT m = 0;
+Vector[int] vec_ejemplo (2,2) = [1,2],[1,5];
 
-DO {
-    INT n = 0;
-    DO {
-        IF (n == 1 && m == 1) {
-            n = n + 1;
-            CONTINUE;
-        }
-        PRINTLN("m = " + m + ", n = " + n);
-        IF (m == 2 && n == 0) {
-            BREAK;
-        }
-        n = n + 1;
-    } WHILE (n < 3);
-    m = m + 1;
-} WHILE (m < 3);
+Int a = vec_ejemplo[0][0]; // Esto es valido
+vec_ejemplo[0][1] = vec_ejemplo[1][0]; // Esto es valido
+IF ( vec_ejemplo[0][1] == 1){
+Println("Esto también es valido");
+}
+
+int b = vec_ejemplo[1][1];
+println(b);
