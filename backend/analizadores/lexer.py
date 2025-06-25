@@ -30,6 +30,8 @@ reservadas = {
     'coseno': 'COSENO',
     'inv': 'INV',
     'vector': 'VECTOR',
+    'proc' : 'PROC',
+    'exec' : 'EXEC'
 }
 
 # Lista de tokens
