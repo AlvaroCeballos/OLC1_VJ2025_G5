@@ -33,6 +33,10 @@ from interprete.otros.errores import Error, TablaErrores
 from interprete.instrucciones.vector import Vector
 from interprete.instrucciones.asignacionVector import AsignacionVector
 from interprete.expresiones.accesoVector import AccesoVector
+from interprete.expresiones.funcionesVector import Shuffle, Sort
+from interprete.instrucciones.AsignacionFuncionVector import AsignacionFuncionVector
+from interprete.instrucciones.declaracionVectorFuncion import DeclaracionVectorFuncion
+
 
 tokens = lexer.tokens
 
@@ -190,6 +194,29 @@ def p_declaracion_vector(t):
             linea=t.lineno(1),
             columna=t.lexpos(1)
         )
+def p_declaracion_vector_con_funcion(t):
+    '''
+    declaracion_vector : VECTOR CORCHETE_ABRE tipo CORCHETE_CIERRA ID PARA lista_dimensiones PARC IGUAL SORT PARA expresion PARC
+                       | VECTOR CORCHETE_ABRE tipo CORCHETE_CIERRA ID PARA lista_dimensiones PARC IGUAL SHUFFLE PARA expresion PARC
+    '''
+    func = t[10].upper()
+    
+    if func == 'SORT':
+        funcion = Sort(f'sort({t[12].text_val})', t[12], t.lineno(10), t.lexpos(10))
+    elif func == 'SHUFFLE':
+        funcion = Shuffle(f'shuffle({t[12].text_val})', t[12], t.lineno(10), t.lexpos(10))
+    
+    text_val = f'Vector[{t[3].name.lower()}] {t[5]}({", ".join([str(d.valor) if hasattr(d, "valor") else str(d) for d in t[7]])}) = {func.lower()}(...)'
+    
+    t[0] = DeclaracionVectorFuncion(
+        text_val=text_val,
+        id_vector=t[5],
+        tipo_dato=t[3],
+        dimensiones=t[7],
+        funcion_vector=funcion,
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
 
 def p_lista_dimensiones(t):
     '''
@@ -506,6 +533,8 @@ def p_expresion_nativa(t):
     expresion : SENO PARA expresion PARC
               | COSENO PARA expresion PARC
               | INV PARA expresion PARC
+              | SHUFFLE PARA expresion PARC
+              | SORT PARA expresion PARC
     '''
     func = t[1].upper() #t1 = seno
     args = t[3]  #t3 = expresion
@@ -527,6 +556,17 @@ def p_expresion_nativa(t):
                     argumento=args, 
                     linea=t.lineno(1), 
                     columna=t.lexpos(1))
+    elif func == 'SHUFFLE':
+        t[0] = Shuffle(text_val=f'shuffle({args.text_val})', 
+                       vector_arg=args, 
+                       linea=t.lineno(1), 
+                       columna=t.lexpos(1))
+    elif func == 'SORT':
+        t[0] = Sort(text_val=f'sort({args.text_val})', 
+                    vector_arg=args, 
+                    linea=t.lineno(1), 
+                    columna=t.lexpos(1))
+
 
 
 def p_expresion_aritmetica(t):
