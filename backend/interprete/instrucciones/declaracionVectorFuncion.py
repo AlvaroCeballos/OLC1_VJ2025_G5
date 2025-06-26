@@ -3,6 +3,7 @@ from .instruccion import Instruccion
 from interprete.otros.tipos import TipoDato, TipoSimbolo
 from interprete.otros.errores import Error, TablaErrores
 from interprete.otros.symbol import Symbol
+from interprete.otros.symbolVector import SymbolVector
 
 class DeclaracionVectorFuncion(Instruccion):
     def __init__(self, text_val, id_vector, tipo_dato, dimensiones, funcion_vector, linea, columna):
@@ -53,22 +54,49 @@ class DeclaracionVectorFuncion(Instruccion):
             ))
             return self
         
-        # Crear el símbolo del nuevo vector
-        simbolo = Symbol(
+        # CREAR SÍMBOLO VECTOR ESPECÍFICO
+        simbolo_vector = SymbolVector(
             tipo_simbolo=TipoSimbolo.VECTOR,
             tipo=self.tipo_dato,
             id=self.id_vector,
-            valor={
-                'dimensiones': dimensiones_evaluadas,
-                'datos': resultado_funcion.valor['datos'],
-                'tamanio_total': tamanio_total
-            },
-            ambito=env.ambito,
-            parametros=[],
-            instrucciones=[],
-            direccion=''
+            dimensiones=dimensiones_evaluadas,
+            datos=resultado_funcion.valor['datos'],
+            tamanio_total=tamanio_total,
+            ambito=env.ambito
         )
         
-        env.insertar_simbolo(self.id_vector, simbolo)
+        # INSERTAR EN TABLA DE VECTORES
+        env.insertar_vector(self.id_vector, simbolo_vector)
         
         return self
+    
+    def recorrerArbol(self, raiz: Nodo):
+        id_declaracion = AST.generarId()
+        nodo_declaracion = Nodo(id=id_declaracion, valor='DECLARACION_VECTOR_FUNCION', hijos=[])
+        raiz.addHijo(nodo_declaracion)
+        
+        # Agregar nodo para el tipo
+        id_tipo = AST.generarId()
+        nodo_tipo = Nodo(id=id_tipo, valor=f'TIPO: {self.tipo_dato.name}', hijos=[])
+        nodo_declaracion.addHijo(nodo_tipo)
+        
+        # Agregar nodo para el identificador
+        id_id = AST.generarId()
+        nodo_id = Nodo(id=id_id, valor=f'ID: {self.id_vector}', hijos=[])
+        nodo_declaracion.addHijo(nodo_id)
+        
+        # Agregar nodo para las dimensiones
+        id_dimensiones = AST.generarId()
+        nodo_dimensiones = Nodo(id=id_dimensiones, valor='DIMENSIONES', hijos=[])
+        nodo_declaracion.addHijo(nodo_dimensiones)
+        
+        for dimension in self.dimensiones:
+            dimension.recorrerArbol(nodo_dimensiones)
+        
+        # Agregar nodo para la función (sort o shuffle)
+        id_funcion = AST.generarId()
+        nodo_funcion = Nodo(id=id_funcion, valor='INICIALIZACION', hijos=[])
+        nodo_declaracion.addHijo(nodo_funcion)
+        
+        self.funcion_vector.recorrerArbol(nodo_funcion)
+    
