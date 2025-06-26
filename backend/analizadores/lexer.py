@@ -31,7 +31,9 @@ reservadas = {
     'inv': 'INV',
     'vector': 'VECTOR',
     'proc' : 'PROC',
-    'exec' : 'EXEC'
+    'exec' : 'EXEC',
+    'shuffle': 'SHUFFLE',
+    'sort': 'SORT',
 }
 
 # Lista de tokens
@@ -73,7 +75,7 @@ tokens = [
     'INCREMENTO',
     'DECREMENTO',
     'CORCHETE_ABRE',
-    'CORCHETE_CIERRA',
+    'CORCHETE_CIERRA'
 ] + list(reservadas.values())
 
 # Expresiones regulares para tokens simples

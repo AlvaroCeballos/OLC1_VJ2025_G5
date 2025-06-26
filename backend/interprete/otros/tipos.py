@@ -37,3 +37,5 @@ class TipoLogico(Enum):
 class TipoSimbolo(Enum):
     VARIABLE = 1
     FUNCTION = 2
+    VECTOR = 3
+

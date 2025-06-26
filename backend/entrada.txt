@@ -1,14 +1,4 @@
-PRINTLN("STRING == STRING:");
-PRINTLN("hola" == "hola"); // RES: TRUE
-
-PRINTLN("STRING != STRING:");
-PRINTLN("hola" != "adiós"); // RES: TRUE
-
-PRINTLN("STRING < STRING:");
-PRINTLN("abc" < "def"); // RES: ERROR SEMÁNTICO
-
-PRINTLN("STRING == INT:");
-PRINTLN("5" == 5); // RES: ERROR SEMÁNTICO
-
-PRINTLN("STRING == CHAR:");
-PRINTLN("A" == 'A'); // RES: ERROR SEMÁNTICO
+Vector[int] vec_ejemplo (2,2) = [1,2],[1,5];
+Vector[int] vec_shuffled (2,2) = shuffle(vec_ejemplo);
+Vector[int] vec_original (5) = [1,4,3,2,5];
+Vector[int] vec_sorted (5) = sort(vec_original);
