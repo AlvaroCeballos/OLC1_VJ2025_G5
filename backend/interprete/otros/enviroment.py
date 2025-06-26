@@ -24,7 +24,7 @@ class Enviroment():
     # Inserta un simbolo en la tabla de simbolos del entorno actual
     def insertar_simbolo(self, id:str, simbolo:Symbol):
         #Validar si el simbolo es funcion o variable
-        if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE:
+        if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE or simbolo.tipo_simbolo == TipoSimbolo.VECTOR:
             self.ts_variables.instertarSimbolo(id, simbolo)
         #Valida si el simbolo es una funcion    
         elif simbolo.tipo_simbolo == TipoSimbolo.FUNCTION:
@@ -34,7 +34,7 @@ class Enviroment():
     def existe_simbolo(self, id:str, tipoSimbolo:TipoSimbolo):
         ent:Enviroment = self
         while ent is not None:
-            if(tipoSimbolo == TipoSimbolo.VARIABLE):
+            if(tipoSimbolo == TipoSimbolo.VARIABLE) or tipoSimbolo == TipoSimbolo.VECTOR:
                 existe = ent.ts_variables.buscarSimbolo(id)
             elif(tipoSimbolo == TipoSimbolo.FUNCTION):
                 existe = ent.ts_funciones.buscarSimbolo(id)
@@ -48,13 +48,36 @@ class Enviroment():
         ent:Enviroment = self
         
         while ent is not None:
-            if (tipo_simbolo == TipoSimbolo.VARIABLE):
+            if tipo_simbolo is None:
+                # Buscar primero en variables (incluye vectores)
                 simbolo = ent.ts_variables.getSimbolo(id)
-            elif (tipo_simbolo == TipoSimbolo.FUNCTION):
+                if simbolo is not None:
+                    return simbolo
+                # Si no se encuentra, buscar en funciones
                 simbolo = ent.ts_funciones.getSimbolo(id)
-            if (simbolo is not None):
-                return simbolo
+                if simbolo is not None:
+                    return simbolo
+            elif tipo_simbolo == TipoSimbolo.VARIABLE or tipo_simbolo == TipoSimbolo.VECTOR:
+                simbolo = ent.ts_variables.getSimbolo(id)
+                if simbolo is not None:
+                    # Si se especifica VECTOR, verificar que sea vector
+                    if tipo_simbolo == TipoSimbolo.VECTOR and simbolo.tipo_simbolo != TipoSimbolo.VECTOR:
+                        ent = ent.ent_anterior
+                        continue
+                    return simbolo
+            elif tipo_simbolo == TipoSimbolo.FUNCTION:
+                simbolo = ent.ts_funciones.getSimbolo(id)
+                if simbolo is not None:
+                    return simbolo
+            
             ent = ent.ent_anterior
+            #if (tipo_simbolo == TipoSimbolo.VARIABLE):
+             #   simbolo = ent.ts_variables.getSimbolo(id)
+            #elif (tipo_simbolo == TipoSimbolo.FUNCTION):
+             #   simbolo = ent.ts_funciones.getSimbolo(id)
+            #if (simbolo is not None):
+             #   return simbolo
+            #ent = ent.ent_anterior
         return None
     
     # Valida si un simbolo existe en el entorno actual

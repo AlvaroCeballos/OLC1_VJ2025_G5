@@ -9,7 +9,6 @@ from interprete.otros.retorno import Retorno
 from interprete.otros.symbol import Symbol
 from interprete.otros.errores import Error, TablaErrores
 from interprete.expresiones.literal import Literal
-from interprete.instrucciones.asignacion import Asignacion
 
 class Declaracion(Instruccion):
     def __init__(self, text_val:str, id:str, tipo:TipoDato, valor:str, linea:int, columna:int):
@@ -23,37 +22,70 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
-        #print('Insertado en TS: ', self.id)
+
+        tipo_variable = self.tipo
+
+        # Evaluar la expresión si existe
         if self.valor is not None and isinstance(self.valor, Expresion):
             retorno = self.valor.ejecutar(env)
-            tipo = retorno.tipo
-            valor = retorno.valor
+        
+            if retorno.tipo == TipoDato.ERROR:
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
+                        descripcion='Error en la expresión de inicialización')
+                TablaErrores.addError(err)
+                return self
+            
+            # VALIDACIÓN ESTRICTA: Los tipos deben coincidir exactamente
+            if not self.son_tipos_compatibles(tipo_variable, retorno.tipo):
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
+                        descripcion=f'No se puede asignar un valor de tipo {retorno.tipo.name} a una variable de tipo {tipo_variable.name}')
+                TablaErrores.addError(err)
+                return self  # NO crear la variable, salir con error
+        
+        # Si los tipos son compatibles, usar el valor de la expresión
+            valor_final = retorno.valor # Guardar la expresión original
         else:
             # Valor por defecto según el tipo
             tipo = self.tipo
             if self.tipo == TipoDato.INT:
-                valor = 0
+                valor_final = 0
             elif self.tipo == TipoDato.FLOAT:
-                valor = 0.0
+                valor_final = 0.0
             elif self.tipo == TipoDato.STR:
-                valor = ' '
+                valor_final = ' '
             elif self.tipo == TipoDato.CHAR:
-                valor = ' '
+                valor_final = ' '
             elif self.tipo == TipoDato.BOOL:
-                valor = True
+                valor_final = True
             else:
-                valor = None
-
-        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor, env.ambito, None)
+                valor_final = None
+            
+        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo_variable, self.id, valor_final, env.ambito, None)
         env.insertar_simbolo(self.id, simbolo)
+        # Crear símbolo (esto permite sobreescribir si ya existe)
+        #simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor_final, env.ambito, None)
+        #env.insertar_simbolo(self.id, simbolo)
 
-        # Si hay inicialización, ejecuta la asignación
-        if self.valor is not None:
-            asignacion = Asignacion(self.text_val, self.id, self.valor, self.linea, self.columna)
-            asignacion.ejecutar(env)
+        # Si había una expresión inicial, hacer la asignación CORRECTAMENTE
+        #if expresion_original is not None:
+         #   from interprete.instrucciones.asignacion import Asignacion
+          #  asignacion = Asignacion(self.text_val, self.id, expresion_original, self.linea, self.columna)
+           # asignacion.ejecutar(env)
 
         return self
     
+    def son_tipos_compatibles(self, tipo_declarado, tipo_valor):
+        """Verifica si los tipos son compatibles para asignación"""
+        # Exactamente iguales
+        if tipo_declarado == tipo_valor:
+            return True
+        # Solo permitir INT a FLOAT si quieres esa conversión
+        if tipo_declarado == TipoDato.FLOAT and tipo_valor == TipoDato.INT:
+            return True
+        # Todas las demás combinaciones son incompatibles
+        return False
+
+
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='DECLARACION', hijos=[])
@@ -75,5 +107,3 @@ class Declaracion(Instruccion):
         else:
             id = AST.generarId()
             hijo.addHijo(Nodo(id=id, valor='None', hijos=[]))
-        
-

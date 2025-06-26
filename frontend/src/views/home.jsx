@@ -14,6 +14,7 @@ const Home = () => {
   const [mensajes, setMensajes] = useState([]);
   const [errores, setErrores] = useState([]);
   const [simbolos, setSimbolos] = useState([]);
+   const [vectores, setVectores] = useState([]); 
 
   const [activeTab, setActiveTab] = useState(0);
   const [imageSrc, setImageSrc] = useState("");
@@ -56,6 +57,7 @@ const Home = () => {
       setMensajes(response.data.ListConsole);
       setErrores(response.data.ListError);
       setSimbolos(response.data.ListSymbol);
+      setVectores(response.data.ListVector || []); 
 
       await loadImage();
     } catch {
@@ -114,6 +116,7 @@ const Home = () => {
             <Tab>CONSOLA</Tab>
             <Tab>TABLA DE SÍMBOLOS</Tab>
             <Tab>ERRORES</Tab>
+            <Tab>VECTORES</Tab>
             <Tab>AST</Tab>
           </TabList>
 
@@ -185,7 +188,54 @@ const Home = () => {
               </tbody>
             </table>
           </TabPanel>
-
+                
+                <TabPanel className="tab-panel">
+            <table className="striped-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Dimensiones</th>
+                  <th>Tamaño Total</th>
+                  <th>Ámbito</th>
+                  <th>Estrategia de Almacenamiento</th>
+                  <th>Datos Lineales</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vectores.map((vector, index) => (
+                  <tr key={index}>
+                    <td>{vector.id}</td>
+                    <td>{vector.tipo}</td>
+                    <td>{vector.dimensiones}</td>
+                    <td>{vector.tamanio_total}</td>
+                    <td>{vector.ambito}</td>
+                    <td>
+                      <pre style={{ 
+                        fontSize: '12px', 
+                        margin: 0, 
+                        whiteSpace: 'pre-wrap',
+                        maxWidth: '300px',
+                        overflow: 'auto'
+                      }}>
+                        {vector.estrategia}
+                      </pre>
+                    </td>
+                    <td>
+                      <code style={{ 
+                        fontSize: '12px',
+                        maxWidth: '200px',
+                        overflow: 'auto',
+                        display: 'block'
+                      }}>
+                        {vector.datos}
+                      </code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TabPanel>
           <TabPanel className="tab-panel">
             <div className="ast-image-container" onWheel={handleWheel}>
               {imageSrc && (
