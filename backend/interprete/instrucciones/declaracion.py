@@ -22,12 +22,28 @@ class Declaracion(Instruccion):
             self.tipo = tipo
         
     def ejecutar(self, env:Enviroment):
+
+        tipo_variable = self.tipo
+
         # Evaluar la expresión si existe
         if self.valor is not None and isinstance(self.valor, Expresion):
             retorno = self.valor.ejecutar(env)
-            tipo = retorno.tipo
-            valor_final = retorno.valor
-            expresion_original = self.valor  # Guardar la expresión original
+        
+            if retorno.tipo == TipoDato.ERROR:
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
+                        descripcion='Error en la expresión de inicialización')
+                TablaErrores.addError(err)
+                return self
+            
+            # VALIDACIÓN ESTRICTA: Los tipos deben coincidir exactamente
+            if not self.son_tipos_compatibles(tipo_variable, retorno.tipo):
+                err = Error(tipo='Semántico', linea=self.linea, columna=self.columna, 
+                        descripcion=f'No se puede asignar un valor de tipo {retorno.tipo.name} a una variable de tipo {tipo_variable.name}')
+                TablaErrores.addError(err)
+                return self  # NO crear la variable, salir con error
+        
+        # Si los tipos son compatibles, usar el valor de la expresión
+            valor_final = retorno.valor # Guardar la expresión original
         else:
             # Valor por defecto según el tipo
             tipo = self.tipo
@@ -43,20 +59,33 @@ class Declaracion(Instruccion):
                 valor_final = True
             else:
                 valor_final = None
-            expresion_original = None
-
-        # Crear símbolo (esto permite sobreescribir si ya existe)
-        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor_final, env.ambito, None)
+            
+        simbolo = Symbol(TipoSimbolo.VARIABLE, tipo_variable, self.id, valor_final, env.ambito, None)
         env.insertar_simbolo(self.id, simbolo)
+        # Crear símbolo (esto permite sobreescribir si ya existe)
+        #simbolo = Symbol(TipoSimbolo.VARIABLE, tipo, self.id, valor_final, env.ambito, None)
+        #env.insertar_simbolo(self.id, simbolo)
 
         # Si había una expresión inicial, hacer la asignación CORRECTAMENTE
-        if expresion_original is not None:
-            from interprete.instrucciones.asignacion import Asignacion
-            asignacion = Asignacion(self.text_val, self.id, expresion_original, self.linea, self.columna)
-            asignacion.ejecutar(env)
+        #if expresion_original is not None:
+         #   from interprete.instrucciones.asignacion import Asignacion
+          #  asignacion = Asignacion(self.text_val, self.id, expresion_original, self.linea, self.columna)
+           # asignacion.ejecutar(env)
 
         return self
     
+    def son_tipos_compatibles(self, tipo_declarado, tipo_valor):
+        """Verifica si los tipos son compatibles para asignación"""
+        # Exactamente iguales
+        if tipo_declarado == tipo_valor:
+            return True
+        # Solo permitir INT a FLOAT si quieres esa conversión
+        if tipo_declarado == TipoDato.FLOAT and tipo_valor == TipoDato.INT:
+            return True
+        # Todas las demás combinaciones son incompatibles
+        return False
+
+
     def recorrerArbol(self, raiz:Nodo):
         id = AST.generarId()
         hijo = Nodo(id=id, valor='DECLARACION', hijos=[])

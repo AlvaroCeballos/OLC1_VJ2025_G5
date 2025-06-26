@@ -30,6 +30,8 @@ reservadas = {
     'coseno': 'COSENO',
     'inv': 'INV',
     'vector': 'VECTOR',
+    'shuffle': 'SHUFFLE',
+    'sort': 'SORT',
 }
 
 # Lista de tokens
@@ -71,7 +73,7 @@ tokens = [
     'INCREMENTO',
     'DECREMENTO',
     'CORCHETE_ABRE',
-    'CORCHETE_CIERRA',
+    'CORCHETE_CIERRA'
 ] + list(reservadas.values())
 
 # Expresiones regulares para tokens simples

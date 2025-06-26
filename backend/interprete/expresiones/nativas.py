@@ -77,11 +77,14 @@ class Inv(Expresion):
             # devolvemos un Retorno de error
             return Retorno(None, TipoDato.ERROR)
         
+        
         #invierte los digitos
         n = ret.valor
-        s = str(abs(n)[::-1])  # invertir los dígitos
-        inv = int(s) * (1 if n >= 0 else -1)  # mantener el signo original
-
+        s = str(abs(n))        # p.ej. "2020"
+        rev_s = s[::-1]        # p.ej. "0202"
+        inv = int(rev_s)       # p.ej. 202
+        if n < 0:
+            inv = -inv         # p.ej. -202
         return Retorno(TipoDato.INT, inv)
     
     def recorrerArbol(self, raiz: Nodo):
