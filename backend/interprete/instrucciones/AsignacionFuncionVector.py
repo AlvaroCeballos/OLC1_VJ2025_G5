@@ -47,3 +47,20 @@ class AsignacionFuncionVector(Instruccion):
         simbolo_destino.valor['datos'] = resultado.valor['datos']
         
         return self
+    
+    def recorrerArbol(self, raiz: Nodo):
+        id_asignacion = AST.generarId()
+        nodo_asignacion = Nodo(id=id_asignacion, valor='ASIGNACION_VECTOR_FUNCION', hijos=[])
+        raiz.addHijo(nodo_asignacion)
+        
+        # Agregar nodo para el identificador destino
+        id_destino = AST.generarId()
+        nodo_destino = Nodo(id=id_destino, valor=f'DESTINO: {self.id_destino}', hijos=[])
+        nodo_asignacion.addHijo(nodo_destino)
+        
+        # Agregar nodo para la función
+        id_funcion = AST.generarId()
+        nodo_funcion = Nodo(id=id_funcion, valor='FUNCION', hijos=[])
+        nodo_asignacion.addHijo(nodo_funcion)
+        
+        self.funcion_vector.recorrerArbol(nodo_funcion)

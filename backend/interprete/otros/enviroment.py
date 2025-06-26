@@ -1,114 +1,146 @@
 from interprete.otros.symbol import Symbol
-from interprete.otros.tipos import TipoSimbolo
 from interprete.otros.symbol_table import TablaSimbolos
+from interprete.otros.symbol_table_vector import TablaSimbolosVector
+from interprete.otros.symbolVector import SymbolVector
+from interprete.otros.tipos import TipoSimbolo
 
 class Enviroment():
     env_list = []
-    def __init__(self, ent_anterior, ambito:str, nombre:str="Global"):
-        self.ent_anterior:Enviroment = ent_anterior
+    
+    def __init__(self, ent_anterior, ambito: str, nombre: str = "Global"):
+        self.ent_anterior: Enviroment = ent_anterior
         self.ambito = ambito
         self.nombre = nombre
         self.ts_variables = TablaSimbolos()
         self.ts_funciones = TablaSimbolos()
+        self.ts_vectores = TablaSimbolosVector()  # ✅ NUEVA TABLA DE VECTORES
         self.dentro_funcion = False
-        self.tamanio = 0                    # Para manejo de funciones/procedimientos (es como un offset)
+        self.tamanio = 0
         Enviroment.addEnviroment(self)
     
-    # Incrementa el tamaño del entorno
     def incrementarTamanio(self):
         self.tamanio += 1
 
     def getTamanio(self):
         return self.tamanio
 
-    # Inserta un simbolo en la tabla de simbolos del entorno actual
-    def insertar_simbolo(self, id:str, simbolo:Symbol):
-        #Validar si el simbolo es funcion o variable
-        if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE or simbolo.tipo_simbolo == TipoSimbolo.VECTOR:
+    def insertar_simbolo(self, id: str, simbolo: Symbol):
+        """Inserta símbolos normales (variables y funciones) - NO vectores"""
+        if simbolo.tipo_simbolo == TipoSimbolo.VARIABLE:
             self.ts_variables.instertarSimbolo(id, simbolo)
-        #Valida si el simbolo es una funcion    
         elif simbolo.tipo_simbolo == TipoSimbolo.FUNCTION:
             self.ts_funciones.instertarSimbolo(id, simbolo)
+        # Los vectores ya NO se insertan aquí
     
-    # Busca un simbolo en el entorno actual o en los entornos anteriores
-    def existe_simbolo(self, id:str, tipoSimbolo:TipoSimbolo):
-        ent:Enviroment = self
+    def insertar_vector(self, id: str, simbolo_vector: SymbolVector):
+        """Inserta vectores en su tabla específica"""
+        self.ts_vectores.insertarVector(id, simbolo_vector)
+    
+    def existe_simbolo(self, id: str, tipoSimbolo: TipoSimbolo):
+        """Busca símbolos en todos los entornos"""
+        ent: Enviroment = self
         while ent is not None:
-            if(tipoSimbolo == TipoSimbolo.VARIABLE) or tipoSimbolo == TipoSimbolo.VECTOR:
+            if tipoSimbolo == TipoSimbolo.VARIABLE:
                 existe = ent.ts_variables.buscarSimbolo(id)
-            elif(tipoSimbolo == TipoSimbolo.FUNCTION):
+            elif tipoSimbolo == TipoSimbolo.FUNCTION:
                 existe = ent.ts_funciones.buscarSimbolo(id)
-            if (existe is not None):
+            elif tipoSimbolo == TipoSimbolo.VECTOR:
+                existe = ent.ts_vectores.existeVector(id)
+                if existe:
+                    return True
+                ent = ent.ent_anterior
+                continue
+            
+            if existe is not None:
                 return True
             ent = ent.ent_anterior
         return False
-    
-    #Obtiene el simbolo sobre todos los entornos
-    def getSimbolo(self, id:str, tipo_simbolo:TipoSimbolo):
-        ent:Enviroment = self
+
+    def getSimbolo(self, id: str, tipo_simbolo: TipoSimbolo):
+        """Obtiene símbolos de todos los entornos"""
+        ent: Enviroment = self
         
         while ent is not None:
             if tipo_simbolo is None:
-                # Buscar primero en variables (incluye vectores)
+                # Buscar primero en variables
                 simbolo = ent.ts_variables.getSimbolo(id)
                 if simbolo is not None:
                     return simbolo
-                # Si no se encuentra, buscar en funciones
+                # Buscar en funciones
                 simbolo = ent.ts_funciones.getSimbolo(id)
                 if simbolo is not None:
                     return simbolo
-            elif tipo_simbolo == TipoSimbolo.VARIABLE or tipo_simbolo == TipoSimbolo.VECTOR:
+                # Buscar en vectores y convertir a Symbol
+                vector = ent.ts_vectores.getVector(id)
+                if vector is not None:
+                    return self._convertir_vector_a_symbol(vector)
+                    
+            elif tipo_simbolo == TipoSimbolo.VARIABLE:
                 simbolo = ent.ts_variables.getSimbolo(id)
                 if simbolo is not None:
-                    # Si se especifica VECTOR, verificar que sea vector
-                    if tipo_simbolo == TipoSimbolo.VECTOR and simbolo.tipo_simbolo != TipoSimbolo.VECTOR:
-                        ent = ent.ent_anterior
-                        continue
                     return simbolo
+                    
+            elif tipo_simbolo == TipoSimbolo.VECTOR:
+                vector = ent.ts_vectores.getVector(id)
+                if vector is not None:
+                    return self._convertir_vector_a_symbol(vector)
+                    
             elif tipo_simbolo == TipoSimbolo.FUNCTION:
                 simbolo = ent.ts_funciones.getSimbolo(id)
                 if simbolo is not None:
                     return simbolo
             
             ent = ent.ent_anterior
-            #if (tipo_simbolo == TipoSimbolo.VARIABLE):
-             #   simbolo = ent.ts_variables.getSimbolo(id)
-            #elif (tipo_simbolo == TipoSimbolo.FUNCTION):
-             #   simbolo = ent.ts_funciones.getSimbolo(id)
-            #if (simbolo is not None):
-             #   return simbolo
-            #ent = ent.ent_anterior
         return None
     
-    # Valida si un simbolo existe en el entorno actual
-    def existe_simbolo_ent_actual(self, id:str, tipo_simbolo:TipoSimbolo):
-        if(tipo_simbolo == TipoSimbolo.VARIABLE):
+    def _convertir_vector_a_symbol(self, vector: SymbolVector) -> Symbol:
+        """Convierte SymbolVector a Symbol para compatibilidad"""
+        return Symbol(
+            tipo_simbolo=TipoSimbolo.VECTOR,
+            tipo=vector.tipo,
+            id=vector.id,
+            valor={
+                'dimensiones': vector.dimensiones,
+                'datos': vector.datos,
+                'tamanio_total': vector.tamanio_total
+            },
+            ambito=vector.ambito,
+            parametros=[],
+            instrucciones=[],
+            direccion=''
+        )
+    
+    def existe_simbolo_ent_actual(self, id: str, tipo_simbolo: TipoSimbolo):
+        """Valida si un símbolo existe en el entorno actual"""
+        if tipo_simbolo == TipoSimbolo.VARIABLE:
             existe = self.ts_variables.getSimbolo(id)
-        elif (tipo_simbolo == TipoSimbolo.FUNCTION):
+        elif tipo_simbolo == TipoSimbolo.FUNCTION:
             existe = self.ts_funciones.getSimbolo(id)
-        if(existe is not None):
+        elif tipo_simbolo == TipoSimbolo.VECTOR:
+            return self.ts_vectores.existeVector(id)
+        
+        if existe is not None:
             return True
         return False
     
-    # Valida si hay una funcion en un entorno mas externo
     def dentroDeFuncion(self) -> bool:
-        ent:Enviroment = self
-        
+        ent: Enviroment = self
         while ent is not None:
             if ent.getDentroFunction():
                 return True
             ent = ent.ent_anterior
         return False
     
-    def setDentroFuncion(self, val:bool):
+    def setDentroFuncion(self, val: bool):
         self.dentro_funcion = val
     
     def getDentroFunction(self):
         return self.dentro_funcion
     
-    # Serializa la tabla de simbolos de un entorno y genera un arreglo en formato JSON
     def getTablaSimbolos(self):
+        """Serializa SOLO variables y funciones (sin vectores)"""
         simbolos = []
+        
         # Llenado de variables
         for simbolo in self.ts_variables.getTS():
             template = {
@@ -134,7 +166,10 @@ class Enviroment():
             simbolos.append(template)
                     
         return simbolos
-
+    
+    def getTablaVectores(self):
+        """Serializa SOLO vectores"""
+        return self.ts_vectores.getTablaComoLista()
     
     @classmethod
     def addEnviroment(cls, env):
@@ -144,14 +179,25 @@ class Enviroment():
     def getEnviroments(cls):
         return cls.env_list
     
-    # Obtiene los simbolos de todos los entornos creados
     @classmethod
     def serializarTodosSimbolos(cls):
+        """Obtiene SOLO variables y funciones de todos los entornos"""
         simbolos = []
         for env in cls.env_list:
             simbolos = simbolos + env.getTablaSimbolos()
         return simbolos
+    
+    @classmethod
+    def serializarTodosVectores(cls):
+        """Obtiene SOLO vectores de todos los entornos"""
+        vectores = []
+        for env in cls.env_list:
+            vectores = vectores + env.getTablaVectores()
+        return vectores
 
     @classmethod
     def cleanEnviroments(cls):
+        """Limpia todos los entornos incluyendo vectores"""
+        for env in cls.env_list:
+            env.ts_vectores.limpiarTabla()
         cls.env_list = []

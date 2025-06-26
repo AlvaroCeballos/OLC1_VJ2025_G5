@@ -5,6 +5,7 @@ from interprete.otros.enviroment import Enviroment
 from interprete.otros.symbol import Symbol
 from interprete.otros.errores import Error, TablaErrores
 from interprete.otros.reporteVectores import ReporteVectores
+from interprete.otros.symbolVector import SymbolVector
 
 class Vector(Instruccion):
     def __init__(self, text_val: str, id: str, tipo_dato: TipoDato, dimensiones: list, 
@@ -56,22 +57,19 @@ class Vector(Instruccion):
             if vector_lineal is None:  # Error en procesamiento
                 return self
         
-        #agregar el vector a la tabla de símbolos
-        simbolo = Symbol(
-            tipo_simbolo = TipoSimbolo.VECTOR,
+        # Crear el símbolo del vector
+        simbolo_vector = SymbolVector(
+            tipo_simbolo=TipoSimbolo.VECTOR,
             tipo=self.tipo_dato,
             id=self.id,
-            valor={
-                'dimensiones': dimensiones_evaluadas,
-                'datos': vector_lineal,
-                'tamanio_total': tamanio_total
-            },
-            ambito=env.ambito,
-            parametros=[],                 
-            instrucciones=[],                   
-            direccion=''
+            dimensiones=dimensiones_evaluadas,
+            datos=vector_lineal,
+            tamanio_total=tamanio_total,
+            ambito=env.ambito
         )
-        env.insertar_simbolo(self.id, simbolo)
+        
+        # INSERTAR EN TABLA DE VECTORES
+        env.insertar_vector(self.id, simbolo_vector)
 
         # SOLO REPORTAR EL VECTOR - NO AGREGAR A TABLA DE SÍMBOLOS
         ReporteVectores.addVector(

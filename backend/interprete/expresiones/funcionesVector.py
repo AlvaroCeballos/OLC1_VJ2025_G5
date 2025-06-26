@@ -74,9 +74,16 @@ class Sort(Expresion):
     
     def recorrerArbol(self, raiz: Nodo):
         id_sort = AST.generarId()
-        nodo = Nodo(id_sort, 'SORT', hijos=[])
-        raiz.hijos.append(nodo)
-        self.vector_arg.recorrerArbol(nodo)
+        nodo_sort = Nodo(id=id_sort, valor='SORT', hijos=[])
+        raiz.addHijo(nodo_sort)
+        
+        # Agregar nodo para los parámetros
+        id_params = AST.generarId()
+        nodo_params = Nodo(id=id_params, valor='PARAMETROS', hijos=[])
+        nodo_sort.addHijo(nodo_params)
+        
+        # Recorrer el argumento del vector
+        self.vector_arg.recorrerArbol(nodo_params)
 
 class Shuffle(Expresion):
     def __init__(self, text_val: str, vector_arg, linea: int, columna: int):
@@ -146,6 +153,13 @@ class Shuffle(Expresion):
     
     def recorrerArbol(self, raiz: Nodo):
         id_shuffle = AST.generarId()
-        nodo = Nodo(id_shuffle, 'SHUFFLE', hijos=[])
-        raiz.hijos.append(nodo)
-        self.vector_arg.recorrerArbol(nodo)
+        nodo_shuffle = Nodo(id=id_shuffle, valor='SHUFFLE', hijos=[])
+        raiz.addHijo(nodo_shuffle)
+        
+        # Agregar nodo para los parámetros
+        id_params = AST.generarId()
+        nodo_params = Nodo(id=id_params, valor='PARAMETROS', hijos=[])
+        nodo_shuffle.addHijo(nodo_params)
+        
+        # Recorrer el argumento del vector
+        self.vector_arg.recorrerArbol(nodo_params)
