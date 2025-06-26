@@ -1,0 +1,90 @@
+// Declaración de variables globales
+INT a = 10;
+CHAR c = 'X';
+INT b;
+
+// Declaración de un procedimiento válido
+PROC mostrar_datos(INT: num, CHAR: letra) {
+    PRINTLN("Número recibido:");
+    PRINTLN(num);
+    PRINTLN("Letra recibida:");
+    PRINTLN(letra);
+    a = a + num; // Modifica variable global
+}
+
+// Llamada correcta
+EXEC mostrar_datos(5, 'Z');
+
+// Llamada con tipo incorrecto (debe dar error)
+EXEC mostrar_datos('A', 7);
+
+// Llamada con cantidad incorrecta de parámetros (debe dar error)
+EXEC mostrar_datos(10);
+
+// Declaración de procedimiento sin parámetros
+PROC saludar() {
+    PRINTLN("¡Hola mundo!");
+}
+
+// Llamada a procedimiento sin parámetros
+EXEC saludar();
+
+// Procedimiento que usa variable global y local
+PROC suma_global(INT: x) {
+    b = a + x; // b y a son globales
+    PRINTLN("Suma global:");
+    PRINTLN(b);
+}
+
+// Llamada correcta
+EXEC suma_global(15);
+
+// Procedimiento con parámetros del mismo nombre (debe dar error)
+PROC error_param(INT: x, INT: x) {
+    PRINTLN(x);
+}
+
+// Procedimiento que declara variable local igual a parámetro
+PROC sombra(INT: x) {
+    INT x = 99;
+    PRINTLN(x); // Debe imprimir 99, no el valor del parámetro
+}
+
+// Llamada a sombra
+EXEC sombra(123);
+
+// Procedimiento que no existe (debe dar error)
+EXEC no_existe(1);
+
+// Procedimiento con vector como parámetro (debe dar error si no se permite)
+PROC vector_param(INT[]: arr) {
+    PRINTLN("Esto no debería permitirse");
+}
+
+// Llamada a procedimiento con vector como parámetro
+EXEC vector_param([1,2,3]);
+
+// Procedimiento con parámetro booleano
+PROC prueba_bool(BOOL: flag) {
+    IF (flag) {
+        PRINTLN("Flag es verdadero");
+    } ELSE {
+        PRINTLN("Flag es falso");
+    }
+}
+
+// Llamadas a prueba_bool
+EXEC prueba_bool(TRUE);
+EXEC prueba_bool(FALSE);
+
+// Procedimiento con parámetro tipo cadena
+PROC prueba_cadena(STR: texto) {
+    PRINTLN("Texto recibido:");
+    PRINTLN(texto);
+}
+
+// Llamada a prueba_cadena
+EXEC prueba_cadena("¡Hola desde cadena!");
+
+// Llamada con parámetro faltante (debe dar error)
+EXEC prueba_cadena();
