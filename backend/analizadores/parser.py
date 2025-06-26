@@ -37,6 +37,9 @@ from interprete.expresiones.funcionesVector import Shuffle, Sort
 from interprete.instrucciones.AsignacionFuncionVector import AsignacionFuncionVector
 from interprete.instrucciones.declaracionVectorFuncion import DeclaracionVectorFuncion
 
+from interprete.instrucciones.procedimiento import Procedimiento
+from interprete.instrucciones.iRunProce import IRunProce
+
 
 tokens = lexer.tokens
 
@@ -84,23 +87,36 @@ precedence = (
 
 # Definición de la gramática
 def p_inicio(t):
-    '''
-    ini : instrucciones
-    '''
+    '''ini : instrucciones_globales'''
     t[0] = t[1] if t[1] is not None else []
     print('Entrada correcta')
 
-def p_instrucciones(t):
+def p_instrucciones_globales(t):
     '''
-    instrucciones : instrucciones instruccion
+    instrucciones_globales : instrucciones_globales instruccion_global
+                           | instruccion_global
     '''
-    #if t[1] is None:
-     #   t[1] = []
-    #if t[2] is None:
-     #   t[2] = []
-    #t[1].append(t[2])
-    #t[0] = t[1]
-    t[0] = t[1] + [t[2]]
+    if len(t) == 3:
+        t[0] = t[1] + [t[2]]
+    else:
+        t[0] = [t[1]]
+
+def p_instruccion_global(t):
+    '''
+    instruccion_global : declaracion_procedimiento
+                       | instruccion_local
+    '''
+    t[0] = t[1]        
+
+def p_instrucciones_locales(t):
+    '''
+    instrucciones : instrucciones instruccion_local
+                  | instruccion_local
+    '''
+    if len(t) == 3:
+        t[0] = t[1] + [t[2]]
+    else:
+        t[0] = [t[1]]
 
 
 def p_instruccion_error_print(t):
@@ -148,15 +164,16 @@ def p_instrucciones_instruccion(t):
     else:
         t[0] = [t[1]]
 
-def p_instruccion(t):
+def p_instruccion_local(t):
     '''
-    instruccion : instruccion_println
+    instruccion_local : instruccion_println
                 | declaracion_variable PYC
                 | asignacion_variable PYC
                 | estructura_control
                 | incremento PYC
                 | decremento PYC
-                | declaracion_vector PYC 
+                | declaracion_vector PYC
+                | llamada_procedimiento 
     '''
     if len(t) == 3:  # Instrucciones que terminan con PYC
         if t[1] is not None and hasattr(t[1], 'text_val'):
@@ -270,6 +287,90 @@ def p_acceso_vector(t):
     literal : ID lista_indices
     '''
     t[0] = AccesoVector(t[1], t[2], t.lineno(1), t.lexpos(1))
+
+
+# Declaración de procedimiento
+def p_declaracion_procedimiento(t):
+    '''
+    declaracion_procedimiento : PROC ID PARA lista_parametros PARC LLA instrucciones LLC
+    '''
+    text_val = f'PROC {t[2]}({", ".join([f"{tipo}:{nombre}" for tipo, nombre in t[4]])}) {{...}}'
+    t[0] = Procedimiento(
+        text_val=text_val,
+        id=t[2],
+        parametros=t[4],
+        instrucciones=t[7],
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+
+# Lista de parámetros para el procedimiento
+def p_lista_parametros(t):
+    '''
+    lista_parametros : lista_parametros COMA tipo DOS_PUNTOS ID
+                    | tipo DOS_PUNTOS ID
+                    | 
+    '''
+    if len(t) == 6:
+        t[0] = t[1] + [(t[3], t[5])]
+    elif len(t) == 4:
+        t[0] = [(t[1], t[3])]
+    else:
+        t[0] = []
+
+# Llamada al procedimiento
+def p_llamada_procedimiento(t):
+    '''
+    llamada_procedimiento : EXEC ID PARA lista_argumentos PARC PYC
+    '''
+    text_val = f'EXEC {t[2]}({", ".join([str(arg.text_val) for arg in t[4]])});'
+    t[0] = IRunProce(
+        id=t[2],
+        argumentos=t[4],
+        linea=t.lineno(1),
+        columna=t.lexpos(1)
+    )
+
+# Lista de argumentos para la llamada al procedimiento
+def p_lista_argumentos(t):
+    '''
+    lista_argumentos : lista_argumentos COMA argumento_simple
+                     | argumento_simple
+                     | 
+    '''
+    if len(t) == 4:
+        t[0] = t[1] + [t[3]]
+    elif len(t) == 2:
+        t[0] = [t[1]]
+    else:
+        t[0] = []
+
+def p_argumento_simple(t):
+    '''
+    argumento_simple : ID
+                     | ENTERO
+                     | DECIMAL
+                     | CARACTER
+                     | CADENAS
+                     | TRUE
+                     | FALSE
+    '''
+    token_type = t.slice[1].type
+    if token_type == 'ID':
+        t[0] = Acceso(t[1], t[1], linea=t.lineno(1), columna=t.lexpos(1))
+    elif token_type == 'ENTERO':
+        t[0] = Literal(str(t[1]), TipoDato.INT, t[1], t.lineno(1), t.lexpos(1))
+    elif token_type == 'DECIMAL':
+        t[0] = Literal(str(t[1]), TipoDato.FLOAT, t[1], t.lineno(1), t.lexpos(1))
+    elif token_type == 'CARACTER':
+        t[0] = Literal(str(t[1]), TipoDato.CHAR, t[1], t.lineno(1), t.lexpos(1))
+    elif token_type == 'CADENAS':
+        t[0] = Literal(str(t[1]), TipoDato.STR, t[1], t.lineno(1), t.lexpos(1))
+    elif token_type in ('TRUE', 'FALSE'):
+        valor = True if t[1].lower() == 'true' else False
+        t[0] = Literal(t[1], TipoDato.BOOL, valor, t.lineno(1), t.lexpos(1))
+    else:
+        t[0] = Literal(str(t[1]), None, t[1], t.lineno(1), t.lexpos(1))
 
 #Se crea funcion para poder manejar todos los tipos de ciclos anidados
 def p_estructura_control(t):
