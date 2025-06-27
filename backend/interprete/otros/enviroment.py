@@ -13,7 +13,7 @@ class Enviroment():
         self.nombre = nombre
         self.ts_variables = TablaSimbolos()
         self.ts_funciones = TablaSimbolos()
-        self.ts_vectores = TablaSimbolosVector()  # ✅ NUEVA TABLA DE VECTORES
+        self.ts_vectores = TablaSimbolosVector()  
         self.dentro_funcion = False
         self.tamanio = 0
         Enviroment.addEnviroment(self)
