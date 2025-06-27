@@ -41,6 +41,9 @@ for linea in Consola.getConsola():
 print('\nTABLA DE SÍMBOLOS:')
 print(Enviroment.serializarTodosSimbolos())
 
+print("\nTABLA DE VECTORES:")
+print(Enviroment.serializarTodosVectores())
+
 print('\nTABLA DE ERRORES:')
 print(TablaErrores.serializarTBErrores())
 
