@@ -32,6 +32,8 @@ reservadas = {
     'vector': 'VECTOR',
     'shuffle': 'SHUFFLE',
     'sort': 'SORT',
+    'proc': 'PROC',        
+    'exec': 'EXEC', 
 }
 
 # Lista de tokens
